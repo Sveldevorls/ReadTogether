@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import "./App.css";
+import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 </script>
 
 <template>
-  <header>
-    <h1>App</h1>
-  </header>
-  <main>
+  <Header />
+  <main class="mt-4 grow">
     <RouterView></RouterView>
   </main>
   <Footer />
