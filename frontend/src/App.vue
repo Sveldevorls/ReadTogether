@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import "./App.css";
+import Footer from "./Footer.vue";
 </script>
 
 <template>
-  <h1>Hello world</h1>
+  <header>
+    <h1>App</h1>
+  </header>
+  <main>
+    <RouterView></RouterView>
+  </main>
+  <Footer />
 </template>
 
 <style scoped></style>
