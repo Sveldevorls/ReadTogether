@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { InputText } from "primevue";
 const email = ref<string>("");
 const password = ref<string>("");
 
@@ -20,16 +21,14 @@ function login() {
       @submit.prevent="login"
     >
       <label for="email">Email</label>
-      <input
+      <InputText
         type="text"
-        class="w-full h-10 px-2 rounded-sm border border-slate-300 bg-white hover:bg-gray-50 focus:bg-white"
         id="email"
         v-model="email"
       />
       <label for="password">Password</label>
-      <input
+      <InputText
         type="password"
-        class="w-full h-10 px-2 rounded-sm border border-slate-300 bg-white hover:bg-gray-50 focus:bg-white"
         id="password"
         v-model="password"
       />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToast } from "primevue";
+import { useToast, InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
 import { Toast } from "primevue";
 import * as yup from "yup";
@@ -47,8 +47,7 @@ const onSubmit = handleSubmit(
   () => {
     toast.add({
       severity: "error",
-      summary: "Validation Error",
-      detail: "Please fix the errors in the form before submitting.",
+      summary: "Please fix the errors in the form before submitting.",
       group: "message",
       life: 3000,
     });
@@ -67,41 +66,61 @@ const onSubmit = handleSubmit(
       @submit="onSubmit"
     >
       <label for="email">Email</label>
-      <input
-        :class="errors.email ? 'border-red-500' : 'border-slate-300'"
+      <InputText
+        :invalid="!!errors.email"
         type="text"
-        class="w-full h-10 px-2 rounded-sm border bg-white hover:bg-gray-50 focus:bg-white"
         id="email"
         v-model="email"
       />
-      <span class="text-sm text-red-500">{{ errors.email }}</span>
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+      >
+        {{ errors.email }}
+      </Message>
       <label for="username">Username</label>
-      <input
-        :class="errors.username ? 'border-red-500' : 'border-slate-300'"
+      <InputText
+        :invalid="!!errors.username"
         type="text"
-        class="w-full h-10 px-2 rounded-sm border bg-white hover:bg-gray-50 focus:bg-white"
         id="username"
         v-model="username"
       />
-      <span class="text-sm text-red-500">{{ errors.username }}</span>
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+      >
+        {{ errors.username }}
+      </Message>
       <label for="password">Password</label>
-      <input
-        :class="errors.password ? 'border-red-500' : 'border-slate-300'"
+      <InputText
+        :invalid="!!errors.password"
         type="password"
-        class="w-full h-10 px-2 rounded-sm border bg-white hover:bg-gray-50 focus:bg-white"
         id="password"
         v-model="password"
       />
-      <span class="text-sm text-red-500">{{ errors.password }}</span>
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+      >
+        {{ errors.password }}
+      </Message>
       <label for="passwordConfirm">Password confirmation</label>
-      <input
-        :class="errors.passwordConfirm ? 'border-red-500' : 'border-slate-300'"
+      <InputText
+        :invalid="!!errors.passwordConfirm"
         type="password"
-        class="w-full h-10 px-2 rounded-sm border bg-white hover:bg-gray-50 focus:bg-white"
         id="passwordConfirm"
         v-model="passwordConfirm"
       />
-      <span class="text-sm text-red-500">{{ errors.passwordConfirm }}</span>
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+      >
+        {{ errors.passwordConfirm }}
+      </Message>
     </form>
     <button
       form="register"
@@ -128,11 +147,7 @@ const onSubmit = handleSubmit(
 <style scoped>
 @reference "tailwindcss";
 
-span + label {
+:deep(div + label) {
   @apply mt-4;
-}
-
-span {
-  @apply mt-1;
 }
 </style>

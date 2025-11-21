@@ -25,11 +25,19 @@ const navbarItems = ref<MenuItem[]>([
   <header class="sticky top-0 bg-slate-50 shadow">
     <Menubar
       :model="navbarItems"
+      :dt="{
+        root: {
+          background: 'none',
+          transitionDuration: '0s',
+        },
+      }"
       :pt="{
-        root: 'h-12 !max-w-[100em] mx-auto',
-        button: '!h-full !px-4 hover:!bg-slate-200',
-        item: 'bg-slate-50 hover:bg-slate-200',
-        end: 'h-full hover:bg-slate-200',
+        root: 'h-12 !max-w-[100em] mx-auto !border-0',
+        rootList: '!p-0 !gap-0 !rounded-none',
+        button: '!h-12 !w-12 !rounded-none !px-4 hover:!bg-slate-200',
+        item: 'bg-slate-50',
+        itemContent: '!rounded-none hover:!bg-slate-200',
+        end: '!h-12 hover:bg-slate-200',
       }"
     >
       <template #item="{ item }">
