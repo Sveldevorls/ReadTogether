@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useToast, InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
 import { Toast } from "primevue";
-import * as yup from "yup";
+import { object, string, ref as yupRef } from "yup";
+
+type fieldNames = "email" | "username" | "password" | "passwordConfirm";
 
 const toast = useToast();
-
-const schema = yup.object({
-  email: yup
-    .string()
-    .email("Email must be valid")
-    .required("Email is required"),
-  username: yup
-    .string()
+const schema = object({
+  email: string().email("Email must be valid").required("Email is required"),
+  username: string()
     .min(3, "Username must be at least 3 characters long")
     .max(20, "Username must be at most 20 characters long")
     .matches(
@@ -20,24 +18,42 @@ const schema = yup.object({
       "Username can only contain letters, numbers, and underscores"
     )
     .required("Username is required"),
-  password: yup
-    .string()
+  password: string()
     .min(8, "Password must be at least 8 characters long")
     .required("Password is required"),
-  passwordConfirm: yup
-    .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
+  passwordConfirm: string()
+    .oneOf([yupRef("password")], "Passwords must match")
     .required("Please confirm your password"),
 });
+
+const isFocusedStates = ref<Record<fieldNames, boolean>>({
+  email: false,
+  password: false,
+  username: false,
+  passwordConfirm: false,
+});
+
+const fieldConfig = {
+  validateOnBlur: true,
+  validateOnModelUpdate: false,
+};
 
 const { defineField, handleSubmit, errors } = useForm({
   validationSchema: schema,
 });
 
-const [email] = defineField<string>("email");
-const [password] = defineField<string>("password");
-const [username] = defineField<string>("username");
-const [passwordConfirm] = defineField<string>("passwordConfirm");
+const [email, emailProps] = defineField<string>("email", fieldConfig);
+const [password, passwordProps] = defineField<string>("password", fieldConfig);
+const [username, usernameProps] = defineField<string>("username", fieldConfig);
+const [passwordConfirm, passwordConfirmProps] = defineField<string>("passwordConfirm", fieldConfig);
+
+function handleFocus(fieldName: fieldNames): void {
+  isFocusedStates.value[fieldName] = true;
+}
+
+function handleBlur(fieldName: fieldNames): void {
+  isFocusedStates.value[fieldName] = false;
+}
 
 const onSubmit = handleSubmit(
   (values) => {
@@ -71,11 +87,15 @@ const onSubmit = handleSubmit(
         type="text"
         id="email"
         v-model="email"
+        v-bind="emailProps"
+        @focus="handleFocus('email')"
+        @blur="handleBlur('email')"
       />
       <Message
         severity="error"
         variant="simple"
         size="small"
+        v-if="!isFocusedStates.email"
       >
         {{ errors.email }}
       </Message>
@@ -85,11 +105,15 @@ const onSubmit = handleSubmit(
         type="text"
         id="username"
         v-model="username"
+        v-bind="usernameProps"
+        @focus="handleFocus('username')"
+        @blur="handleBlur('username')"
       />
       <Message
         severity="error"
         variant="simple"
         size="small"
+        v-if="!isFocusedStates.username"
       >
         {{ errors.username }}
       </Message>
@@ -99,11 +123,15 @@ const onSubmit = handleSubmit(
         type="password"
         id="password"
         v-model="password"
+        v-bind="passwordProps"
+        @focus="handleFocus('password')"
+        @blur="handleBlur('password')"
       />
       <Message
         severity="error"
         variant="simple"
         size="small"
+        v-if="!isFocusedStates.password"
       >
         {{ errors.password }}
       </Message>
@@ -113,11 +141,15 @@ const onSubmit = handleSubmit(
         type="password"
         id="passwordConfirm"
         v-model="passwordConfirm"
+        v-bind="passwordConfirmProps"
+        @focus="handleFocus('passwordConfirm')"
+        @blur="handleBlur('passwordConfirm')"
       />
       <Message
         severity="error"
         variant="simple"
         size="small"
+        v-if="!isFocusedStates.passwordConfirm"
       >
         {{ errors.passwordConfirm }}
       </Message>
@@ -147,7 +179,7 @@ const onSubmit = handleSubmit(
 <style scoped>
 @reference "tailwindcss";
 
-:deep(div + label) {
+label:not(:first-child) {
   @apply mt-4;
 }
 </style>
