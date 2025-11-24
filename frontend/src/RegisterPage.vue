@@ -4,6 +4,7 @@ import { useToast, InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
 import { Toast } from "primevue";
 import { object, string, ref as yupRef } from "yup";
+import api from "./api";
 
 type fieldNames = "email" | "username" | "password" | "passwordConfirm";
 
@@ -45,7 +46,10 @@ const { defineField, handleSubmit, errors } = useForm({
 const [email, emailProps] = defineField<string>("email", fieldConfig);
 const [password, passwordProps] = defineField<string>("password", fieldConfig);
 const [username, usernameProps] = defineField<string>("username", fieldConfig);
-const [passwordConfirm, passwordConfirmProps] = defineField<string>("passwordConfirm", fieldConfig);
+const [passwordConfirm, passwordConfirmProps] = defineField<string>(
+  "passwordConfirm",
+  fieldConfig
+);
 
 function handleFocus(fieldName: fieldNames): void {
   isFocusedStates.value[fieldName] = true;
@@ -56,9 +60,12 @@ function handleBlur(fieldName: fieldNames): void {
 }
 
 const onSubmit = handleSubmit(
-  (values) => {
+  async (values) => {
+    console.log(values);
     // placeholder
     console.log("Registering with", values);
+    const result = await api.post("/api/register", values);
+    console.log(result);
   },
   () => {
     toast.add({

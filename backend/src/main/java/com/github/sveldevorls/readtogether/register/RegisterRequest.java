@@ -1,9 +1,24 @@
-package com.github.sveldevorls.readtogether.user;
+package com.github.sveldevorls.readtogether.register;
 
-public class UserRegisterRequest {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class RegisterRequest {
+
+    @NotBlank(message = "Username can not be blank")
+    @Size(min = 3, message = "Username must be at least 3 characters long")
     private String username;
+
+    @NotBlank(message = "Email can not be blank")
+    @Email(message = "Email format must be valid")
     private String email;
+    
+    @NotBlank(message = "Password can not be blank")
+    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
     private String password;
+
+    @NotBlank(message = "Password confirmation can not be blank")
     private String passwordConfirm;
 
     public String getUsername() {
