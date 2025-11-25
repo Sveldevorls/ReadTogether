@@ -2,7 +2,6 @@ package com.github.sveldevorls.readtogether.register;
 
 import com.github.sveldevorls.readtogether.responses.ErrorResponse;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -23,20 +22,7 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        String password = request.getPassword();
-        String passwordConfirm = request.getPasswordConfirm();
-        if (!password.equals(passwordConfirm)) {
-            errors.put("passwordConfirm", "Password does not match confirmation");
-        }
-
-        if (errors.isEmpty()) {
-            System.out.println("Validation success");
-            return new ResponseEntity<>("Good", HttpStatus.CREATED);
-        } else {
-            System.out.println("Validation failed");
-            return new ResponseEntity<>(new ErrorResponse(400, errors), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>("Good", HttpStatus.CREATED);
     }
 
     @GetMapping

@@ -10,7 +10,7 @@ type fieldNames = "email" | "username" | "password" | "passwordConfirm";
 
 const toast = useToast();
 const schema = object({
-  email: string().email("Email must be valid").required("Email is required"),
+  email: string().email("Email is not valid").required("Email is required"),
   username: string()
     .min(3, "Username must be at least 3 characters long")
     .max(20, "Username must be at most 20 characters long")
