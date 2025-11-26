@@ -1,6 +1,9 @@
 package com.github.sveldevorls.readtogether.register;
 
 import com.github.sveldevorls.readtogether.responses.ErrorResponse;
+import com.github.sveldevorls.readtogether.responses.SuccessResponse;
+
+import java.util.Collections;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,9 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
-        return new ResponseEntity<>("Good", HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.CREATED, "Registration completed", Collections.emptyList()),
+                HttpStatus.CREATED);
     }
 
     @GetMapping
