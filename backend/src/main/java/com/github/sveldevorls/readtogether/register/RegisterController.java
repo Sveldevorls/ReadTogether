@@ -27,8 +27,6 @@ public class RegisterController {
 
     @GetMapping
     public ResponseEntity<ErrorResponse> doGet() {
-        return new ResponseEntity<>(
-                new ErrorResponse(405, Map.of("general", "Method Not Allowed")),
-                HttpStatus.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
     }
 }

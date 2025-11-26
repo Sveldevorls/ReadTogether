@@ -9,7 +9,8 @@ import com.github.sveldevorls.readtogether.responses.ErrorResponse;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
@@ -17,11 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        List<Map<String, String>> errors = new ArrayList<>();
         ex.getBindingResult()
           .getFieldErrors()
-          .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+          .forEach(error -> errors.add(Map.of(error.getField(), error.getDefaultMessage())));
 
-        return new ResponseEntity<>(new ErrorResponse(400, errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 }
