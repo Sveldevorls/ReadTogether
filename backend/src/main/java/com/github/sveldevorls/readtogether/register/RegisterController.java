@@ -1,7 +1,7 @@
 package com.github.sveldevorls.readtogether.register;
 
-import com.github.sveldevorls.readtogether.responses.ErrorResponse;
-import com.github.sveldevorls.readtogether.responses.SuccessResponse;
+import com.github.sveldevorls.readtogether.responses.ErrorResponseDTO;
+import com.github.sveldevorls.readtogether.responses.SuccessResponseDTO;
 
 import java.util.Collections;
 
@@ -24,12 +24,12 @@ public class RegisterController {
     @PostMapping
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
         return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.CREATED, "Registration completed", Collections.emptyList()),
+                new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", Collections.emptyList()),
                 HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<ErrorResponse> doGet() {
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
+    public ResponseEntity<ErrorResponseDTO> doGet() {
+        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
