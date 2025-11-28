@@ -22,14 +22,16 @@ import jakarta.validation.Valid;
 public class RegisterController {
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDTO request) {
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", Collections.emptyList()),
+                new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", null),
                 HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<ErrorResponseDTO> doGet() {
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(HttpStatus.METHOD_NOT_ALLOWED),
+                HttpStatus.METHOD_NOT_ALLOWED);
     }
 }

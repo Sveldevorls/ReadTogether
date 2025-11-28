@@ -6,39 +6,23 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @PasswordsMatch
-public class RegisterRequest {
+public record RegisterRequestDTO(
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, message = "Username must be at least 3 characters long")
     @Size(max = 20, message = "Username must be at most 20 characters long")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain letters, numbers, and underscores")
-    private String username;
+    String username,
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email format is not valid")
-    private String email;
+    String email,
     
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     @Size(max = 64, message = "Password must be at most 64 characters long")
-    private String password;
+    String password,
 
     @NotBlank(message = "Password confirmation is required")
-    private String passwordConfirm;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-}
+    String passwordConfirm
+){}

@@ -3,16 +3,16 @@ package com.github.sveldevorls.readtogether.register;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class RegisterRequestValidator implements ConstraintValidator<PasswordsMatch, RegisterRequest> {
+public class RegisterRequestValidator implements ConstraintValidator<PasswordsMatch, RegisterRequestDTO> {
 
     @Override
-    public boolean isValid(RegisterRequest request, ConstraintValidatorContext context) {
+    public boolean isValid(RegisterRequestDTO request, ConstraintValidatorContext context) {
         if (request == null) {
             return true;
         }
 
-        String password = request.getPassword();
-        String passwordConfirm = request.getPasswordConfirm();
+        String password = request.password();
+        String passwordConfirm = request.passwordConfirm();
 
         boolean isValid = password != null && password.equals(passwordConfirm);
         if (!isValid) {
