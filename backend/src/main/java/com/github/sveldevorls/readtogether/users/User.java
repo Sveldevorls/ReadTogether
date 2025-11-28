@@ -9,8 +9,8 @@ public class User {
     private String email;
     private String displayName;
     private String passwordHash;
-    private String pfpURL;
-    private String aboutMe;
+    private String avatarUrl;
+    private String bio;
     private Date createdAt;
     private Date updatedAt;
     private String role;

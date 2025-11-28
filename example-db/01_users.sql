@@ -6,8 +6,8 @@ CREATE TABLE users (
   email VARCHAR(100) NOT NULL UNIQUE,
   display_name VARCHAR(100),
   password_hash VARCHAR(255) NOT NULL,
-  pfp_url VARCHAR(500),
-  about_me TEXT,
+  avatar_url VARCHAR(500),
+  bio TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   user_role ENUM('user', 'admin', 'moderator') NOT NULL DEFAULT 'user'

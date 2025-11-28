@@ -4,8 +4,8 @@ public record UserDTO(
     
     String username,
     String displayName,
-    String pfpURL,
-    String aboutMe,
+    String avatarUrl,
+    String bio,
     String createdAt,
     String role
 ) { }
