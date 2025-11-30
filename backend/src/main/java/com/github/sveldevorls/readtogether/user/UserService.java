@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.users;
+package com.github.sveldevorls.readtogether.user;
 
 public class UserService {
     
