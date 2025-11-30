@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.user;
+package com.github.sveldevorls.readtogether.user.dto;
 
 public record UserDTO(
     String username,

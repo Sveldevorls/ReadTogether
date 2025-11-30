@@ -1,4 +1,7 @@
-package com.github.sveldevorls.readtogether.user;
+package com.github.sveldevorls.readtogether.user.service;
+
+import com.github.sveldevorls.readtogether.user.dao.UserDAO;
+import com.github.sveldevorls.readtogether.user.dto.UserDTO;
 
 public class UserService {
     

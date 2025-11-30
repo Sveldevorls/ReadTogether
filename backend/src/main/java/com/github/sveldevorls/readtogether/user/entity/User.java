@@ -1,6 +1,6 @@
-package com.github.sveldevorls.readtogether.user;
+package com.github.sveldevorls.readtogether.user.entity;
 
-public record UserEntity(
+public record User(
     int id,
     String username,
     String email,

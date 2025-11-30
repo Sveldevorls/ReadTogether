@@ -1,6 +1,10 @@
-package com.github.sveldevorls.readtogether.user;
+package com.github.sveldevorls.readtogether.user.dao;
 
 import org.springframework.stereotype.Repository;
+
+import com.github.sveldevorls.readtogether.user.dto.UserDTO;
+import com.github.sveldevorls.readtogether.user.entity.User;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Repository
@@ -13,7 +17,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // C
-    public void createUser(UserEntity newUser) {
+    public void createUser(User newUser) {
         throw new UnsupportedOperationException("Unimplemented method 'getUserByUsername'");
     }
 
@@ -50,7 +54,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // U
-    public void updateUser(UserEntity newUserData) {
+    public void updateUser(User newUserData) {
         throw new UnsupportedOperationException("Unimplemented method 'updateUserByUsername'");
     }
 }
