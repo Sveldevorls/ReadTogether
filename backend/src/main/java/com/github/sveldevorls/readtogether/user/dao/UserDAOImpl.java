@@ -2,7 +2,6 @@ package com.github.sveldevorls.readtogether.user.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.github.sveldevorls.readtogether.user.dto.UserDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,23 +21,28 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // R
-    public UserDTO getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
-        UserDTO resultUserDTO = jdbcTemplate.queryForObject(
+        User resultUser = jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> {
-                    UserDTO returnUserDTO = new UserDTO(
-                            rs.getString("username"),
-                            rs.getString("display_name"),
-                            rs.getString("avatar_url"),
-                            rs.getString("bio"),
-                            rs.getString("created_at"),
-                            rs.getString("user_role"));
-                    return returnUserDTO;
+                    User returnUser = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("display_name"),
+                        rs.getString("password_hash"),
+                        rs.getString("avatar_url"),
+                        rs.getString("bio"),
+                        rs.getTimestamp("created_at").toString(), //fix
+                        rs.getTimestamp("updated_at").toString(), //fix
+                        rs.getString("user_role")
+                    );
+                    return returnUser;
                 },
-                username);
-
-        return resultUserDTO;
+                username
+            );
+        return resultUser;
     }
 
     public boolean existsByUsername(String username) {
