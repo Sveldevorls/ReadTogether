@@ -3,6 +3,7 @@ package com.github.sveldevorls.readtogether.user.service;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.github.sveldevorls.readtogether.auth.DuplicateUserException;
 import com.github.sveldevorls.readtogether.register.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
 import com.github.sveldevorls.readtogether.user.entity.User;
@@ -17,6 +18,13 @@ public class UserService {
     }
 
     public void createUser(RegisterRequestDTO dto) {
+        if (userDao.existsByEmail(dto.email())) {
+            throw new DuplicateUserException("email");
+        }
+        if (userDao.existsByUsername(dto.username())) {
+            throw new DuplicateUserException("username");
+        }
+
         Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         String hashedPassword = encoder.encode(dto.password());
         userDao.createUser(
