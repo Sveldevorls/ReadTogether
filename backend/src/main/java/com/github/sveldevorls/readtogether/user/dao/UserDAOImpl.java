@@ -16,8 +16,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // C
-    public void createUser(User newUser) {
-        throw new UnsupportedOperationException("Unimplemented method 'getUserByUsername'");
+    public void createUser(User user) {
+        String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, user.username(), user.email(), user.passwordHash());
     }
 
     // R
@@ -58,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // U
-    public void updateUser(User newUserData) {
+    public void updateUser(User user) {
         throw new UnsupportedOperationException("Unimplemented method 'updateUserByUsername'");
     }
 }

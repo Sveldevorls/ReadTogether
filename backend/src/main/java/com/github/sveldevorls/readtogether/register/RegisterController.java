@@ -1,9 +1,8 @@
 package com.github.sveldevorls.readtogether.register;
 
+import com.github.sveldevorls.readtogether.auth.AuthService;
 import com.github.sveldevorls.readtogether.responses.ErrorResponseDTO;
 import com.github.sveldevorls.readtogether.responses.SuccessResponseDTO;
-
-import java.util.Collections;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,15 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:5173")
 public class RegisterController {
 
+    private final AuthService authService;
+
+    public RegisterController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDTO request) {
+        authService.registerUser(request);
         return new ResponseEntity<>(
                 new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", null),
                 HttpStatus.CREATED);
