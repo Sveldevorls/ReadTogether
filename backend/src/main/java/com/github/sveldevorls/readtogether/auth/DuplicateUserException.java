@@ -1,20 +1,20 @@
 package com.github.sveldevorls.readtogether.auth;
 
+import java.util.List;
+
 public class DuplicateUserException extends RuntimeException {
 
-    private String field;
-    private String errorMessage;
+    private List<String> errorFields;
 
-    public DuplicateUserException(String field) {
-        this.field = field;
-        this.errorMessage = String.format("This %s has already been registered", field);
+    public DuplicateUserException(List<String> errorFields) {
+        this.errorFields = errorFields;
     }
     
-    public String getField() {
-        return field;
+    public List<String> getErrorFields() {
+        return this.errorFields;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getErrorMessage(String field) {
+        return String.format("This %s has already been registered", field);
     }
 }

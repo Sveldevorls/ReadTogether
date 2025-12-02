@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.github.sveldevorls.readtogether.auth.DuplicateUserException;
 import com.github.sveldevorls.readtogether.responses.ErrorResponseDTO;
+import com.github.sveldevorls.readtogether.util.ErrorMapper;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -21,8 +22,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error -> errors.add(Map.of("field", error.getField(), "message", error.getDefaultMessage())));
+          .getFieldErrors()
+          .forEach(error -> errors.add(ErrorMapper.map(error.getField(), error.getDefaultMessage())));
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
@@ -30,7 +31,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<ErrorResponseDTO> handleDuplicateUserException(DuplicateUserException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
-        errors.add(Map.of("field", ex.getField(), "message", ex.getErrorMessage()));
+        ex.getErrorFields()
+          .forEach(field -> errors.add(ErrorMapper.map(field, ex.getErrorMessage(field))));
+
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 }

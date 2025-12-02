@@ -1,5 +1,8 @@
 package com.github.sveldevorls.readtogether.user.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +21,16 @@ public class UserService {
     }
 
     public void createUser(RegisterRequestDTO dto) {
-        if (userDao.existsByEmail(dto.email())) {
-            throw new DuplicateUserException("email");
-        }
+        List<String> errorFields = new ArrayList<>();
         if (userDao.existsByUsername(dto.username())) {
-            throw new DuplicateUserException("username");
+            errorFields.add("username");
+        }
+        if (userDao.existsByEmail(dto.email())) {
+            errorFields.add("email");
+        }
+
+        if (errorFields.size() > 0) {
+            throw new DuplicateUserException(errorFields);
         }
 
         Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
