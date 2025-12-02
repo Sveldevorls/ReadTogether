@@ -5,10 +5,22 @@ import { useForm } from "vee-validate";
 import { Toast } from "primevue";
 import { object, string, ref as yupRef } from "yup";
 import api from "./api";
+import { useRouter } from "vue-router";
+import { isAxiosError, type AxiosError } from "axios";
 
 type fieldNames = "email" | "username" | "password" | "passwordConfirm";
+type Error = {
+  field: string;
+  message: string;
+};
+type RegisterErrorData = {
+  statusCode: number;
+  message: string;
+  errors: Error[];
+};
 
 const toast = useToast();
+const router = useRouter();
 const schema = object({
   email: string()
     .email("Email format is not valid")
@@ -42,7 +54,7 @@ const fieldConfig = {
   validateOnModelUpdate: false,
 };
 
-const { defineField, handleSubmit, errors } = useForm({
+const { defineField, handleSubmit, setFieldError, errors } = useForm({
   validationSchema: schema,
 });
 
@@ -64,11 +76,37 @@ function handleBlur(fieldName: fieldNames): void {
 
 const onSubmit = handleSubmit(
   async (values) => {
-    console.log(values);
-    // placeholder
-    console.log("Registering with", values);
-    const result = await api.post("/api/register", values);
-    console.log(result);
+    try {
+      const result = await api.post("/api/register", values);
+      toast.add({
+        severity: "success",
+        summary: "Registration complete",
+        group: "message",
+        life: 3000,
+      });
+      router.push("/");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorData: RegisterErrorData = error.response?.data;
+        errorData.errors.forEach((error) => {
+          setFieldError(error.field, error.message);
+        });
+        toast.add({
+          severity: "error",
+          summary: "Please fix the errors in the form before submitting.",
+          group: "message",
+          life: 3000,
+        });
+      } else {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "An unknown error had occurred. Please try again later.",
+          group: "message",
+          life: 3000,
+        });
+      }
+    }
   },
   () => {
     toast.add({
