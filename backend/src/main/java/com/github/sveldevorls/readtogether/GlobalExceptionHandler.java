@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         List<Map<String, String>> errors = new ArrayList<>();
         ex.getBindingResult()
                 .getFieldErrors()
-                .forEach(error -> errors.add(Map.of(error.getField(), error.getDefaultMessage())));
+                .forEach(error -> errors.add(Map.of("field", error.getField(), "message", error.getDefaultMessage())));
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<ErrorResponseDTO> handleDuplicateUserException(DuplicateUserException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
-        errors.add(Map.of(ex.getField(), ex.getErrorMessage()));
+        errors.add(Map.of("field", ex.getField(), "message", ex.getErrorMessage()));
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 }
