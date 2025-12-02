@@ -129,24 +129,6 @@ const onSubmit = handleSubmit(
       class="flex flex-col p-2 w-full"
       @submit="onSubmit"
     >
-      <label for="email">Email</label>
-      <InputText
-        :invalid="!!errors.email"
-        type="text"
-        id="email"
-        v-model="email"
-        v-bind="emailProps"
-        @focus="handleFocus('email')"
-        @blur="handleBlur('email')"
-      />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!isFocusedStates.email"
-      >
-        {{ errors.email }}
-      </Message>
       <label for="username">Username</label>
       <InputText
         :invalid="!!errors.username"
@@ -164,6 +146,24 @@ const onSubmit = handleSubmit(
         v-if="!isFocusedStates.username"
       >
         {{ errors.username }}
+      </Message>
+      <label for="email">Email</label>
+      <InputText
+        :invalid="!!errors.email"
+        type="text"
+        id="email"
+        v-model="email"
+        v-bind="emailProps"
+        @focus="handleFocus('email')"
+        @blur="handleBlur('email')"
+      />
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+        v-if="!isFocusedStates.email"
+      >
+        {{ errors.email }}
       </Message>
       <label for="password">Password</label>
       <InputText
