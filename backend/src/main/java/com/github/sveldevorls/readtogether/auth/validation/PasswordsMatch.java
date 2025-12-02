@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.register;
+package com.github.sveldevorls.readtogether.auth.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,6 @@
-package com.github.sveldevorls.readtogether.register;
+package com.github.sveldevorls.readtogether.auth.dto;
+
+import com.github.sveldevorls.readtogether.auth.validation.PasswordsMatch;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

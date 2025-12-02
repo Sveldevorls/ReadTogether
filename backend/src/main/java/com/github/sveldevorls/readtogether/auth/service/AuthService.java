@@ -1,8 +1,8 @@
-package com.github.sveldevorls.readtogether.auth;
+package com.github.sveldevorls.readtogether.auth.service;
 
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.register.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 @Service

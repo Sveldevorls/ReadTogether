@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.auth.DuplicateUserException;
-import com.github.sveldevorls.readtogether.register.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.exception.DuplicateUserException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 

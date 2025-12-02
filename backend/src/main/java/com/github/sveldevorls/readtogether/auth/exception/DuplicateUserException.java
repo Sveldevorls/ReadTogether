@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.auth;
+package com.github.sveldevorls.readtogether.auth.exception;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.responses;
+package com.github.sveldevorls.readtogether.common.response;
 
 import java.util.Collections;
 import java.util.List;

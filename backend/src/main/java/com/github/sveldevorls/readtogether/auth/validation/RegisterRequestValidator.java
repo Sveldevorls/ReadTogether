@@ -1,4 +1,6 @@
-package com.github.sveldevorls.readtogether.register;
+package com.github.sveldevorls.readtogether.auth.validation;
+
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

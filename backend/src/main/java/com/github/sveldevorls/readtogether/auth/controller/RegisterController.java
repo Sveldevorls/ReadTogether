@@ -1,8 +1,4 @@
-package com.github.sveldevorls.readtogether.register;
-
-import com.github.sveldevorls.readtogether.auth.AuthService;
-import com.github.sveldevorls.readtogether.responses.ErrorResponseDTO;
-import com.github.sveldevorls.readtogether.responses.SuccessResponseDTO;
+package com.github.sveldevorls.readtogether.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.service.AuthService;
+import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
 
 import jakarta.validation.Valid;
 
