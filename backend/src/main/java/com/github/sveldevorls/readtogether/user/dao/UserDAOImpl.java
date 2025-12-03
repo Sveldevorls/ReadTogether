@@ -46,6 +46,30 @@ public class UserDAOImpl implements UserDAO {
         return resultUser;
     }
 
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        User resultUser = jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> {
+                    User returnUser = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("display_name"),
+                        rs.getString("password_hash"),
+                        rs.getString("avatar_url"),
+                        rs.getString("bio"),
+                        rs.getTimestamp("created_at").toString(), //fix
+                        rs.getTimestamp("updated_at").toString(), //fix
+                        rs.getString("user_role")
+                    );
+                    return returnUser;
+                },
+                email
+            );
+        return resultUser;
+    }
+
     public boolean existsByUsername(String username) {
         String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);

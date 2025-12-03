@@ -9,6 +9,7 @@ public interface UserDAO {
     
     // R
     User getUserByUsername(String username);
+    User getUserByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     

@@ -2,6 +2,7 @@ package com.github.sveldevorls.readtogether.auth.service;
 
 import org.springframework.stereotype.Service;
 
+import com.github.sveldevorls.readtogether.auth.dto.LoginRequestDTO;
 import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
@@ -16,5 +17,9 @@ public class AuthService {
 
     public void registerUser(RegisterRequestDTO dto) {
         userService.createUser(dto);
+    }
+
+    public void login(LoginRequestDTO dto) {
+        userService.login(dto);
     }
 }
