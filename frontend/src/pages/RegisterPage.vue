@@ -32,7 +32,7 @@ const schema = object({
     .required("Please confirm your password"),
 });
 
-const isFocusedStates = ref<Record<LoginPageFields, boolean>>({
+const fieldIsFocused = ref<Record<LoginPageFields, boolean>>({
   email: false,
   password: false,
   username: false,
@@ -57,11 +57,11 @@ const [passwordConfirm, passwordConfirmProps] = defineField<string>(
 );
 
 function handleFocus(fieldName: LoginPageFields): void {
-  isFocusedStates.value[fieldName] = true;
+  fieldIsFocused.value[fieldName] = true;
 }
 
 function handleBlur(fieldName: LoginPageFields): void {
-  isFocusedStates.value[fieldName] = false;
+  fieldIsFocused.value[fieldName] = false;
 }
 
 const onSubmit = handleSubmit(
@@ -133,7 +133,7 @@ const onSubmit = handleSubmit(
         severity="error"
         variant="simple"
         size="small"
-        v-if="!isFocusedStates.username"
+        v-if="!fieldIsFocused.username"
       >
         {{ errors.username }}
       </Message>
@@ -151,7 +151,7 @@ const onSubmit = handleSubmit(
         severity="error"
         variant="simple"
         size="small"
-        v-if="!isFocusedStates.email"
+        v-if="!fieldIsFocused.email"
       >
         {{ errors.email }}
       </Message>
@@ -169,7 +169,7 @@ const onSubmit = handleSubmit(
         severity="error"
         variant="simple"
         size="small"
-        v-if="!isFocusedStates.password"
+        v-if="!fieldIsFocused.password"
       >
         {{ errors.password }}
       </Message>
@@ -187,7 +187,7 @@ const onSubmit = handleSubmit(
         severity="error"
         variant="simple"
         size="small"
-        v-if="!isFocusedStates.passwordConfirm"
+        v-if="!fieldIsFocused.passwordConfirm"
       >
         {{ errors.passwordConfirm }}
       </Message>
