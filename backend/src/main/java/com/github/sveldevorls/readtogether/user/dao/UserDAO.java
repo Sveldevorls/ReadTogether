@@ -12,6 +12,7 @@ public interface UserDAO {
     User getUserByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+    String getPasswordHashByIdentifier(String identifier);
     
     // U
     void updateUser(User newUserData);

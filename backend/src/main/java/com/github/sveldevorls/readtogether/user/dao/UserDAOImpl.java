@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.user.entity.User;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Repository
@@ -68,6 +69,22 @@ public class UserDAOImpl implements UserDAO {
                 email
             );
         return resultUser;
+    }
+
+    // Returns null if identifier does not exist
+    public String getPasswordHashByIdentifier(String identifier) {
+        try {
+            String sql = "SELECT password_hash FROM users WHERE username = ? OR email = ?";
+            String resultHash = jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> rs.getString(1),
+                identifier,
+                identifier
+            );
+            return resultHash;
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     public boolean existsByUsername(String username) {
