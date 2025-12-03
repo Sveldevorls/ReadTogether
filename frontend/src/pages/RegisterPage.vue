@@ -6,18 +6,8 @@ import { Toast } from "primevue";
 import { object, string, ref as yupRef } from "yup";
 import api from "@/util/api";
 import { useRouter } from "vue-router";
-import { isAxiosError, type AxiosError } from "axios";
-
-type fieldNames = "email" | "username" | "password" | "passwordConfirm";
-type Error = {
-  field: string;
-  message: string;
-};
-type RegisterErrorData = {
-  statusCode: number;
-  message: string;
-  errors: Error[];
-};
+import { isAxiosError } from "axios";
+import type { ErrorResponse, LoginPageFields } from "@/util/types";
 
 const toast = useToast();
 const router = useRouter();
@@ -42,7 +32,7 @@ const schema = object({
     .required("Please confirm your password"),
 });
 
-const isFocusedStates = ref<Record<fieldNames, boolean>>({
+const isFocusedStates = ref<Record<LoginPageFields, boolean>>({
   email: false,
   password: false,
   username: false,
@@ -66,18 +56,18 @@ const [passwordConfirm, passwordConfirmProps] = defineField<string>(
   fieldConfig
 );
 
-function handleFocus(fieldName: fieldNames): void {
+function handleFocus(fieldName: LoginPageFields): void {
   isFocusedStates.value[fieldName] = true;
 }
 
-function handleBlur(fieldName: fieldNames): void {
+function handleBlur(fieldName: LoginPageFields): void {
   isFocusedStates.value[fieldName] = false;
 }
 
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      const result = await api.post("/api/register", values);
+      await api.post("/api/register", values);
       toast.add({
         severity: "success",
         summary: "Registration complete",
@@ -87,7 +77,7 @@ const onSubmit = handleSubmit(
       router.push("/");
     } catch (error) {
       if (isAxiosError(error)) {
-        const errorData: RegisterErrorData = error.response?.data;
+        const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
         errorData.errors.forEach((error) => {
           setFieldError(error.field, error.message);
         });
