@@ -7,7 +7,7 @@ import { object, string, ref as yupRef } from "yup";
 import api from "@/util/api";
 import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
-import type { ErrorResponse, LoginPageFields } from "@/util/types";
+import type { ErrorResponse, RegisterPageFields } from "@/util/types";
 
 const toast = useToast();
 const router = useRouter();
@@ -32,7 +32,7 @@ const schema = object({
     .required("Please confirm your password"),
 });
 
-const fieldIsFocused = ref<Record<LoginPageFields, boolean>>({
+const fieldIsFocused = ref<Record<RegisterPageFields, boolean>>({
   email: false,
   password: false,
   username: false,
@@ -56,11 +56,11 @@ const [passwordConfirm, passwordConfirmProps] = defineField<string>(
   fieldConfig
 );
 
-function handleFocus(fieldName: LoginPageFields): void {
+function handleFocus(fieldName: RegisterPageFields): void {
   fieldIsFocused.value[fieldName] = true;
 }
 
-function handleBlur(fieldName: LoginPageFields): void {
+function handleBlur(fieldName: RegisterPageFields): void {
   fieldIsFocused.value[fieldName] = false;
 }
 
@@ -77,7 +77,8 @@ const onSubmit = handleSubmit(
       router.push("/");
     } catch (error) {
       if (isAxiosError(error)) {
-        const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
+        const errorData: ErrorResponse<RegisterPageFields> =
+          error.response?.data;
         errorData.errors.forEach((error) => {
           setFieldError(error.field, error.message);
         });

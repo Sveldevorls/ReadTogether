@@ -1,13 +1,96 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { InputText } from "primevue";
-const email = ref<string>("");
-const password = ref<string>("");
+// Todo: Add JWT support
+// Todo: Fix form validation flashing error on blur when previously invalid value becomes valid
+// Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
 
-function login() {
-  // placeholder
-  console.log("Logging in with", email.value, password.value);
+import { ref } from "vue";
+import { InputText, Message, useToast, Toast } from "primevue";
+import { object, string } from "yup";
+import type { ErrorResponse, LoginPageFields } from "@/util/types";
+import { useForm } from "vee-validate";
+import api from "@/util/api";
+import { useRouter } from "vue-router";
+import { isAxiosError } from "axios";
+
+const toast = useToast();
+const router = useRouter();
+const schema = object({
+  identifier: string().required("Username or email is required"),
+  password: string().required("Password is required"),
+});
+
+const fieldIsFocused = ref<Record<LoginPageFields, boolean>>({
+  identifier: false,
+  password: false,
+});
+
+const fieldConfig = {
+  validateOnBlur: true,
+  validateOnModelUpdate: false,
+};
+
+const { defineField, handleSubmit, setFieldError, errors } = useForm({
+  validationSchema: schema,
+});
+
+const [identifier, identifierProps] = defineField<string>(
+  "identifier",
+  fieldConfig
+);
+const [password, passwordProps] = defineField<string>("password", fieldConfig);
+
+function handleFocus(fieldName: LoginPageFields): void {
+  fieldIsFocused.value[fieldName] = true;
 }
+
+function handleBlur(fieldName: LoginPageFields): void {
+  fieldIsFocused.value[fieldName] = false;
+}
+
+const onSubmit = handleSubmit(
+  async (values) => {
+    try {
+      await api.post("/api/login", values);
+      toast.add({
+        severity: "success",
+        summary: "Login complete",
+        group: "message",
+        life: 3000,
+      });
+      router.push("/");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
+        errorData.errors.forEach((error) => {
+          setFieldError("identifier", error.message);
+          setFieldError("password", error.message);
+        });
+        toast.add({
+          severity: "error",
+          summary: "Please fix the errors in the form before submitting.",
+          group: "message",
+          life: 3000,
+        });
+      } else {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "An unknown error had occurred. Please try again later.",
+          group: "message",
+          life: 3000,
+        });
+      }
+    }
+  },
+  () => {
+    toast.add({
+      severity: "error",
+      summary: "Please fix the errors in the form before submitting.",
+      group: "message",
+      life: 3000,
+    });
+  }
+);
 </script>
 
 <template>
@@ -17,21 +100,45 @@ function login() {
     <h1 class="text-center font-bold text-2xl">Log in to ReadTogether</h1>
     <form
       id="login"
-      class="flex flex-col gap-2 @md:grid @md:grid-cols-[80px_1fr] @md:items-center p-2 w-full"
-      @submit.prevent="login"
+      class="flex flex-col p-2 w-full"
+      @submit="onSubmit"
     >
-      <label for="email">Email</label>
+      <label for="identifier">Username or email</label>
       <InputText
+        :invalid="!!errors.identifier"
         type="text"
-        id="email"
-        v-model="email"
+        id="identifier"
+        v-model="identifier"
+        v-bind="identifierProps"
+        @focus="handleFocus('identifier')"
+        @blur="handleBlur('identifier')"
       />
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+        v-if="!fieldIsFocused.identifier"
+      >
+        {{ errors.identifier }}
+      </Message>
       <label for="password">Password</label>
       <InputText
+        :invalid="!!errors.password"
         type="password"
         id="password"
         v-model="password"
+        v-bind="passwordProps"
+        @focus="handleFocus('password')"
+        @blur="handleBlur('password')"
       />
+      <Message
+        severity="error"
+        variant="simple"
+        size="small"
+        v-if="!fieldIsFocused.password"
+      >
+        {{ errors.password }}
+      </Message>
     </form>
     <button
       form="login"
@@ -48,6 +155,17 @@ function login() {
         Register here
       </router-link>
     </p>
+    <Toast
+      position="bottom-center"
+      group="message"
+    />
   </section>
 </template>
-<style scoped></style>
+
+<style scoped>
+@reference "tailwindcss";
+
+label:not(:first-child) {
+  @apply mt-4;
+}
+</style>

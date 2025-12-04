@@ -9,6 +9,7 @@ type ErrorData<T> = {
     message: string,
 };
 
-type LoginPageFields = "username" | "email" | "password" | "passwordConfirm";
+type RegisterPageFields = "username" | "email" | "password" | "passwordConfirm";
+type LoginPageFields = "identifier" | "password";
 
-export type { ErrorResponse, ErrorData, LoginPageFields };
+export type { ErrorResponse, ErrorData, RegisterPageFields, LoginPageFields };
