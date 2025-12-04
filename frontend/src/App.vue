@@ -6,7 +6,7 @@ import Footer from "./components/Footer.vue";
 
 <template>
   <Header />
-  <main class="flex justify-center mt-4 mb-auto mx-auto w-[min(100%,100em)]">
+  <main class="flex justify-center mt-4 mb-auto mx-auto w-[min(100%,80em)]">
     <RouterView></RouterView>
   </main>
   <Footer />
