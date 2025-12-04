@@ -1,4 +1,5 @@
-<script lang="ts"></script>
+<script setup lang="ts"></script>
+
 <template>
   <section class="w-[min(100%,80em)] px-4">
     <div>

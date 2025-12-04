@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useToast, InputText, Message } from "primevue";
+import { InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
-import { Toast } from "primevue";
 import { object, string, ref as yupRef } from "yup";
 import api from "@/util/api";
 import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
 import type { ErrorResponse, RegisterPageFields } from "@/util/types";
+import { useSingularToast } from "@/util/useSingularToast";
 
-const toast = useToast();
+const toast = useSingularToast();
 const router = useRouter();
 const schema = object({
   email: string()
@@ -68,7 +68,7 @@ const onSubmit = handleSubmit(
   async (values) => {
     try {
       await api.post("/api/register", values);
-      toast.add({
+      toast({
         severity: "success",
         summary: "Registration complete",
         group: "message",
@@ -82,7 +82,7 @@ const onSubmit = handleSubmit(
         errorData.errors.forEach((error) => {
           setFieldError(error.field, error.message);
         });
-        toast.add({
+        toast({
           severity: "error",
           summary: "Please fix the errors in the form before submitting.",
           group: "message",
@@ -90,7 +90,7 @@ const onSubmit = handleSubmit(
         });
       } else {
         console.log(error);
-        toast.add({
+        toast({
           severity: "error",
           summary: "An unknown error had occurred. Please try again later.",
           group: "message",
@@ -100,7 +100,7 @@ const onSubmit = handleSubmit(
     }
   },
   () => {
-    toast.add({
+    toast({
       severity: "error",
       summary: "Please fix the errors in the form before submitting.",
       group: "message",
@@ -208,10 +208,7 @@ const onSubmit = handleSubmit(
         Log in here
       </router-link>
     </p>
-    <Toast
-      position="bottom-center"
-      group="message"
-    />
+    
   </section>
 </template>
 

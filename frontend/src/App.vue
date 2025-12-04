@@ -2,6 +2,7 @@
 import "./App.css";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import SingularToast from "./components/SingularToast.vue";
 </script>
 
 <template>
@@ -10,6 +11,9 @@ import Footer from "./components/Footer.vue";
     <RouterView></RouterView>
   </main>
   <Footer />
+  <div id="overlay">
+    <SingularToast />
+  </div>
 </template>
 
 <style scoped></style>

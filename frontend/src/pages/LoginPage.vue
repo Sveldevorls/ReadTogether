@@ -4,15 +4,16 @@
 // Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
 
 import { ref } from "vue";
-import { InputText, Message, useToast, Toast } from "primevue";
+import { InputText, Message } from "primevue";
 import { object, string } from "yup";
 import type { ErrorResponse, LoginPageFields } from "@/util/types";
 import { useForm } from "vee-validate";
 import api from "@/util/api";
 import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
+import { useSingularToast } from "@/util/useSingularToast";
 
-const toast = useToast();
+const toast = useSingularToast();
 const router = useRouter();
 const schema = object({
   identifier: string().required("Username or email is required"),
@@ -51,7 +52,7 @@ const onSubmit = handleSubmit(
   async (values) => {
     try {
       await api.post("/api/login", values);
-      toast.add({
+      toast({
         severity: "success",
         summary: "Login complete",
         group: "message",
@@ -65,7 +66,7 @@ const onSubmit = handleSubmit(
           setFieldError("identifier", error.message);
           setFieldError("password", error.message);
         });
-        toast.add({
+        toast({
           severity: "error",
           summary: "Please fix the errors in the form before submitting.",
           group: "message",
@@ -73,7 +74,7 @@ const onSubmit = handleSubmit(
         });
       } else {
         console.log(error);
-        toast.add({
+        toast({
           severity: "error",
           summary: "An unknown error had occurred. Please try again later.",
           group: "message",
@@ -83,7 +84,7 @@ const onSubmit = handleSubmit(
     }
   },
   () => {
-    toast.add({
+    toast({
       severity: "error",
       summary: "Please fix the errors in the form before submitting.",
       group: "message",
@@ -155,10 +156,6 @@ const onSubmit = handleSubmit(
         Register here
       </router-link>
     </p>
-    <Toast
-      position="bottom-center"
-      group="message"
-    />
   </section>
 </template>
 
