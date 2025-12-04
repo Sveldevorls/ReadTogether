@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import IndexGuestPage from "./IndexGuestPage.vue";
+</script>
 
 <template>
-  <h1>Index</h1>
+  <IndexGuestPage />
 </template>

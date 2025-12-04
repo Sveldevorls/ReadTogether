@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+    --breakpoint-lg: 961px;
+}
+
 #app {
     min-height: 100vh;
     display: flex;
