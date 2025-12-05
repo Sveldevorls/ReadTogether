@@ -1,27 +1,41 @@
 import { useToast, type ToastMessageOptions } from "primevue";
 
+let isShowing = false;
+let resetTimerId: number | null = null;
+let addTimerId: number | null = null;
+
 function useSingularToast() {
   const toast = useToast();
-  let isShowing = false;
-  let timerId: number | null = null;
 
   return (message: ToastMessageOptions) => {
+    if (resetTimerId != null) {
+      clearTimeout(resetTimerId);
+      resetTimerId = null;
+    }
+    if (addTimerId != null) {
+      clearTimeout(addTimerId);
+      addTimerId = null;
+    }
+
     if (!isShowing) {
       toast.add({ ...message, group: "message" });
       isShowing = true;
     } else {
-      if (timerId != null) {
-        clearTimeout(timerId);
-      }
       toast.removeGroup("message");
-      setTimeout(() => {
+      isShowing = false;
+      
+      addTimerId = setTimeout(() => {
         toast.add({ ...message, group: "message" });
+        isShowing = true;
+        addTimerId = null;
       }, 200);
     }
-    timerId = setTimeout(() => {
+    
+    const delay = (message.life ?? 3000) + (isShowing ? 200 : 0);
+    resetTimerId = setTimeout(() => {
       isShowing = false;
-      timerId = null;
-    }, (message.life ?? 3000) + (isShowing ? 200 : 0));
+      resetTimerId = null;
+    }, delay)
   };
 }
 
