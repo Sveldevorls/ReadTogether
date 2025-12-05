@@ -22,7 +22,7 @@ const navbarItems = ref<MenuItem[]>([
 </script>
 
 <template>
-  <header class="sticky top-0 bg-slate-50 shadow">
+  <header class="sticky top-0 bg-slate-50 shadow z-1">
     <Menubar
       :model="navbarItems"
       :dt="{
