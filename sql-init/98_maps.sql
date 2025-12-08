@@ -1,4 +1,4 @@
--- User favorite mapping --
+-- User favorite mapping
 DROP TABLE IF EXISTS user_favorite_author_map;
 DROP TABLE IF EXISTS user_favorite_book_map;
 DROP TABLE iF EXISTS user_favorite_genre_map;
@@ -21,7 +21,7 @@ CREATE TABLE user_favorite_genre_map (
   PRIMARY KEY (user_id, genre_id)
 );
 
--- User book status mapping --
+-- User book status mapping
 DROP TABLE IF EXISTS user_reading_book_map;
 DROP TABLE IF EXISTS user_finished_book_map;
 
@@ -37,7 +37,7 @@ CREATE TABLE user_finished_book_map (
   PRIMARY KEY (user_id, book_id) 
 );
 
--- Book data mapping --
+-- Book data mapping
 DROP TABLE IF EXISTS book_author_map;
 DROP TABLE IF EXISTS book_genre_map;
 

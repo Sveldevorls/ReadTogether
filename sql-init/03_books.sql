@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS books;
 
 CREATE TABLE books (
-  -- Meta --
+  -- Meta
   id INT NOT NULL AUTO_INCREMENT,
   search_key VARCHAR(255) NOT NULL, -- String to compare against when searching, generated from title
   slug VARCHAR(255) UNIQUE NOT NULL, -- URL, [id]-[title], id is the main identifier
@@ -10,7 +10,7 @@ CREATE TABLE books (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  -- Book data --
+  -- Book data
   title VARCHAR(255) NOT NULL,
   isbn VARCHAR(13),
   book_description TEXT,

@@ -2,12 +2,12 @@
 DROP TABLE IF EXISTS book_submissions;
 
 CREATE TABLE book_submissions (
-  -- Meta --
+  -- Meta
   id INT NOT NULL AUTO_INCREMENT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  -- Submission data --
+  -- Submission data
   submission_type ENUM('new', 'update') NOT NULL,
   previous_submission_id INT, -- ID of previous approved submisison for comparison purpose, NULL for new submissions
   book_id INT, -- ID of original book in books table
@@ -18,7 +18,7 @@ CREATE TABLE book_submissions (
   reviewed_at TIMESTAMP,
   review_status ENUM('approved', 'pending', 'rejected') NOT NULL DEFAULT 'pending',
   
-  -- Submission data --
+  -- Submission data
   title VARCHAR(255) NOT NULL,
   isbn VARCHAR(13),
   book_description TEXT,
