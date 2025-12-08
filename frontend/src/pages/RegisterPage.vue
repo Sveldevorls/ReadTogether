@@ -77,19 +77,26 @@ const onSubmit = handleSubmit(
       router.push("/");
     } catch (error) {
       if (isAxiosError(error)) {
-        const errorData: ErrorResponse<RegisterPageFields> =
-          error.response?.data;
-        errorData.errors.forEach((error) => {
-          setFieldError(error.field, error.message);
-        });
-        toast({
-          severity: "error",
-          summary: "Please fix the errors in the form before submitting.",
-          group: "message",
-          life: 3000,
-        });
+        if (error.status === 400) {
+          const errorData: ErrorResponse<RegisterPageFields> = error.response?.data;
+          errorData.errors.forEach((error) => {
+            setFieldError(error.field, error.message);
+          });
+          toast({
+            severity: "error",
+            summary: "Please fix the errors in the form before submitting.",
+            group: "message",
+            life: 3000,
+          });
+        } else {
+          toast({
+            severity: "error",
+            summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
+            group: "message",
+            life: 3000,
+          });
+        }
       } else {
-        console.log(error);
         toast({
           severity: "error",
           summary: "An unknown error had occurred. Please try again later.",
@@ -208,7 +215,6 @@ const onSubmit = handleSubmit(
         Log in here
       </router-link>
     </p>
-    
   </section>
 </template>
 
