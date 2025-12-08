@@ -27,21 +27,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT * FROM users WHERE username = ?";
         User resultUser = jdbcTemplate.queryForObject(
                 sql,
-                (rs, rowNum) -> {
-                    User returnUser = new User(
-                        rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("display_name"),
-                        rs.getString("password_hash"),
-                        rs.getString("avatar_url"),
-                        rs.getString("bio"),
-                        rs.getTimestamp("created_at").toString(), //fix
-                        rs.getTimestamp("updated_at").toString(), //fix
-                        rs.getString("user_role")
-                    );
-                    return returnUser;
-                },
+                new UserRowMapper(),
                 username
             );
         return resultUser;
@@ -51,21 +37,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT * FROM users WHERE email = ?";
         User resultUser = jdbcTemplate.queryForObject(
                 sql,
-                (rs, rowNum) -> {
-                    User returnUser = new User(
-                        rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("display_name"),
-                        rs.getString("password_hash"),
-                        rs.getString("avatar_url"),
-                        rs.getString("bio"),
-                        rs.getTimestamp("created_at").toString(), //fix
-                        rs.getTimestamp("updated_at").toString(), //fix
-                        rs.getString("user_role")
-                    );
-                    return returnUser;
-                },
+                new UserRowMapper(),
                 email
             );
         return resultUser;

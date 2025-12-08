@@ -1,26 +1,28 @@
 package com.github.sveldevorls.readtogether.user.entity;
 
 public record User(
-    int id,
+    Integer id,
+    String searchKey,
+    String createdAt,
+    String updatedAt,
     String username,
     String email,
     String displayName,
     String passwordHash,
     String avatarUrl,
     String bio,
-    String createdAt,
-    String updatedAt,
     String userRole
 ) {
     public static User createUser(String username, String email, String hashedPassword) {
         return new User(
-            0,
+            null,
+            username,
+            null,
+            null,
             username,
             email,
             null,
             hashedPassword,
-            null,
-            null,
             null,
             null,
             "user"
