@@ -23,6 +23,13 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public void createAdminIfNotExists(String username, String email, String password) {
+        String hashedPassword = encoder.encode(password);
+        if (!userDao.existsByUsername(username)) {
+            userDao.createAdmin(User.creatrAdmin(username, email, hashedPassword));
+        }
+    }
+
     public void createUser(RegisterRequestDTO dto) {
         List<String> errorFields = new ArrayList<>();
         if (userDao.existsByUsername(dto.username())) {

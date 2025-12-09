@@ -23,6 +23,14 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // C //
+    public void createAdmin(User user) {
+        String sql = "INSERT INTO users (username, email, password_hash, user_role) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(
+            sql, 
+            user.username(), user.email(), user.passwordHash(), user.userRole()
+        );
+    }
+
     public User createUser(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

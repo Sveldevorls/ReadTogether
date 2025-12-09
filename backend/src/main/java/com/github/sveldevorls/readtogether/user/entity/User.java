@@ -28,4 +28,20 @@ public record User(
             "user"
         );
     }
+
+    public static User creatrAdmin(String username, String email, String hashedPassword) {
+        return new User(
+            null,
+            username,
+            null,
+            null,
+            username,
+            email,
+            null,
+            hashedPassword,
+            null,
+            null,
+            "admin"
+        );
+    }
 }

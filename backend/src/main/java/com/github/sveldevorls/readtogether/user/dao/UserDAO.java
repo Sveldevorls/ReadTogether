@@ -5,6 +5,8 @@ import com.github.sveldevorls.readtogether.user.entity.User;
 public interface UserDAO {
 
     // C //
+    void createAdmin(User newUser);
+
     User createUser(User newUser);
 
     // R //
