@@ -24,13 +24,16 @@ public class UserDAOImpl implements UserDAO {
 
     // R
     public User getUserByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
-        User resultUser = jdbcTemplate.queryForObject(
-                sql,
-                new UserRowMapper(),
-                username
-            );
-        return resultUser;
+        try {
+            String sql = "SELECT * FROM users WHERE username = ?";
+            User resultUser = jdbcTemplate.queryForObject(
+                    sql,
+                    new UserRowMapper(),
+                    username);
+            return resultUser;
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     public User getUserByEmail(String email) {
@@ -38,8 +41,7 @@ public class UserDAOImpl implements UserDAO {
         User resultUser = jdbcTemplate.queryForObject(
                 sql,
                 new UserRowMapper(),
-                email
-            );
+                email);
         return resultUser;
     }
 
@@ -48,11 +50,10 @@ public class UserDAOImpl implements UserDAO {
         try {
             String sql = "SELECT password_hash FROM users WHERE username = ? OR email = ?";
             String resultHash = jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> rs.getString(1),
-                identifier,
-                identifier
-            );
+                    sql,
+                    (rs, rowNum) -> rs.getString(1),
+                    identifier,
+                    identifier);
             return resultHash;
         } catch (DataAccessException ex) {
             return null;

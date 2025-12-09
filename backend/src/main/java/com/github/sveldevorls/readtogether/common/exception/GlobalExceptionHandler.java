@@ -29,6 +29,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        List<Map<String, String>> errors = new ArrayList<>();
+        errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
+
+        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.NOT_FOUND, errors), HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<ErrorResponseDTO> handleDuplicateUserException(DuplicateUserException ex) {
         List<Map<String, String>> errors = new ArrayList<>();

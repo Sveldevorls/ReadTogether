@@ -18,7 +18,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/register", produces = "application/json")
-@CrossOrigin(origins = "http://localhost:5173")
 public class RegisterController {
 
     private final AuthService authService;

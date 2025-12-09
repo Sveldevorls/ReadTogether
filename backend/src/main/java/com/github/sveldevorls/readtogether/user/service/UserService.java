@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.auth.exception.DuplicateUserException;
+import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
+import com.github.sveldevorls.readtogether.user.dto.UserDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 @Service
@@ -42,5 +44,13 @@ public class UserService {
 
     public String getPasswordHashByIdentifier(String identifier) {
         return userDao.getPasswordHashByIdentifier(identifier);
+    }
+
+    public UserDTO getUserPageData(String username) {
+        User user = userDao.getUserByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException();
+        }
+        return new UserDTO(user.username(), user.displayName(), user.avatarUrl(), user.bio(), user.createdAt(), user.userRole());
     }
 }
