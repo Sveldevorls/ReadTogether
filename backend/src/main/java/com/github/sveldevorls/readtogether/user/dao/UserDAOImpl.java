@@ -16,36 +16,25 @@ public class UserDAOImpl implements UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // C
+    // C //
     public void createUser(User user) {
         String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, user.username(), user.email(), user.passwordHash());
     }
 
-    // R
-    public User getUserByUsername(String username) {
-        try {
-            String sql = "SELECT * FROM users WHERE username = ?";
-            User resultUser = jdbcTemplate.queryForObject(
-                    sql,
-                    new UserRowMapper(),
-                    username);
-            return resultUser;
-        } catch (DataAccessException ex) {
-            return null;
-        }
+    // R //
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 
-    public User getUserByEmail(String email) {
-        String sql = "SELECT * FROM users WHERE email = ?";
-        User resultUser = jdbcTemplate.queryForObject(
-                sql,
-                new UserRowMapper(),
-                email);
-        return resultUser;
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);
+        return count != null && count > 0;
     }
 
-    // Returns null if identifier does not exist
     public String getPasswordHashByIdentifier(String identifier) {
         try {
             String sql = "SELECT password_hash FROM users WHERE username = ? OR email = ?";
@@ -60,19 +49,33 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public boolean existsByUsername(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);
-        return count != null && count > 0;
+    public User getUserByEmail(String email) {
+        try {
+            String sql = "SELECT * FROM users WHERE email = ?";
+            User resultUser = jdbcTemplate.queryForObject(
+                    sql,
+                    new UserRowMapper(),
+                    email);
+            return resultUser;
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
-    public boolean existsByEmail(String email) {
-        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
-        return count != null && count > 0;
+    public User getUserByUsername(String username) {
+        try {
+            String sql = "SELECT * FROM users WHERE username = ?";
+            User resultUser = jdbcTemplate.queryForObject(
+                    sql,
+                    new UserRowMapper(),
+                    username);
+            return resultUser;
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
-    // U
+    // U //
     public void updateUser(User user) {
         throw new UnsupportedOperationException("Unimplemented method 'updateUserByUsername'");
     }

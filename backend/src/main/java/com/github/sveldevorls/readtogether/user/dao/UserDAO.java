@@ -4,16 +4,20 @@ import com.github.sveldevorls.readtogether.user.entity.User;
 
 public interface UserDAO {
 
-    // C
+    // C //
     void createUser(User newUser);
-    
-    // R
-    User getUserByUsername(String username);
-    User getUserByEmail(String email);
-    boolean existsByUsername(String username);
+
+    // R //
     boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
+
     String getPasswordHashByIdentifier(String identifier);
-    
-    // U
+
+    User getUserByEmail(String email);
+
+    User getUserByUsername(String username);
+
+    // U //
     void updateUser(User newUserData);
 }
