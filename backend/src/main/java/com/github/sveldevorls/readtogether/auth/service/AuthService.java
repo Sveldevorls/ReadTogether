@@ -21,7 +21,7 @@ public class AuthService {
         this.userService = userService;
     }
 
-    public void registerUser(RegisterRequestDTO dto) {
+    public void register(RegisterRequestDTO dto) {
         userService.createUser(dto);
     }
 

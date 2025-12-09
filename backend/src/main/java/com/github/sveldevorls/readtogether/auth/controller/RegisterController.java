@@ -26,8 +26,8 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDTO request) {
-        authService.registerUser(request);
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO request) {
+        authService.register(request);
         return new ResponseEntity<>(
                 new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", null),
                 HttpStatus.CREATED);
