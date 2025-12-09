@@ -2,10 +2,16 @@ package com.github.sveldevorls.readtogether.user.dao;
 
 import org.springframework.stereotype.Repository;
 
+import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorException;
 import com.github.sveldevorls.readtogether.user.entity.User;
+
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -17,9 +23,26 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // C //
-    public void createUser(User user) {
+    public User createUser(User user) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, user.username(), user.email(), user.passwordHash());
+        jdbcTemplate.update(
+            connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, user.username());
+                ps.setString(2, user.email());
+                ps.setString(3, user.passwordHash());
+                return ps;
+            },
+            keyHolder
+        );
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new InternalServerErrorException();
+        }
+        int generatedId = key.intValue();
+        return getUserById(generatedId);
     }
 
     // R //
@@ -49,13 +72,13 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public User getUserByEmail(String email) {
+    public User getUserById(int id) {
         try {
-            String sql = "SELECT * FROM users WHERE email = ?";
+            String sql = "SELECT * FROM users WHERE id = ?";
             User resultUser = jdbcTemplate.queryForObject(
                     sql,
                     new UserRowMapper(),
-                    email);
+                    id);
             return resultUser;
         } catch (DataAccessException ex) {
             return null;

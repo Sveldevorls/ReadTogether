@@ -34,4 +34,12 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.NOT_FOUND, errors), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInternalServerErrorException(InternalServerErrorException ex) {
+        List<Map<String, String>> errors = new ArrayList<>();
+        errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
+
+        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

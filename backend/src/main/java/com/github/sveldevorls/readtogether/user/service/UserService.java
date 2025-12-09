@@ -37,7 +37,7 @@ public class UserService {
         }
 
         String hashedPassword = encoder.encode(dto.password());
-        userDao.createUser(
+        User createdUser = userDao.createUser(
             User.createUser(dto.username(), dto.email(), hashedPassword)
         );
     }
