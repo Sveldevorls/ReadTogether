@@ -10,6 +10,7 @@ import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.auth.exception.DuplicateUserException;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
+import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
 import com.github.sveldevorls.readtogether.user.dto.UserDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
@@ -23,10 +24,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void createAdminIfNotExists(String username, String email, String password) {
-        String hashedPassword = encoder.encode(password);
-        if (!userDao.existsByUsername(username)) {
-            userDao.createAdmin(User.creatrAdmin(username, email, hashedPassword));
+    public void createAdminIfNotExists(AdminCreationDTO dto) {
+        String hashedPassword = encoder.encode(dto.password());
+        if (!userDao.existsByUsername(dto.username())) {
+            userDao.createAdmin(User.creatrAdmin(dto.username(), dto.email(), hashedPassword));
         }
     }
 
