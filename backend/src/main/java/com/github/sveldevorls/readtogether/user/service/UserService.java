@@ -2,6 +2,7 @@ package com.github.sveldevorls.readtogether.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,11 @@ public class UserService {
 
     public String getPasswordHashByIdentifier(String identifier) {
         return userDao.getPasswordHashByIdentifier(identifier);
+    }
+
+    public User getUserByIdentifier(String identifier) {
+        return userDao.getUserByIdentifier(identifier)
+                      .orElseThrow(() -> new ResourceNotFoundException());
     }
 
     public UserDTO getUserPageData(String username) {

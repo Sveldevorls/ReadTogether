@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.auth.dto.LoginRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.LoginResponseDTO;
 import com.github.sveldevorls.readtogether.auth.service.AuthService;
 import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
@@ -28,9 +29,12 @@ public class LoginController {
     // placeholder, add jwt later
     @PostMapping
     public ResponseEntity<SuccessResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-        authService.login(request);
+        LoginResponseDTO response = authService.login(request);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.OK, "Logged in successfully", null),
+                new SuccessResponseDTO(
+                    HttpStatus.OK, 
+                    "Logged in successfully", 
+                    response),
                 HttpStatus.OK);
     }
 

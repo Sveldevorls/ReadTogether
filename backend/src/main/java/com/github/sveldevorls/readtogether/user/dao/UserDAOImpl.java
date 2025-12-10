@@ -7,6 +7,8 @@ import com.github.sveldevorls.readtogether.user.entity.User;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -91,6 +93,17 @@ public class UserDAOImpl implements UserDAO {
         } catch (DataAccessException ex) {
             return null;
         }
+    }
+
+    public Optional<User> getUserByIdentifier(String identifier) {
+        String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+        List<User> result = jdbcTemplate.query(
+                    sql,
+                    new UserRowMapper(),
+                    identifier,
+                    identifier);
+        
+        return result.stream().findFirst();
     }
 
     public User getUserByUsername(String username) {
