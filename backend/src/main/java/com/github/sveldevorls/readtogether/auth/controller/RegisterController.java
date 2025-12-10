@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterResponseDTO;
 import com.github.sveldevorls.readtogether.auth.service.AuthService;
 import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
@@ -27,12 +28,12 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO request) {
-        authService.register(request);
+        RegisterResponseDTO response = authService.register(request);
         return new ResponseEntity<>(
                 new SuccessResponseDTO(
                     HttpStatus.CREATED, 
                     "Registration completed", 
-                    null),
+                    response),
                 HttpStatus.CREATED);
     }
 

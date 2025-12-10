@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.github.sveldevorls.readtogether.auth.dto.LoginRequestDTO;
 import com.github.sveldevorls.readtogether.auth.dto.LoginResponseDTO;
 import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterResponseDTO;
 import com.github.sveldevorls.readtogether.auth.exception.InvalidLoginCredentialsException;
 import com.github.sveldevorls.readtogether.security.JwtUtil;
 import com.github.sveldevorls.readtogether.user.entity.User;
@@ -26,8 +27,10 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void register(RegisterRequestDTO dto) {
-        userService.createUser(dto);
+    public RegisterResponseDTO register(RegisterRequestDTO dto) {
+        User createdUser = userService.createUser(dto);
+        String token = jwtUtil.generateToken(createdUser.username(), createdUser.userRole().name());
+        return new RegisterResponseDTO(token);
     }
 
     public LoginResponseDTO login(LoginRequestDTO dto) {
