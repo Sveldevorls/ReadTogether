@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/register", "/api/login").permitAll()
                 .requestMatchers("/api/users/{username}").permitAll()
                 .requestMatchers("/api/test/*").permitAll()
+                .requestMatchers("/api/verify").authenticated()
                 .anyRequest().hasRole("ADMIN")
             )
             .addFilterBefore(
