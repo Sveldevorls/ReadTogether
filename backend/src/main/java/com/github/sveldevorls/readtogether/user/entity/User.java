@@ -11,7 +11,7 @@ public record User(
     String passwordHash,
     String avatarUrl,
     String bio,
-    String userRole
+    Role userRole
 ) {
     public static User createUser(String username, String email, String hashedPassword) {
         return new User(
@@ -25,7 +25,7 @@ public record User(
             hashedPassword,
             null,
             null,
-            "user"
+            Role.ROLE_USER
         );
     }
 
@@ -41,7 +41,7 @@ public record User(
             hashedPassword,
             null,
             null,
-            "admin"
+            Role.ROLE_ADMIN
         );
     }
 }

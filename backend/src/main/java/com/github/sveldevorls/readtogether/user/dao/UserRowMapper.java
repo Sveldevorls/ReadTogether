@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
+import com.github.sveldevorls.readtogether.user.entity.Role;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 public class UserRowMapper implements RowMapper<User> {
@@ -23,7 +24,7 @@ public class UserRowMapper implements RowMapper<User> {
                 rs.getString("password_hash"),
                 rs.getString("avatar_url"),
                 rs.getString("bio"),
-                rs.getString("user_role"));
+                Role.valueOf(rs.getString("user_role")));
         return returnUser;
     }
 }

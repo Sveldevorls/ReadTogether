@@ -15,7 +15,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   avatar_url VARCHAR(500),
   bio TEXT,
-  user_role ENUM('USER', 'MODERATOR', 'ADMIN') NOT NULL DEFAULT 'USER',
+  user_role ENUM('ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN') NOT NULL DEFAULT 'ROLE_USER',
 
   PRIMARY KEY (id)
 );

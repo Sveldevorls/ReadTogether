@@ -66,6 +66,13 @@ public class UserService {
     public UserPageDTO getUserPageData(String username) {
         User user = userDao.getUserByUsername(username)
                            .orElseThrow(() -> new ResourceNotFoundException());
-        return new UserPageDTO(user.username(), user.displayName(), user.avatarUrl(), user.bio(), user.createdAt(), user.userRole());
+        return new UserPageDTO(
+            user.username(), 
+            user.displayName(), 
+            user.avatarUrl(), 
+            user.bio(), 
+            user.createdAt(), 
+            user.userRole().name()
+        );
     }
 }
