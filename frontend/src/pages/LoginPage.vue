@@ -12,8 +12,10 @@ import api from "@/util/api";
 import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
 import { useSingularToast } from "@/util/useSingularToast";
+import { useUserStore } from "@/util/userStore";
 
 const toast = useSingularToast();
+const userStore = useUserStore();
 const router = useRouter();
 const schema = object({
   identifier: string().required("Username or email is required"),
@@ -51,7 +53,12 @@ function handleBlur(fieldName: LoginPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      await api.post("/api/login", values);
+      const response = await api.post("/api/login", values);
+      const token = response.data.data.token;
+      localStorage.setItem("token", token);
+      const verifyResponse = await api.post("/api/verify");
+      userStore.setUsername(verifyResponse.data.data.username);
+      userStore.setRole(userStore.parseRole(verifyResponse.data.data.role));
       toast({
         severity: "success",
         summary: "Login complete",
@@ -61,17 +68,26 @@ const onSubmit = handleSubmit(
       router.push("/");
     } catch (error) {
       if (isAxiosError(error)) {
-        const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
-        errorData.errors.forEach((error) => {
-          setFieldError("identifier", error.message);
-          setFieldError("password", error.message);
-        });
-        toast({
-          severity: "error",
-          summary: "Please fix the errors in the form before submitting.",
-          group: "message",
-          life: 3000,
-        });
+        if (error.status === 400) {
+          const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
+          errorData.errors.forEach((error) => {
+            setFieldError("identifier", error.message);
+            setFieldError("password", error.message);
+          });
+          toast({
+            severity: "error",
+            summary: "Please fix the errors in the form before submitting.",
+            group: "message",
+            life: 3000,
+          });
+        } else {
+          toast({
+            severity: "error",
+            summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
+            group: "message",
+            life: 3000,
+          });
+        }
       } else {
         console.log(error);
         toast({
