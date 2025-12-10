@@ -29,7 +29,10 @@ public class RegisterController {
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO request) {
         authService.register(request);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.CREATED, "Registration completed", null),
+                new SuccessResponseDTO(
+                    HttpStatus.CREATED, 
+                    "Registration completed", 
+                    null),
                 HttpStatus.CREATED);
     }
 

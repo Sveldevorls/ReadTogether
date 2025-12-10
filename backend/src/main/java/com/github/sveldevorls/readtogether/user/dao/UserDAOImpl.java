@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -33,7 +32,7 @@ public class UserDAOImpl implements UserDAO {
         );
     }
 
-    public User createUser(User user) {
+    public Optional<User> createUser(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
@@ -68,31 +67,23 @@ public class UserDAOImpl implements UserDAO {
         return count != null && count > 0;
     }
 
-    public String getPasswordHashByIdentifier(String identifier) {
-        try {
-            String sql = "SELECT password_hash FROM users WHERE username = ? OR email = ?";
-            String resultHash = jdbcTemplate.queryForObject(
-                    sql,
-                    (rs, rowNum) -> rs.getString(1),
-                    identifier,
-                    identifier);
-            return resultHash;
-        } catch (DataAccessException ex) {
-            return null;
-        }
+    public Optional<String> getPasswordHashByIdentifier(String identifier) {
+        String sql = "SELECT password_hash FROM users WHERE username = ? OR email = ?";
+        List<String> result = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> rs.getString(1),
+                identifier,
+                identifier);
+        return result.stream().findFirst();
     }
 
-    public User getUserById(int id) {
-        try {
-            String sql = "SELECT * FROM users WHERE id = ?";
-            User resultUser = jdbcTemplate.queryForObject(
-                    sql,
-                    new UserRowMapper(),
-                    id);
-            return resultUser;
-        } catch (DataAccessException ex) {
-            return null;
-        }
+    public Optional<User> getUserById(int id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        List<User> result = jdbcTemplate.query(
+                sql,
+                new UserRowMapper(),
+                id);
+        return result.stream().findFirst();
     }
 
     public Optional<User> getUserByIdentifier(String identifier) {
@@ -106,17 +97,13 @@ public class UserDAOImpl implements UserDAO {
         return result.stream().findFirst();
     }
 
-    public User getUserByUsername(String username) {
-        try {
-            String sql = "SELECT * FROM users WHERE username = ?";
-            User resultUser = jdbcTemplate.queryForObject(
-                    sql,
-                    new UserRowMapper(),
-                    username);
-            return resultUser;
-        } catch (DataAccessException ex) {
-            return null;
-        }
+    public Optional<User> getUserByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        List<User> result = jdbcTemplate.query(
+                sql,
+                new UserRowMapper(),
+                username);
+        return result.stream().findFirst();
     }
 
     // U //

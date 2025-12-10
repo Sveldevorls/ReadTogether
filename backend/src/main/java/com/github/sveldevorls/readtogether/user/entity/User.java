@@ -29,7 +29,7 @@ public record User(
         );
     }
 
-    public static User creatrAdmin(String username, String email, String hashedPassword) {
+    public static User createAdmin(String username, String email, String hashedPassword) {
         return new User(
             null,
             username,

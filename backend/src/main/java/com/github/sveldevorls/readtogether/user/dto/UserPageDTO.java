@@ -1,6 +1,6 @@
 package com.github.sveldevorls.readtogether.user.dto;
 
-public record UserDTO(
+public record UserPageDTO(
     String username,
     String displayName,
     String avatarUrl,

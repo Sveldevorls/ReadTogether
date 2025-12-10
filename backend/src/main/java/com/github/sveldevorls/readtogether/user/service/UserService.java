@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.auth.exception.DuplicateUserException;
+import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorException;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
 import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserPageDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 @Service
@@ -28,11 +29,11 @@ public class UserService {
     public void createAdminIfNotExists(AdminCreationDTO dto) {
         String hashedPassword = encoder.encode(dto.password());
         if (!userDao.existsByUsername(dto.username())) {
-            userDao.createAdmin(User.creatrAdmin(dto.username(), dto.email(), hashedPassword));
+            userDao.createAdmin(User.createAdmin(dto.username(), dto.email(), hashedPassword));
         }
     }
 
-    public void createUser(RegisterRequestDTO dto) {
+    public User createUser(RegisterRequestDTO dto) {
         List<String> errorFields = new ArrayList<>();
         if (userDao.existsByUsername(dto.username())) {
             errorFields.add("username");
@@ -48,10 +49,12 @@ public class UserService {
         String hashedPassword = encoder.encode(dto.password());
         User createdUser = userDao.createUser(
             User.createUser(dto.username(), dto.email(), hashedPassword)
-        );
+        ).orElseThrow(() -> new InternalServerErrorException());
+
+        return createdUser;
     }
 
-    public String getPasswordHashByIdentifier(String identifier) {
+    public Optional<String> getPasswordHashByIdentifier(String identifier) {
         return userDao.getPasswordHashByIdentifier(identifier);
     }
 
@@ -60,11 +63,9 @@ public class UserService {
                       .orElseThrow(() -> new ResourceNotFoundException());
     }
 
-    public UserDTO getUserPageData(String username) {
-        User user = userDao.getUserByUsername(username);
-        if (user == null) {
-            throw new ResourceNotFoundException();
-        }
-        return new UserDTO(user.username(), user.displayName(), user.avatarUrl(), user.bio(), user.createdAt(), user.userRole());
+    public UserPageDTO getUserPageData(String username) {
+        User user = userDao.getUserByUsername(username)
+                           .orElseThrow(() -> new ResourceNotFoundException());
+        return new UserPageDTO(user.username(), user.displayName(), user.avatarUrl(), user.bio(), user.createdAt(), user.userRole());
     }
 }

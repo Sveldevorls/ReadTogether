@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserPageDTO;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class UserPageController {
 
     @GetMapping("/{username}")
     public ResponseEntity<SuccessResponseDTO> getUserData(@PathVariable String username) {
-        UserDTO response = userService.getUserPageData(username);
+        UserPageDTO response = userService.getUserPageData(username);
         return new ResponseEntity<>(
                 new SuccessResponseDTO(HttpStatus.OK, response),
                 HttpStatus.OK);

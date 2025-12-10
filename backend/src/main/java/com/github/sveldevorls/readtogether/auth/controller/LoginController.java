@@ -26,7 +26,6 @@ public class LoginController {
         this.authService = authService;
     }
 
-    // placeholder, add jwt later
     @PostMapping
     public ResponseEntity<SuccessResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
         LoginResponseDTO response = authService.login(request);

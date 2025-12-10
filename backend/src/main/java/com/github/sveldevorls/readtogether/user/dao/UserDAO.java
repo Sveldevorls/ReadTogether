@@ -9,20 +9,20 @@ public interface UserDAO {
     // C //
     void createAdmin(User newUser);
 
-    User createUser(User newUser);
+    Optional<User> createUser(User newUser);
 
     // R //
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
 
-    String getPasswordHashByIdentifier(String identifier);
+    Optional<String> getPasswordHashByIdentifier(String identifier);
 
-    User getUserById(int id);
+    Optional<User> getUserById(int id);
 
     Optional<User> getUserByIdentifier(String identifier);
 
-    User getUserByUsername(String username);
+    Optional<User> getUserByUsername(String username);
 
     // U //
     void updateUser(User newUserData);

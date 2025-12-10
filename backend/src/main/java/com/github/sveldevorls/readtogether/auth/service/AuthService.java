@@ -31,8 +31,8 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO dto) {
-        String currentUserHash = userService.getPasswordHashByIdentifier(dto.identifier());
-        String hashToCheck = (currentUserHash != null) ? currentUserHash : dummyPasswordHash;
+        String hashToCheck = userService.getPasswordHashByIdentifier(dto.identifier())
+                                        .orElse(dummyPasswordHash);
         if (!encoder.matches(dto.password(), hashToCheck)) {
             throw new InvalidLoginCredentialsException();
         }
