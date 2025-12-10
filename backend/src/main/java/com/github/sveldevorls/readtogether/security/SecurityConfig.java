@@ -41,6 +41,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(req -> req
                 .requestMatchers("/api/register", "/api/login").permitAll()
                 .requestMatchers("/api/users/{username}").permitAll()
+                .requestMatchers("/api/test/*").permitAll()
                 .anyRequest().hasRole("ADMIN")
             )
             .addFilterBefore(
