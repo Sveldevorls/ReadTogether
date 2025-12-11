@@ -13,7 +13,7 @@ import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorE
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
 import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserPageDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserProfileDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 @Service
@@ -63,10 +63,10 @@ public class UserService {
                       .orElseThrow(() -> new ResourceNotFoundException());
     }
 
-    public UserPageDTO getUserPageData(String username) {
+    public UserProfileDTO getUserProfileData(String username) {
         User user = userDao.getUserByUsername(username)
                            .orElseThrow(() -> new ResourceNotFoundException());
-        return new UserPageDTO(
+        return new UserProfileDTO(
             user.username(), 
             user.displayName(), 
             user.avatarUrl(), 

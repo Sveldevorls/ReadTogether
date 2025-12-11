@@ -9,6 +9,7 @@ import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
 import com.github.sveldevorls.readtogether.auth.dto.RegisterResponseDTO;
 import com.github.sveldevorls.readtogether.auth.exception.InvalidLoginCredentialsException;
 import com.github.sveldevorls.readtogether.security.JwtUtil;
+import com.github.sveldevorls.readtogether.user.dto.UserProfileDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
@@ -30,7 +31,7 @@ public class AuthService {
     public RegisterResponseDTO register(RegisterRequestDTO dto) {
         User createdUser = userService.createUser(dto);
         String token = jwtUtil.generateToken(createdUser.username(), createdUser.userRole().name());
-        return new RegisterResponseDTO(token);
+        return new RegisterResponseDTO(token, UserProfileDTO.fromEntity(createdUser));
     }
 
     public LoginResponseDTO login(LoginRequestDTO dto) {
@@ -42,6 +43,6 @@ public class AuthService {
 
         User user = userService.getUserByIdentifier(dto.identifier());
         String token = jwtUtil.generateToken(user.username(), user.userRole().name());
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(token, UserProfileDTO.fromEntity(user));
     }   
 }
