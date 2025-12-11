@@ -15,8 +15,7 @@ const userStore = useUserStore();
 onBeforeMount(async () => {
   try {
     const { data: response } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
-    userStore.setUsername(response.data.username);
-    userStore.setRole(userStore.parseRole(response.data.role));
+    userStore.setUser(response.data.user);
   } catch (error) {
     if (localStorage.getItem("token") != null) {
       localStorage.removeItem("token");

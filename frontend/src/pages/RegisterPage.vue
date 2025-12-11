@@ -66,9 +66,7 @@ const onSubmit = handleSubmit(
       const { data: registerResponse } = await api.post<SuccessResponse<RegisterResponse>>(ENDPOINTS.REGISTER, values);
       const token = registerResponse.data.token;
       localStorage.setItem("token", token);
-      const { data: verifyResponse } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
-      userStore.setUsername(verifyResponse.data.username);
-      userStore.setRole(userStore.parseRole(verifyResponse.data.role));
+      userStore.setUser(registerResponse.data.user);
       toast({
         severity: "success",
         summary: "Registration complete",

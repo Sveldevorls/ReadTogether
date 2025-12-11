@@ -53,9 +53,7 @@ const onSubmit = handleSubmit(
       const { data: loginResponse } = await api.post<SuccessResponse<LoginResponse>>(ENDPOINTS.LOGIN, values);
       const token = loginResponse.data.token;
       localStorage.setItem("token", token);
-      const { data: verifyResponse } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
-      userStore.setUsername(verifyResponse.data.username);
-      userStore.setRole(userStore.parseRole(verifyResponse.data.role));
+      userStore.setUser(loginResponse.data.user);
       toast({
         severity: "success",
         summary: "Login complete",

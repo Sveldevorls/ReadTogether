@@ -9,7 +9,7 @@ const userStore = useUserStore();
 const menu = ref();
 const menuItems = computed(() => [
   {
-    label: `Hello, ${userStore.username}`,
+    label: `Hello, ${userStore.displayName ?? userStore.username}`,
     items: [
       {
         label: "Profile",
@@ -51,8 +51,7 @@ const toggle = (event: MouseEvent) => {
 
 function logout() {
   localStorage.removeItem("token");
-  userStore.setUsername("");
-  userStore.setRole(0);
+  userStore.clearUser();
 }
 </script>
 
