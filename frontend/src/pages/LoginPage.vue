@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Todo: Add JWT support
 // Todo: Fix form validation flashing error on blur when previously invalid value becomes valid
 // Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
 

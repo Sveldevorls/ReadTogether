@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Todo: Update log out functionality
+
 import { computed, ref } from "vue";
 import { Menu, Menubar } from "primevue";
 import type { MenuItem } from "primevue/menuitem";
@@ -20,8 +22,9 @@ const menuItems = computed(() => [
       },
       {
         label: "Log out",
-        route: "/logout",
+        route: "#",
         class: "text-red-400",
+        command: logout,
       },
     ],
   },
@@ -46,6 +49,12 @@ const navbarItems = ref<MenuItem[]>([
 const toggle = (event: MouseEvent) => {
   menu.value.toggle(event);
 };
+
+function logout() {
+  localStorage.removeItem("token");
+  userStore.setUsername("");
+  userStore.setRole(0);
+}
 </script>
 
 <template>
