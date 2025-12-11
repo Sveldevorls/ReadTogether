@@ -1,8 +1,31 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Menubar } from "primevue";
+import { computed, ref } from "vue";
+import { Menu, Menubar } from "primevue";
 import type { MenuItem } from "primevue/menuitem";
+import { useUserStore } from "@/util/userStore";
 
+const userStore = useUserStore();
+const menu = ref();
+const menuItems = computed(() => [
+  {
+    label: `Hello, ${userStore.username}`,
+    items: [
+      {
+        label: "Profile",
+        route: "/me",
+      },
+      {
+        label: "Settings",
+        route: "/settings",
+      },
+      {
+        label: "Log out",
+        route: "/logout",
+        class: "text-red-400",
+      },
+    ],
+  },
+]);
 const navbarItems = ref<MenuItem[]>([
   {
     label: "Home",
@@ -19,6 +42,10 @@ const navbarItems = ref<MenuItem[]>([
     label: "Community",
   },
 ]);
+
+const toggle = (event: MouseEvent) => {
+  menu.value.toggle(event);
+};
 </script>
 
 <template>
@@ -57,11 +84,36 @@ const navbarItems = ref<MenuItem[]>([
       </template>
       <template #end>
         <router-link
+          v-if="userStore.role == 0"
           to="/login"
           class="flex items-center h-full px-4"
         >
           <span>Log in</span>
         </router-link>
+        <div
+          v-else
+          @click="toggle"
+          class="flex items-center h-full"
+        >
+          <button class="flex items-center h-full px-4">
+            {{ userStore.username }}
+          </button>
+          <Menu
+            ref="menu"
+            :model="menuItems"
+            :popup="true"
+          >
+            <template #item="{ item }">
+              <router-link
+                v-if="item.route"
+                :to="item.route"
+                class="flex items-center px-4 py-2"
+              >
+                <span :class="item.class">{{ item.label }}</span>
+              </router-link>
+            </template>
+          </Menu>
+        </div>
       </template>
     </Menubar>
   </header>
