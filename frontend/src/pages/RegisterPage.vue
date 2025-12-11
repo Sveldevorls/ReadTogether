@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { InputText, Message } from "primevue";
-import { useForm } from "vee-validate";
-import { object, string, ref as yupRef } from "yup";
-import { useRouter } from "vue-router";
-import { isAxiosError } from "axios";
 import api from "@/util/api";
-import { useSingularToast } from "@/util/useSingularToast";
 import { ENDPOINTS } from "@/util/endpoints";
-import { useUserStore } from "@/util/userStore";
 import type { RegisterPageFields } from "@/util/fields";
 import type { ErrorResponse, RegisterResponse, SuccessResponse, VerifyResponse } from "@/util/responses";
+import { useSingularToast } from "@/util/useSingularToast";
+import { useUserStore } from "@/util/userStore";
+import { isAxiosError } from "axios";
+import { InputText, Message } from "primevue";
+import { useForm } from "vee-validate";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { object, string, ref as yupRef } from "yup";
 
 const toast = useSingularToast();
 const userStore = useUserStore();
@@ -66,7 +66,7 @@ const onSubmit = handleSubmit(
       const { data: registerResponse } = await api.post<SuccessResponse<RegisterResponse>>(ENDPOINTS.REGISTER, values);
       const token = registerResponse.data.token;
       localStorage.setItem("token", token);
-      const { data: verifyResponse} = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
+      const { data: verifyResponse } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
       userStore.setUsername(verifyResponse.data.username);
       userStore.setRole(userStore.parseRole(verifyResponse.data.role));
       toast({
@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(
       group: "message",
       life: 3000,
     });
-  }
+  },
 );
 </script>
 

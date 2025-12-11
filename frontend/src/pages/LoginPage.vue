@@ -1,19 +1,18 @@
 <script setup lang="ts">
 // Todo: Fix form validation flashing error on blur when previously invalid value becomes valid
 // Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
-
-import { ref } from "vue";
-import { InputText, Message } from "primevue";
-import { object, string } from "yup";
-import type { LoginPageFields } from "@/util/fields";
-import type { VerifyResponse, ErrorResponse, LoginResponse, SuccessResponse } from "@/util/responses";
-import { useForm } from "vee-validate";
 import api from "@/util/api";
-import { useRouter } from "vue-router";
-import { isAxiosError } from "axios";
+import { ENDPOINTS } from "@/util/endpoints";
+import type { LoginPageFields } from "@/util/fields";
+import type { ErrorResponse, LoginResponse, SuccessResponse, VerifyResponse } from "@/util/responses";
 import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
-import { ENDPOINTS } from "@/util/endpoints";
+import { isAxiosError } from "axios";
+import { InputText, Message } from "primevue";
+import { useForm } from "vee-validate";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { object, string } from "yup";
 
 const toast = useSingularToast();
 const userStore = useUserStore();
@@ -102,7 +101,7 @@ const onSubmit = handleSubmit(
       group: "message",
       life: 3000,
     });
-  }
+  },
 );
 </script>
 

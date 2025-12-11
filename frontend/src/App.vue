@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import "./App.css";
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-import SingularToast from "./components/SingularToast.vue";
 import { onBeforeMount } from "vue";
+
+import "./App.css";
+import Footer from "./components/Footer.vue";
+import Header from "./components/Header.vue";
+import SingularToast from "./components/SingularToast.vue";
 import api from "./util/api";
-import { useUserStore } from "./util/userStore";
 import { ENDPOINTS } from "./util/endpoints";
 import type { SuccessResponse, VerifyResponse } from "./util/responses";
+import { useUserStore } from "./util/userStore";
 
 const userStore = useUserStore();
 

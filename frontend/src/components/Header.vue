@@ -1,10 +1,9 @@
 <script setup lang="ts">
 // Todo: Update log out functionality
-
-import { computed, ref } from "vue";
+import { useUserStore } from "@/util/userStore";
 import { Menu, Menubar } from "primevue";
 import type { MenuItem } from "primevue/menuitem";
-import { useUserStore } from "@/util/userStore";
+import { computed, ref } from "vue";
 
 const userStore = useUserStore();
 const menu = ref();

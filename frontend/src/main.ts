@@ -8,19 +8,18 @@ import { definePreset } from '@primeuix/themes';
 import { createPinia } from 'pinia';
 
 const app = createApp(App);
-
 const pinia = createPinia();
 const auraNoTransition = definePreset(Aura, {
-    semantic: {
-        transitionDuration: '0s'
-    }
+  semantic: {
+    transitionDuration: '0s'
+  }
 })
 
 app.use(router);
 app.use(PrimeVue, {
-    theme: {
-        preset: auraNoTransition
-    }
+  theme: {
+    preset: auraNoTransition
+  }
 });
 app.use(ToastService);
 app.use(pinia);

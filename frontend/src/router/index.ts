@@ -4,9 +4,9 @@ import LoginPage from '@/pages/LoginPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
 
 const routes = [
-  {path: "/", component: IndexPage},
-  {path: "/login", component: LoginPage},
-  {path: "/register", component: RegisterPage},
+  { path: "/", component: IndexPage },
+  { path: "/login", component: LoginPage },
+  { path: "/register", component: RegisterPage },
 ]
 
 const router = createRouter({

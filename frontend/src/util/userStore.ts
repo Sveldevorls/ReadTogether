@@ -19,5 +19,5 @@ export const useUserStore = defineStore('user', () => {
         return roles.guest;
     }
   }
-  return {username, role, setUsername, setRole, parseRole}
+  return { username, role, setUsername, setRole, parseRole }
 })

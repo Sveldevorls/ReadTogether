@@ -7,14 +7,9 @@ import FeaturedReviewBlock from "@/components/FeaturedReviewBlock.vue";
   <section class="w-[min(100%,80em)] px-4">
     <div class="px-2 py-4">
       <h1 class="text-4xl">Welcome to ReadTogether</h1>
-      <p>
-        Share your reading journey, discover your new favorite books, and
-        explore what the world is reading.
-      </p>
+      <p>Share your reading journey, discover your new favorite books, and explore what the world is reading.</p>
     </div>
-    <div
-      class="flex flex-col lg:grid lg:grid-cols-[2fr_1fr] lg:items-start gap-2"
-    >
+    <div class="flex flex-col lg:grid lg:grid-cols-[2fr_1fr] lg:items-start gap-2">
       <div>
         <h2 class="px-2 text-2xl">Featured reviews</h2>
         <ul>
