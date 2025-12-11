@@ -3,28 +3,24 @@ import { ref } from "vue";
 import { InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
 import { object, string, ref as yupRef } from "yup";
-import api from "@/util/api";
 import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
-import type { ErrorResponse, RegisterPageFields } from "@/util/types";
+import api from "@/util/api";
 import { useSingularToast } from "@/util/useSingularToast";
 import { ENDPOINTS } from "@/util/endpoints";
 import { useUserStore } from "@/util/userStore";
+import type { RegisterPageFields } from "@/util/fields";
+import type { ErrorResponse, RegisterResponse, SuccessResponse, VerifyResponse } from "@/util/responses";
 
 const toast = useSingularToast();
 const userStore = useUserStore();
 const router = useRouter();
 const schema = object({
-  email: string()
-    .email("Email format is not valid")
-    .required("Email is required"),
+  email: string().email("Email format is not valid").required("Email is required"),
   username: string()
     .min(3, "Username must be at least 3 characters long")
     .max(20, "Username must be at most 20 characters long")
-    .matches(
-      /^[a-zA-Z0-9_]+$/,
-      "Username can only contain letters, numbers, and underscores"
-    )
+    .matches(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores")
     .required("Username is required"),
   password: string()
     .min(8, "Password must be at least 8 characters long")
@@ -54,10 +50,7 @@ const { defineField, handleSubmit, setFieldError, errors } = useForm({
 const [email, emailProps] = defineField<string>("email", fieldConfig);
 const [password, passwordProps] = defineField<string>("password", fieldConfig);
 const [username, usernameProps] = defineField<string>("username", fieldConfig);
-const [passwordConfirm, passwordConfirmProps] = defineField<string>(
-  "passwordConfirm",
-  fieldConfig
-);
+const [passwordConfirm, passwordConfirmProps] = defineField<string>("passwordConfirm", fieldConfig);
 
 function handleFocus(fieldName: RegisterPageFields): void {
   fieldIsFocused.value[fieldName] = true;
@@ -70,12 +63,12 @@ function handleBlur(fieldName: RegisterPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      const registerResponse = await api.post(ENDPOINTS.REGISTER, values);
-      const token = registerResponse.data.data.token;
+      const { data: registerResponse } = await api.post<SuccessResponse<RegisterResponse>>(ENDPOINTS.REGISTER, values);
+      const token = registerResponse.data.token;
       localStorage.setItem("token", token);
-      const verifyResponse = await api.post(ENDPOINTS.VERIFY);
-      userStore.setUsername(verifyResponse.data.data.username);
-      userStore.setRole(userStore.parseRole(verifyResponse.data.data.role));
+      const { data: verifyResponse} = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
+      userStore.setUsername(verifyResponse.data.username);
+      userStore.setRole(userStore.parseRole(verifyResponse.data.role));
       toast({
         severity: "success",
         summary: "Registration complete",
@@ -85,8 +78,7 @@ const onSubmit = handleSubmit(
       router.push("/");
     } catch (error) {
       if (isAxiosError(error) && error.status === 400) {
-        const errorData: ErrorResponse<RegisterPageFields> =
-          error.response?.data;
+        const errorData: ErrorResponse<RegisterPageFields> = error.response?.data;
         errorData.errors.forEach((error) => {
           setFieldError(error.field, error.message);
         });
@@ -125,9 +117,7 @@ const onSubmit = handleSubmit(
 </script>
 
 <template>
-  <section
-    class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100"
-  >
+  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100">
     <h1 class="text-center font-bold text-2xl">Register</h1>
     <form
       id="register"

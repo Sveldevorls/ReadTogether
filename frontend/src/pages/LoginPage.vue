@@ -5,7 +5,8 @@
 import { ref } from "vue";
 import { InputText, Message } from "primevue";
 import { object, string } from "yup";
-import type { ErrorResponse, LoginPageFields } from "@/util/types";
+import type { LoginPageFields } from "@/util/fields";
+import type { VerifyResponse, ErrorResponse, LoginResponse, SuccessResponse } from "@/util/responses";
 import { useForm } from "vee-validate";
 import api from "@/util/api";
 import { useRouter } from "vue-router";
@@ -36,10 +37,7 @@ const { defineField, handleSubmit, setFieldError, errors } = useForm({
   validationSchema: schema,
 });
 
-const [identifier, identifierProps] = defineField<string>(
-  "identifier",
-  fieldConfig
-);
+const [identifier, identifierProps] = defineField<string>("identifier", fieldConfig);
 const [password, passwordProps] = defineField<string>("password", fieldConfig);
 
 function handleFocus(fieldName: LoginPageFields): void {
@@ -53,12 +51,12 @@ function handleBlur(fieldName: LoginPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      const loginResponse = await api.post(ENDPOINTS.LOGIN, values);
-      const token = loginResponse.data.data.token;
+      const { data: loginResponse } = await api.post<SuccessResponse<LoginResponse>>(ENDPOINTS.LOGIN, values);
+      const token = loginResponse.data.token;
       localStorage.setItem("token", token);
-      const verifyResponse = await api.post(ENDPOINTS.VERIFY);
-      userStore.setUsername(verifyResponse.data.data.username);
-      userStore.setRole(userStore.parseRole(verifyResponse.data.data.role));
+      const { data: verifyResponse } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
+      userStore.setUsername(verifyResponse.data.username);
+      userStore.setRole(userStore.parseRole(verifyResponse.data.role));
       toast({
         severity: "success",
         summary: "Login complete",
@@ -109,9 +107,7 @@ const onSubmit = handleSubmit(
 </script>
 
 <template>
-  <section
-    class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100 @container"
-  >
+  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100 @container">
     <h1 class="text-center font-bold text-2xl">Log in to ReadTogether</h1>
     <form
       id="login"

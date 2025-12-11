@@ -7,14 +7,15 @@ import { onBeforeMount } from "vue";
 import api from "./util/api";
 import { useUserStore } from "./util/userStore";
 import { ENDPOINTS } from "./util/endpoints";
+import type { SuccessResponse, VerifyResponse } from "./util/responses";
 
 const userStore = useUserStore();
 
 onBeforeMount(async () => {
   try {
-    const response = await api.post(ENDPOINTS.VERIFY);
-    userStore.setUsername(response.data.data.username);
-    userStore.setRole(userStore.parseRole(response.data.data.role));
+    const { data: response } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
+    userStore.setUsername(response.data.username);
+    userStore.setRole(userStore.parseRole(response.data.role));
   } catch (error) {
     if (localStorage.getItem("token") != null) {
       localStorage.removeItem("token");
