@@ -9,8 +9,10 @@ import { isAxiosError } from "axios";
 import type { ErrorResponse, RegisterPageFields } from "@/util/types";
 import { useSingularToast } from "@/util/useSingularToast";
 import { ENDPOINTS } from "@/util/endpoints";
+import { useUserStore } from "@/util/userStore";
 
 const toast = useSingularToast();
+const userStore = useUserStore();
 const router = useRouter();
 const schema = object({
   email: string()
@@ -68,7 +70,12 @@ function handleBlur(fieldName: RegisterPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      await api.post(ENDPOINTS.REGISTER, values);
+      const registerResponse = await api.post(ENDPOINTS.REGISTER, values);
+      const token = registerResponse.data.data.token;
+      localStorage.setItem("token", token);
+      const verifyResponse = await api.post(ENDPOINTS.VERIFY);
+      userStore.setUsername(verifyResponse.data.data.username);
+      userStore.setRole(userStore.parseRole(verifyResponse.data.data.role));
       toast({
         severity: "success",
         summary: "Registration complete",
