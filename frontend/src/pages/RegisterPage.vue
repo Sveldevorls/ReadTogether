@@ -8,6 +8,7 @@ import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
 import type { ErrorResponse, RegisterPageFields } from "@/util/types";
 import { useSingularToast } from "@/util/useSingularToast";
+import { ENDPOINTS } from "@/util/endpoints";
 
 const toast = useSingularToast();
 const router = useRouter();
@@ -67,7 +68,7 @@ function handleBlur(fieldName: RegisterPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      await api.post("/api/register", values);
+      await api.post(ENDPOINTS.REGISTER, values);
       toast({
         severity: "success",
         summary: "Registration complete",
@@ -76,26 +77,25 @@ const onSubmit = handleSubmit(
       });
       router.push("/");
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.status === 400) {
-          const errorData: ErrorResponse<RegisterPageFields> = error.response?.data;
-          errorData.errors.forEach((error) => {
-            setFieldError(error.field, error.message);
-          });
-          toast({
-            severity: "error",
-            summary: "Please fix the errors in the form before submitting.",
-            group: "message",
-            life: 3000,
-          });
-        } else {
-          toast({
-            severity: "error",
-            summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
-            group: "message",
-            life: 3000,
-          });
-        }
+      if (isAxiosError(error) && error.status === 400) {
+        const errorData: ErrorResponse<RegisterPageFields> =
+          error.response?.data;
+        errorData.errors.forEach((error) => {
+          setFieldError(error.field, error.message);
+        });
+        toast({
+          severity: "error",
+          summary: "Please fix the errors in the form before submitting.",
+          group: "message",
+          life: 3000,
+        });
+      } else if (isAxiosError(error)) {
+        toast({
+          severity: "error",
+          summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
+          group: "message",
+          life: 3000,
+        });
       } else {
         toast({
           severity: "error",

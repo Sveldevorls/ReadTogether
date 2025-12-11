@@ -6,12 +6,13 @@ import SingularToast from "./components/SingularToast.vue";
 import { onBeforeMount } from "vue";
 import api from "./util/api";
 import { useUserStore } from "./util/userStore";
+import { ENDPOINTS } from "./util/endpoints";
 
 const userStore = useUserStore();
 
 onBeforeMount(async () => {
   try {
-    const response = await api.post("/api/verify");
+    const response = await api.post(ENDPOINTS.VERIFY);
     userStore.setUsername(response.data.data.username);
     userStore.setRole(userStore.parseRole(response.data.data.role));
   } catch (error) {
@@ -19,7 +20,7 @@ onBeforeMount(async () => {
       localStorage.removeItem("token");
     }
   }
-})
+});
 </script>
 
 <template>

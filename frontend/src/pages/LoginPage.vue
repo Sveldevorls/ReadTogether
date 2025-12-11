@@ -13,6 +13,7 @@ import { useRouter } from "vue-router";
 import { isAxiosError } from "axios";
 import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
+import { ENDPOINTS } from "@/util/endpoints";
 
 const toast = useSingularToast();
 const userStore = useUserStore();
@@ -53,10 +54,10 @@ function handleBlur(fieldName: LoginPageFields): void {
 const onSubmit = handleSubmit(
   async (values) => {
     try {
-      const response = await api.post("/api/login", values);
-      const token = response.data.data.token;
+      const loginResponse = await api.post(ENDPOINTS.LOGIN, values);
+      const token = loginResponse.data.data.token;
       localStorage.setItem("token", token);
-      const verifyResponse = await api.post("/api/verify");
+      const verifyResponse = await api.post(ENDPOINTS.VERIFY);
       userStore.setUsername(verifyResponse.data.data.username);
       userStore.setRole(userStore.parseRole(verifyResponse.data.data.role));
       toast({
@@ -67,27 +68,25 @@ const onSubmit = handleSubmit(
       });
       router.push("/");
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.status === 400) {
-          const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
-          errorData.errors.forEach((error) => {
-            setFieldError("identifier", error.message);
-            setFieldError("password", error.message);
-          });
-          toast({
-            severity: "error",
-            summary: "Please fix the errors in the form before submitting.",
-            group: "message",
-            life: 3000,
-          });
-        } else {
-          toast({
-            severity: "error",
-            summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
-            group: "message",
-            life: 3000,
-          });
-        }
+      if (isAxiosError(error) && error.status === 400) {
+        const errorData: ErrorResponse<LoginPageFields> = error.response?.data;
+        errorData.errors.forEach((error) => {
+          setFieldError("identifier", error.message);
+          setFieldError("password", error.message);
+        });
+        toast({
+          severity: "error",
+          summary: "Please fix the errors in the form before submitting.",
+          group: "message",
+          life: 3000,
+        });
+      } else if (isAxiosError(error)) {
+        toast({
+          severity: "error",
+          summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
+          group: "message",
+          life: 3000,
+        });
       } else {
         console.log(error);
         toast({
