@@ -24,22 +24,24 @@ export type SuccessResponse<ResponseType> = {
 // POST /api/register
 export type RegisterResponse = {
     token: string,
-    user: UserProfileResponse,
+    user: UserDataResponse,
 }
 
 // POST /api/login
 export type LoginResponse = {
     token: string,
-    user: UserProfileResponse,
+    user: UserDataResponse,
 }
 
 // POST /api/verify
 export type VerifyResponse = {
-    user: UserProfileResponse,
+    user: UserDataResponse,
 }
 
 // GET /api/users/{username}
-export type UserProfileResponse = {
+// Todo: Expand to UserProfileResponse once author and data are added
+
+export type UserDataResponse = {
     username: string,
     displayName: string | null,
     avatarUrl: string | null,

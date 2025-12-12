@@ -13,7 +13,7 @@ import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorE
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.user.dao.UserDAO;
 import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserProfileDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 @Service
@@ -63,10 +63,11 @@ public class UserService {
                       .orElseThrow(() -> new ResourceNotFoundException());
     }
 
-    public UserProfileDTO getUserProfileData(String username) {
+    // Todo: Change return type to UserProfileDTO once books and authors are added
+    public UserDataDTO getUserProfileData(String username) {
         User user = userDao.getUserByUsername(username)
                            .orElseThrow(() -> new ResourceNotFoundException());
-        return new UserProfileDTO(
+        return new UserDataDTO(
             user.username(), 
             user.displayName(), 
             user.avatarUrl(), 

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.auth.dto.VerifyResponseDTO;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserProfileDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class VerifyControler {
     @PostMapping
     public ResponseEntity<SuccessResponseDTO> verify(Authentication authentication) {
         String username = authentication.getName();
-        UserProfileDTO response = userService.getUserProfileData(username);
+        UserDataDTO response = userService.getUserProfileData(username);
         
         return new ResponseEntity<>(
                 new SuccessResponseDTO(

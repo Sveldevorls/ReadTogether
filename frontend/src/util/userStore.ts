@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import { roles } from "./enums";
-import type { UserProfileResponse } from "./responses";
+import type { UserDataResponse } from "./responses";
 
 export const useUserStore = defineStore('user', () => {
   const username = ref<string | null>(null);
@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
   const createdAt = ref<string | null>(null);
   const role = ref<roles>(roles.guest);
 
-  const setUser = (user: UserProfileResponse) => {
+  const setUser = (user: UserDataResponse) => {
     username.value = user.username;
     displayName.value = user.displayName;
     avatarUrl.value = user.avatarUrl;

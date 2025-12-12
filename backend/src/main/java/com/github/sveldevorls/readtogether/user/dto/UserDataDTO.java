@@ -2,7 +2,8 @@ package com.github.sveldevorls.readtogether.user.dto;
 
 import com.github.sveldevorls.readtogether.user.entity.User;
 
-public record UserProfileDTO(
+// Basic user data, different from UserProfile where other fields for books and authors will exist
+public record UserDataDTO(
     String username,
     String displayName,
     String avatarUrl,
@@ -11,8 +12,8 @@ public record UserProfileDTO(
     String userRole
 ) { 
 
-    public static UserProfileDTO fromEntity(User user) {
-        return new UserProfileDTO(
+    public static UserDataDTO fromEntity(User user) {
+        return new UserDataDTO(
             user.username(), 
             user.displayName(), 
             user.avatarUrl(), 

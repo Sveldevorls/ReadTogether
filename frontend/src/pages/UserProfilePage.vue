@@ -2,7 +2,7 @@
 import defaultAvatar from "@/assets/default_avatar.svg";
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
-import type { SuccessResponse, UserProfileResponse } from "@/util/responses";
+import type { SuccessResponse, UserDataResponse } from "@/util/responses";
 import { isAxiosError } from "axios";
 import { Divider } from "primevue";
 import { computed, onMounted, ref } from "vue";
@@ -10,7 +10,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const username = route.params.username;
-const profile = ref<UserProfileResponse | null>(null);
+const profile = ref<UserDataResponse | null>(null);
 const isLoading = ref<boolean>(true);
 const errorStatus = ref<"error" | "notfound" | null>(null);
 
@@ -26,7 +26,7 @@ const roleDisplay = computed(() => {
 
 onMounted(async () => {
   try {
-    const { data: response } = await api.get<SuccessResponse<UserProfileResponse>>(ENDPOINTS.USERS + "/" + username);
+    const { data: response } = await api.get<SuccessResponse<UserDataResponse>>(ENDPOINTS.USERS + "/" + username);
     profile.value = response.data;
   } catch (e) {
     if (isAxiosError(e) && e.status == 404) {
