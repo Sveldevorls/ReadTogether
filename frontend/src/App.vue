@@ -5,20 +5,12 @@ import "./App.css";
 import Footer from "./components/Footer.vue";
 import Header from "./components/Header.vue";
 import SingularToast from "./components/SingularToast.vue";
-import api from "./util/api";
-import { ENDPOINTS } from "./util/endpoints";
-import type { SuccessResponse, VerifyResponse } from "./util/responses";
 import { useUserStore } from "./util/userStore";
 
 const userStore = useUserStore();
 
 onBeforeMount(async () => {
-  try {
-    const { data: response } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
-    userStore.setUser(response.data.user);
-  } catch (error) {
-    userStore.clearUser();
-  }
+  await userStore.verify();
 });
 </script>
 

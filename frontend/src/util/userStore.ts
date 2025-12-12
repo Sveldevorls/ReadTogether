@@ -1,7 +1,9 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import { roles } from "./enums";
-import type { UserDataResponse } from "./responses";
+import type { SuccessResponse, UserDataResponse, VerifyResponse } from "./responses";
+import api from "./api";
+import { ENDPOINTS } from "./endpoints";
 
 export const useUserStore = defineStore('user', () => {
   const username = ref<string | null>(null);
@@ -29,6 +31,15 @@ export const useUserStore = defineStore('user', () => {
     role.value = roles.guest;
   }
 
+  const verify = async () => {
+    try {
+      const { data: response } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
+      setUser(response.data.user);
+    } catch (error) {
+      clearUser();
+    }
+  }
+
   const parseRole = (role: string): roles => {
     switch (role) {
       case "ROLE_ADMIN":
@@ -41,5 +52,5 @@ export const useUserStore = defineStore('user', () => {
         return roles.guest;
     }
   }
-  return { username, displayName, avatarUrl, bio, createdAt, role, setUser, clearUser }
+  return { username, displayName, avatarUrl, bio, createdAt, role, setUser, clearUser, verify }
 })

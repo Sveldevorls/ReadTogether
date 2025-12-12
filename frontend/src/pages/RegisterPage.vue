@@ -2,7 +2,7 @@
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
 import type { RegisterPageFields } from "@/util/fields";
-import type { ErrorResponse, RegisterResponse, SuccessResponse, VerifyResponse } from "@/util/responses";
+import type { ErrorResponse, RegisterResponse, SuccessResponse } from "@/util/responses";
 import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
 import { isAxiosError } from "axios";

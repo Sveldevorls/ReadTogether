@@ -4,7 +4,7 @@
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
 import type { LoginPageFields } from "@/util/fields";
-import type { ErrorResponse, LoginResponse, SuccessResponse, VerifyResponse } from "@/util/responses";
+import type { ErrorResponse, LoginResponse, SuccessResponse } from "@/util/responses";
 import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
 import { isAxiosError } from "axios";
