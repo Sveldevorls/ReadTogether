@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS books;
 CREATE TABLE books (
   -- Meta
   id INT NOT NULL AUTO_INCREMENT,
-  search_key VARCHAR(255) NOT NULL, -- String to compare against when searching, generated from title
+  -- search_key VARCHAR(255) NOT NULL, -- String to compare against when searching, generated from title
   slug VARCHAR(255) UNIQUE NOT NULL, -- URL, [id]-[title], id is the main identifier
   created_from INT NOT NULL, -- The id to the first new book submission in book_submissions that created this record
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

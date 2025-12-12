@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS authors;
 CREATE TABLE authors (
   -- Meta
   id INT NOT NULL AUTO_INCREMENT,
-  search_key VARCHAR(255) NOT NULL, -- String to compare against when searching, generated from author_name
+  -- search_key VARCHAR(255) NOT NULL, -- String to compare against when searching, generated from author_name
   slug VARCHAR(255) UNIQUE NOT NULL, -- URL, [id]-[author_name], id is the main identifier
   created_from INT NOT NULL, -- The id to the first new author submission in author_submissions that created this record
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
