@@ -24,6 +24,9 @@ const menuItems = computed(() => [
         route: "/settings",
       },
       {
+        separator: true
+      },
+      {
         label: "Log out",
         route: "#",
         class: "text-red-400",
