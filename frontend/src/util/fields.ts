@@ -4,3 +4,6 @@ export type RegisterPageFields = "username" | "email" | "password" | "passwordCo
 
 // /login
 export type LoginPageFields = "identifier" | "password";
+
+// /settings profile section
+export type ProfileSettingsFields = "displayName" | "bio";
