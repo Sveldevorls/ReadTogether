@@ -4,12 +4,6 @@
     --breakpoint-lg: 961px;
 }
 
-#app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
 button:hover {
     cursor: pointer;
 }

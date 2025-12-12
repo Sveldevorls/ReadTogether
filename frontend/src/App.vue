@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
+// Todo: Fix flashing screen on load
+// Todo: Maximal lodaing time limit?
+import { onBeforeMount, ref } from "vue";
 
 import "./App.css";
 import Footer from "./components/Footer.vue";
@@ -8,20 +10,29 @@ import SingularToast from "./components/SingularToast.vue";
 import { useUserStore } from "./util/userStore";
 
 const userStore = useUserStore();
+const isVerifying = ref<boolean>(true);
 
 onBeforeMount(async () => {
-  await userStore.verify();
+  try {
+    await userStore.verify();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isVerifying.value = false;
+  }
 });
 </script>
 
 <template>
-  <Header />
-  <main class="flex justify-center mt-4 mb-auto mx-auto w-[min(100%,80em)]">
-    <RouterView></RouterView>
-  </main>
-  <Footer />
-  <div id="overlay">
-    <SingularToast />
+  <div v-if="!isVerifying">
+    <Header />
+    <main class="flex justify-center mt-4 mb-auto mx-auto w-[min(100%,80em)] min-h-screen">
+      <RouterView></RouterView>
+    </main>
+    <Footer />
+    <div id="overlay">
+      <SingularToast />
+    </div>
   </div>
 </template>
 
