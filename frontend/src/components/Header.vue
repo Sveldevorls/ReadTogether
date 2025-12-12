@@ -1,10 +1,14 @@
 <script setup lang="ts">
-// Todo: Update log out functionality
+// Todo: If switched to access-refresh token system: update logout function
+import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
 import { Menu, Menubar } from "primevue";
 import type { MenuItem } from "primevue/menuitem";
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const toast = useSingularToast();
 const userStore = useUserStore();
 const menu = ref();
 const menuItems = computed(() => [
@@ -52,6 +56,13 @@ const toggle = (event: MouseEvent) => {
 function logout() {
   localStorage.removeItem("token");
   userStore.clearUser();
+  router.push("/");
+  toast({
+    severity: "success",
+    summary: "Successfully logged out",
+    group: "message",
+    life: 3000,
+  });
 }
 </script>
 
