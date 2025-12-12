@@ -16,7 +16,9 @@ onBeforeMount(async () => {
   try {
     const { data: response } = await api.post<SuccessResponse<VerifyResponse>>(ENDPOINTS.VERIFY);
     userStore.setUser(response.data.user);
-  } catch (error) {}
+  } catch (error) {
+    userStore.clearUser();
+  }
 });
 </script>
 
