@@ -115,7 +115,7 @@ const onSubmit = handleSubmit(
 </script>
 
 <template>
-  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100">
+  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] h-fit rounded-md bg-slate-100">
     <h1 class="text-center font-bold text-2xl">Register</h1>
     <form
       id="register"

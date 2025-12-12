@@ -104,7 +104,7 @@ const onSubmit = handleSubmit(
 </script>
 
 <template>
-  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] rounded-md bg-slate-100 @container">
+  <section class="flex flex-col gap-6 p-6 w-[min(100%,500px)] h-fit rounded-md bg-slate-100">
     <h1 class="text-center font-bold text-2xl">Log in to ReadTogether</h1>
     <form
       id="login"
