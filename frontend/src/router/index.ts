@@ -1,38 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Index from '@/pages/Index.vue'
-import Login from '@/pages/Login.vue'
-import Register from '@/pages/Register.vue'
-import UserProfile from '@/pages/UserProfile.vue'
-import Settings from '@/pages/Settings.vue'
-import { roles } from '@/util/enums'
-import { useUserStore } from '@/util/userStore'
+import Index from "@/pages/Index.vue";
+import { roles } from "@/util/enums";
+import { useUserStore } from "@/util/userStore";
+import { createRouter, createWebHistory } from "vue-router";
 
-declare module 'vue-router' {
+import authRoutes from "./authRoutes";
+import submissionsRoutes from "./submissionsRoutes";
+import usersRoutes from "./usersRoutes";
+
+declare module "vue-router" {
   interface RouteMeta {
-    requiresAuth: boolean
-    minimalRole: roles
+    requiresAuth: boolean;
+    minimalRole: roles;
+    redirectTo?: string;
   }
 }
 
 const routes = [
   { path: "/", component: Index },
-  { path: "/login", component: Login },
-  { path: "/register", component: Register },
-  { path: "/users/:username", component: UserProfile },
-  { path: "/settings", component: Settings, meta: { requiresAuth: true, minimalRole: roles.user } },
-]
+  ...usersRoutes,
+  ...authRoutes,
+  ...submissionsRoutes
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
-})
+});
 
 router.beforeEach(async (to) => {
-  const userStore = useUserStore();
-  if ((to.meta.requiresAuth)) {
+  if (to.meta.requiresAuth) {
+    const userStore = useUserStore();
     await userStore.verify();
-    if (userStore.role < to.meta.minimalRole) return "/";
+    if (userStore.role < to.meta.minimalRole) {
+      return to.meta.redirectTo || "/";
+    }
   }
-})
+});
 
-export default router
+export default router;
