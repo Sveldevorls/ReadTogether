@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexPage from '@/pages/IndexPage.vue'
-import LoginPage from '@/pages/LoginPage.vue'
-import RegisterPage from '@/pages/RegisterPage.vue'
-import UserProfilePage from '@/pages/UserProfilePage.vue'
-import SettingsPage from '@/pages/SettingsPage.vue'
+import Index from '@/pages/Index.vue'
+import Login from '@/pages/Login.vue'
+import Register from '@/pages/Register.vue'
+import UserProfile from '@/pages/UserProfile.vue'
+import Settings from '@/pages/Settings.vue'
 import { roles } from '@/util/enums'
 import { useUserStore } from '@/util/userStore'
 
@@ -15,11 +15,11 @@ declare module 'vue-router' {
 }
 
 const routes = [
-  { path: "/", component: IndexPage },
-  { path: "/login", component: LoginPage },
-  { path: "/register", component: RegisterPage },
-  { path: "/users/:username", component: UserProfilePage },
-  { path: "/settings", component: SettingsPage, meta: { requiresAuth: true, minimalRole: roles.user } },
+  { path: "/", component: Index },
+  { path: "/login", component: Login },
+  { path: "/register", component: Register },
+  { path: "/users/:username", component: UserProfile },
+  { path: "/settings", component: Settings, meta: { requiresAuth: true, minimalRole: roles.user } },
 ]
 
 const router = createRouter({
