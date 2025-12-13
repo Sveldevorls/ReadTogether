@@ -25,5 +25,7 @@ public interface UserDAO {
     Optional<User> getUserByUsername(String username);
 
     // U //
-    void updateUser(User newUserData);
+    void updateBio(String username, String newBio);
+
+    void updateDisplayName(String username, String newDisplayName);
 }

@@ -107,7 +107,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // U //
-    public void updateUser(User user) {
-        throw new UnsupportedOperationException("Unimplemented method 'updateUserByUsername'");
+    public void updateBio(String username, String newBio) {
+        String sql = "UPDATE users SET bio = ? WHERE username = ?";
+        jdbcTemplate.update(sql, newBio, username);
+    }
+
+    public void updateDisplayName(String username, String newDisplayName) {
+        String sql = "UPDATE users SET display_name = ? WHERE username = ?";
+        jdbcTemplate.update(sql, newDisplayName, username);
     }
 }

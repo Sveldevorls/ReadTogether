@@ -76,4 +76,20 @@ public class UserService {
             user.userRole().name()
         );
     }
+
+    // Todo: handle error
+    public String updateBio(String username, String newBio) {
+        userDao.updateBio(username, newBio);
+        User updatedUser = userDao.getUserByUsername(username)
+                                  .orElseThrow(() -> new ResourceNotFoundException());
+        return updatedUser.bio();
+    }
+
+    // Todo: handle error
+    public String updateDisplayName(String username, String newDisplayName) {
+        userDao.updateDisplayName(username, newDisplayName);
+        User updatedUser = userDao.getUserByUsername(username)
+                                  .orElseThrow(() -> new ResourceNotFoundException());
+        return updatedUser.displayName();
+    }
 }
