@@ -9,7 +9,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const username = route.params.username;
+const username = route.params.username as string;
 const profile = ref<UserDataResponse | null>(null);
 const isLoading = ref<boolean>(true);
 const errorStatus = ref<"error" | "notfound" | null>(null);
@@ -26,7 +26,7 @@ const roleDisplay = computed(() => {
 
 onMounted(async () => {
   try {
-    const { data: response } = await api.get<SuccessResponse<UserDataResponse>>(ENDPOINTS.USERS + "/" + username);
+    const { data: response } = await api.get<SuccessResponse<UserDataResponse>>(ENDPOINTS.USER_PROFILE(username));
     profile.value = response.data;
   } catch (e) {
     if (isAxiosError(e) && e.status == 404) {

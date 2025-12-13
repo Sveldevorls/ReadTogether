@@ -5,7 +5,7 @@ export const ENDPOINTS = {
   LOGIN: "/api/login",
   LOGOUT: "/api/logout",
   VERIFY: "/api/verify",
-  USERS: "/api/users",
+  USER_PROFILE: (username: string) => `/api/users/${username}`,
   MY_PROFILE: "/api/me",
   MY_PROFILE_UPDATE: (field: ProfileUpdateFields) => `/api/me/${field}`,
 }
