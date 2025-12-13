@@ -7,6 +7,7 @@ import "./App.css";
 import Footer from "./components/Footer.vue";
 import Header from "./components/Header.vue";
 import SingularToast from "./components/SingularToast.vue";
+import { ConfirmDialog } from "primevue";
 import { useUserStore } from "./util/userStore";
 
 const userStore = useUserStore();
@@ -32,6 +33,7 @@ onBeforeMount(async () => {
     <Footer />
     <div id="overlay">
       <SingularToast />
+      <ConfirmDialog />
     </div>
   </div>
 </template>
