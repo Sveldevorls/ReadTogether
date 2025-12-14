@@ -8,7 +8,6 @@ import { useUserStore } from "@/util/userStore";
 import { isAxiosError } from "axios";
 import { InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { object, string, ref as yupRef } from "yup";
 
@@ -31,34 +30,14 @@ const schema = object({
     .required("Please confirm your password"),
 });
 
-const fieldIsFocused = ref<Record<RegisterPageFields, boolean>>({
-  email: false,
-  password: false,
-  username: false,
-  passwordConfirm: false,
-});
-
-const fieldConfig = {
-  validateOnBlur: true,
-  validateOnModelUpdate: false,
-};
-
 const { defineField, handleSubmit, setFieldError, errors } = useForm({
   validationSchema: schema,
 });
 
-const [email, emailProps] = defineField<string>("email", fieldConfig);
-const [password, passwordProps] = defineField<string>("password", fieldConfig);
-const [username, usernameProps] = defineField<string>("username", fieldConfig);
-const [passwordConfirm, passwordConfirmProps] = defineField<string>("passwordConfirm", fieldConfig);
-
-function handleFocus(fieldName: RegisterPageFields): void {
-  fieldIsFocused.value[fieldName] = true;
-}
-
-function handleBlur(fieldName: RegisterPageFields): void {
-  fieldIsFocused.value[fieldName] = false;
-}
+const [email] = defineField<string>("email");
+const [password] = defineField<string>("password");
+const [username] = defineField<string>("username");
+const [passwordConfirm] = defineField<string>("passwordConfirm");
 
 const onSubmit = handleSubmit(
   async (values) => {
@@ -128,72 +107,72 @@ const onSubmit = handleSubmit(
         type="text"
         id="username"
         v-model="username"
-        v-bind="usernameProps"
-        @focus="handleFocus('username')"
-        @blur="handleBlur('username')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.username"
-      >
-        {{ errors.username }}
-      </Message>
+      <Transition>
+        <div v-if="errors.username">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.username }}
+          </Message>
+        </div>
+      </Transition>
       <label for="email">Email</label>
       <InputText
         :invalid="!!errors.email"
         type="text"
         id="email"
         v-model="email"
-        v-bind="emailProps"
-        @focus="handleFocus('email')"
-        @blur="handleBlur('email')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.email"
-      >
-        {{ errors.email }}
-      </Message>
+      <Transition>
+        <div v-if="errors.email">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.email }}
+          </Message>
+        </div>
+      </Transition>
       <label for="password">Password</label>
       <InputText
         :invalid="!!errors.password"
         type="password"
         id="password"
         v-model="password"
-        v-bind="passwordProps"
-        @focus="handleFocus('password')"
-        @blur="handleBlur('password')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.password"
-      >
-        {{ errors.password }}
-      </Message>
+      <Transition>
+        <div v-if="errors.password">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.password }}
+          </Message>
+        </div>
+      </Transition>
       <label for="passwordConfirm">Password confirmation</label>
       <InputText
         :invalid="!!errors.passwordConfirm"
         type="password"
         id="passwordConfirm"
         v-model="passwordConfirm"
-        v-bind="passwordConfirmProps"
-        @focus="handleFocus('passwordConfirm')"
-        @blur="handleBlur('passwordConfirm')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.passwordConfirm"
-      >
-        {{ errors.passwordConfirm }}
-      </Message>
+      <Transition>
+        <div v-if="errors.passwordConfirm">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.passwordConfirm }}
+          </Message>
+        </div>
+      </Transition>
     </form>
     <button
       form="register"
@@ -218,5 +197,15 @@ const onSubmit = handleSubmit(
 
 label:not(:first-child) {
   @apply mt-4;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
