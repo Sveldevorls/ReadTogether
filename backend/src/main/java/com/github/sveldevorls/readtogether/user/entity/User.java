@@ -2,7 +2,6 @@ package com.github.sveldevorls.readtogether.user.entity;
 
 public record User(
     Integer id,
-    String searchKey,
     String createdAt,
     String updatedAt,
     String username,
@@ -16,7 +15,6 @@ public record User(
     public static User createUser(String username, String email, String hashedPassword) {
         return new User(
             null,
-            username,
             null,
             null,
             username,
@@ -32,7 +30,6 @@ public record User(
     public static User createAdmin(String username, String email, String hashedPassword) {
         return new User(
             null,
-            username,
             null,
             null,
             username,

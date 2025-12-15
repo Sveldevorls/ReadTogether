@@ -15,7 +15,6 @@ public class UserRowMapper implements RowMapper<User> {
     public User mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
         User returnUser = new User(
                 rs.getInt("id"),
-                rs.getString("search_key"),
                 rs.getTimestamp("created_at").toString(), // fix
                 rs.getTimestamp("updated_at").toString(), // fix
                 rs.getString("username"),
