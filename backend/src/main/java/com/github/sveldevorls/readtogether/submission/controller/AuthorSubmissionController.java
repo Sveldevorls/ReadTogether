@@ -19,8 +19,9 @@ public class AuthorSubmissionController {
 
     // Todo: expand
     @PostMapping
-    @PreAuthorize("hasRole('USER')")  
-    public ResponseEntity<SuccessResponseDTO> createNewAuthorSubmission(@Valid @RequestBody NewAuthorSubmissionDTO dto) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<SuccessResponseDTO> createNewAuthorSubmission(
+            @Valid @RequestBody NewAuthorSubmissionDTO dto) {
         System.out.println(dto);
         return null;
     }
