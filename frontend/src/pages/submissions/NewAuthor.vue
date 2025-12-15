@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { Button, DatePicker, InputText, Message, Textarea } from "primevue";
+import api from "@/util/api";
+import { ENDPOINTS } from "@/util/endpoints";
+import { useSingularToast } from "@/util/useSingularToast";
+import { Button, DatePicker, Divider, Fieldset, InputText, Message, Textarea } from "primevue";
 import { useForm } from "vee-validate";
 import { date, object, string } from "yup";
 
@@ -11,6 +14,8 @@ type NewAuthorFormSchema = {
   biography: string | null;
   submitterComment: string | null;
 };
+
+const toast = useSingularToast();
 
 const schema = object({
   authorName: string().required("Author name is required").max(255, "Author name must be at most 255 characters long"),
@@ -30,7 +35,7 @@ const schema = object({
     }),
   authorImageUrl: string().url("Link to the author's image must be a valid URL"),
   biography: string().max(500, "Author biography must be at most 500 characters long"),
-  submitterComment: string().max(500, "Comment must be at most 500 characters long"),
+  submitterComment: string().max(500, "Comments must be at most 500 characters long"),
 });
 
 const { errorBag, defineField, handleSubmit } = useForm<NewAuthorFormSchema>({ validationSchema: schema });
@@ -41,28 +46,48 @@ const [authorImageUrl] = defineField("authorImageUrl");
 const [biography] = defineField("biography");
 const [submitterComment] = defineField("submitterComment");
 
-const submit = handleSubmit((values) => {
-  function convertDateToUtc(date: Date): Date {
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDay()));
-  }
+function convertDateToString(date: Date | null): string | null {
+  if (!date) return null;
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+}
 
-  if (values.dateOfBirth) {
-    values.dateOfBirth = convertDateToUtc(values.dateOfBirth);
-  }
-  if (values.dateOfDeath) {
-    values.dateOfDeath = convertDateToUtc(values.dateOfDeath);
-  }
-
-  console.log(values);
-  console.log(JSON.stringify(values));
-});
+const submit = handleSubmit(
+  async (values) => {
+    // Todo: expand
+    const payload = {
+      authorName: values.authorName,
+      dateOfBirth: convertDateToString(values.dateOfBirth),
+      dateOfDeath: convertDateToString(values.dateOfDeath),
+      authorImageUrl: values.authorImageUrl,
+      biography: values.biography,
+      submitterComment: values.submitterComment,
+    }
+    console.log(payload);
+    console.log(JSON.stringify(payload));
+    api.post(ENDPOINTS.AUTHOR_SUBMISSIONS, payload);
+  },
+  () => {
+    toast({
+      severity: "error",
+      summary: "Please fix the errors in the form before submitting.",
+      group: "message",
+      life: 3000,
+    });
+  },
+);
 </script>
 
 <template>
   <section class="w-[min(100%,80em)] px-4">
-    <h1 class="text-center font-bold text-2xl">Submit new author</h1>
-    <form class="flex flex-col items-start p-2 max-w-[50em]">
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+    <h1 class="text-2xl font-bold">Add a new author</h1>
+    <Fieldset legend="Before you submit...">
+      <p>
+        Your submissions will be reviewed by moderators, but the author will not be searchable on the main site yet.<br />
+        All submisison history are public, and will be kept no matter the final review status.
+      </p>
+    </Fieldset>
+    <form class="flex flex-col items-start p-2 mt-6 max-w-[50em]">
+      <div class="flex flex-col gap-1 w-full">
         <label for="authorName">
           Name
           <span class="text-xs text-red-500">Required</span>
@@ -87,13 +112,14 @@ const submit = handleSubmit((values) => {
         </Transition>
       </div>
 
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+      <div class="flex flex-col gap-1 w-full">
         <label for="dateOfBirth">
           Date of birth
           <span class="text-xs text-gray-500">(Optional)</span>
         </label>
         <DatePicker
           id="dateOfBirth"
+          class="self-start"
           v-model="dateOfBirth"
           dateFormat="MM dd, yy"
           :maxDate="new Date()"
@@ -113,13 +139,14 @@ const submit = handleSubmit((values) => {
         </Transition>
       </div>
 
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+      <div class="flex flex-col gap-1 w-full">
         <label for="dateOfDeath">
           Date of death
           <span class="text-xs text-gray-500">(Optional)</span>
         </label>
         <DatePicker
           id="dateOfDeath"
+          class="self-start"
           v-model="dateOfDeath"
           dateFormat="MM dd, yy"
           :maxDate="new Date()"
@@ -139,7 +166,7 @@ const submit = handleSubmit((values) => {
         </Transition>
       </div>
 
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+      <div class="flex flex-col gap-1 w-full">
         <label for="authorImageUrl">
           Author image link
           <span class="text-xs text-gray-500">(Optional)</span>
@@ -163,7 +190,7 @@ const submit = handleSubmit((values) => {
         </Transition>
       </div>
 
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+      <div class="flex flex-col gap-1 w-full">
         <label for="biography">
           Author biography
           <span class="text-xs text-gray-500">(Optional)</span>
@@ -188,7 +215,7 @@ const submit = handleSubmit((values) => {
         </Transition>
       </div>
 
-      <div class="flex flex-col md:grid md:grid-cols-[1fr_3fr] w-full">
+      <div class="flex flex-col gap-1 w-full">
         <label for="submitterComment">
           Additional comments
           <span class="text-xs text-gray-500">(Optional)</span>
@@ -214,6 +241,7 @@ const submit = handleSubmit((values) => {
       </div>
 
       <Button
+        class="mt-6"
         label="Submit"
         severity="info"
         @click="submit"
@@ -224,6 +252,10 @@ const submit = handleSubmit((values) => {
 
 <style scoped>
 @reference "tailwindcss";
+
+form > div + div {
+  @apply mt-6;
+}
 
 .v-enter-active,
 .v-leave-active {
