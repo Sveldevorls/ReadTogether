@@ -7,3 +7,12 @@ export type LoginPageFields = "identifier" | "password";
 
 // /settings profile section
 export type ProfileUpdateFields = "displayName" | "bio";
+
+// Author data fields
+export type AuthorDataFields =
+  | "authorName"
+  | "dateOfBirth"
+  | "dateOfDeath"
+  | "authorImageUrl"
+  | "biography"
+  | "submitterComment";

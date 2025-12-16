@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
+import type { AuthorDataFields } from "@/util/fields";
+import type { ErrorResponse, NewAuthorSubmissionResponse, SuccessResponse } from "@/util/responses";
 import { useSingularToast } from "@/util/useSingularToast";
-import { Button, DatePicker, Divider, Fieldset, InputText, Message, Textarea } from "primevue";
+import { isAxiosError } from "axios";
+import { Button, DatePicker, Fieldset, InputText, Message, Textarea } from "primevue";
 import { useForm } from "vee-validate";
+import { useRouter } from "vue-router";
 import { date, object, string } from "yup";
 
 type NewAuthorFormSchema = {
@@ -16,6 +20,7 @@ type NewAuthorFormSchema = {
 };
 
 const toast = useSingularToast();
+const router = useRouter();
 
 const schema = object({
   authorName: string().required("Author name is required").max(255, "Author name must be at most 255 characters long"),
@@ -38,7 +43,9 @@ const schema = object({
   submitterComment: string().max(500, "Comments must be at most 500 characters long"),
 });
 
-const { errorBag, defineField, handleSubmit } = useForm<NewAuthorFormSchema>({ validationSchema: schema });
+const { errorBag, defineField, handleSubmit, setFieldError } = useForm<NewAuthorFormSchema>({
+  validationSchema: schema,
+});
 const [authorName] = defineField("authorName");
 const [dateOfBirth] = defineField("dateOfBirth");
 const [dateOfDeath] = defineField("dateOfDeath");
@@ -53,7 +60,6 @@ function convertDateToString(date: Date | null): string | null {
 
 const submit = handleSubmit(
   async (values) => {
-    // Todo: expand
     const payload = {
       authorData: {
         authorName: values.authorName,
@@ -64,9 +70,48 @@ const submit = handleSubmit(
       },
       submitterComment: values.submitterComment,
     };
-    console.log(payload);
-    console.log(JSON.stringify(payload));
-    api.post(ENDPOINTS.AUTHOR_SUBMISSIONS, payload);
+    try {
+      const { data: response } = await api.post<SuccessResponse<NewAuthorSubmissionResponse>>(
+        ENDPOINTS.AUTHOR_SUBMISSIONS,
+        payload,
+      );
+      toast({
+        severity: "success",
+        summary: "Submission complete, your submission will now be reviewed by a moderator.",
+        group: "message",
+        life: 3000,
+      });
+      router.push(`/submissions/authors/${response.data.id}`);
+    } catch (error) {
+      if (isAxiosError(error) && error.status === 400) {
+        const errorData: ErrorResponse<AuthorDataFields> = error.response?.data;
+        errorData.errors.forEach((error) => {
+          if (error.field != "general") {
+            setFieldError(error.field, error.message);
+          }
+        });
+        toast({
+          severity: "error",
+          summary: "Please fix the errors in the form before submitting.",
+          group: "message",
+          life: 3000,
+        });
+      } else if (isAxiosError(error)) {
+        toast({
+          severity: "error",
+          summary: `Unexpected error: ${error.status} ${error.code}\n Please try again later.`,
+          group: "message",
+          life: 3000,
+        });
+      } else {
+        toast({
+          severity: "error",
+          summary: "An unknown error had occurred. Please try again later.",
+          group: "message",
+          life: 3000,
+        });
+      }
+    }
   },
   () => {
     toast({

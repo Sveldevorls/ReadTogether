@@ -23,7 +23,14 @@ public class GlobalExceptionHandler {
         List<Map<String, String>> errors = new ArrayList<>();
         ex.getBindingResult()
           .getFieldErrors()
-          .forEach(error -> errors.add(ErrorMapper.map(error.getField(), error.getDefaultMessage())));
+          .forEach(error -> {
+            String fieldName = error.getField();
+            int lastDotIndex = fieldName.lastIndexOf('.');
+            if (lastDotIndex != -1) {
+                fieldName = fieldName.substring(lastDotIndex + 1);
+            }
+            errors.add(ErrorMapper.map(fieldName, error.getDefaultMessage()));
+          });
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }

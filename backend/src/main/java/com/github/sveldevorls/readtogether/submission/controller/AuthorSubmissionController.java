@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionDTO;
-import com.github.sveldevorls.readtogether.submission.service.SubmissionService;
+import com.github.sveldevorls.readtogether.submission.service.AuthorSubmissionService;
 
 import jakarta.validation.Valid;
 
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path = "/api/submissions/authors", produces = "application/json")
 public class AuthorSubmissionController {
 
-    private final SubmissionService submissionService;
+    private final AuthorSubmissionService submissionService;
 
-    public AuthorSubmissionController(SubmissionService submissionService) {
+    public AuthorSubmissionController(AuthorSubmissionService submissionService) {
         this.submissionService = submissionService;
     }
 

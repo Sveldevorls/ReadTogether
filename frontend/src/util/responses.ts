@@ -53,3 +53,8 @@ export type UserDataResponse = {
 
 // PATCH /api/me/{field}
 export type ProfileUpdateResponse<fieldName extends ProfileUpdateFields> = Record<fieldName, string>;
+
+// POST /api/submissions/authors
+export type NewAuthorSubmissionResponse = {
+  id: number,
+}

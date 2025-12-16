@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS books;
 CREATE TABLE books (
     -- Meta
     id INT NOT NULL AUTO_INCREMENT,
-    slug VARCHAR(255) UNIQUE NOT NULL, -- URL, [id]-[title], id is the main identifier
+    slug VARCHAR(255) NOT NULL, -- URL, [id]-[title], id is the main identifier
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     is_pending BOOLEAN NOT NULL DEFAULT true,

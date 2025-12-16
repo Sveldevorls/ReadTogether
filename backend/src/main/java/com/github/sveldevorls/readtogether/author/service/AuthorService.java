@@ -3,6 +3,9 @@ package com.github.sveldevorls.readtogether.author.service;
 import org.springframework.stereotype.Service;
 
 import com.github.sveldevorls.readtogether.author.dao.AuthorDAO;
+import com.github.sveldevorls.readtogether.author.entity.Author;
+import com.github.sveldevorls.readtogether.author.entity.AuthorData;
+import com.github.sveldevorls.readtogether.author.entity.AuthorMapper;
 
 @Service
 public class AuthorService {
@@ -13,9 +16,10 @@ public class AuthorService {
         this.authorDao = authorDao;
     }
 
-    // Todo: implement method
-    public int createAuthor() {
+    public int createAuthor(AuthorData authorData) {
+        Author author = AuthorMapper.toEntity(authorData);
+        int createdId = authorDao.createAuthor(author);
 
-        return 1;
+        return createdId;
     }
 }
