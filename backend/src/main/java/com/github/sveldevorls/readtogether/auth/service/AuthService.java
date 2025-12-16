@@ -30,7 +30,7 @@ public class AuthService {
 
     public RegisterResponseDTO register(RegisterRequestDTO dto) {
         User createdUser = userService.createUser(dto);
-        String token = jwtUtil.generateToken(createdUser.username(), createdUser.userRole().name());
+        String token = jwtUtil.generateToken(createdUser.getUsername(), createdUser.getUserRole().name());
         return new RegisterResponseDTO(token, UserDataDTO.fromEntity(createdUser));
     }
 
@@ -42,7 +42,7 @@ public class AuthService {
         }
 
         User user = userService.getUserByIdentifier(dto.identifier());
-        String token = jwtUtil.generateToken(user.username(), user.userRole().name());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getUserRole().name());
         return new LoginResponseDTO(token, UserDataDTO.fromEntity(user));
     }   
 }

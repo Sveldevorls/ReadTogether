@@ -2,7 +2,6 @@ package com.github.sveldevorls.readtogether.user.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorException;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 import java.sql.PreparedStatement;
@@ -10,6 +9,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "INSERT INTO users (username, email, password_hash, user_role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(
             sql, 
-            user.username(), user.email(), user.passwordHash(), user.userRole().name()
+            user.getUsername(), user.getEmail(), user.getPasswordHash(), user.getUserRole().name()
         );
     }
 
@@ -39,16 +39,16 @@ public class UserDAOImpl implements UserDAO {
         jdbcTemplate.update(
             connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, user.username());
-                ps.setString(2, user.email());
-                ps.setString(3, user.passwordHash());
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getPasswordHash());
                 return ps;
             },
             keyHolder
         );
         Number key = keyHolder.getKey();
         if (key == null) {
-            throw new InternalServerErrorException();
+            throw new DataRetrievalFailureException("Failed to create user");
         }
         int generatedId = key.intValue();
         return getUserById(generatedId);

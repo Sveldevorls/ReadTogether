@@ -68,12 +68,12 @@ public class UserService {
         User user = userDao.getUserByUsername(username)
                            .orElseThrow(() -> new ResourceNotFoundException());
         return new UserDataDTO(
-            user.username(), 
-            user.displayName(), 
-            user.avatarUrl(), 
-            user.bio(), 
-            user.createdAt(), 
-            user.userRole().name()
+            user.getUsername(), 
+            user.getDisplayName(), 
+            user.getAvatarUrl(), 
+            user.getBio(), 
+            user.getCreatedAt(), 
+            user.getUserRole().name()
         );
     }
 
@@ -82,7 +82,7 @@ public class UserService {
         userDao.updateBio(username, newBio);
         User updatedUser = userDao.getUserByUsername(username)
                                   .orElseThrow(() -> new ResourceNotFoundException());
-        return updatedUser.bio();
+        return updatedUser.getBio();
     }
 
     // Todo: handle error
@@ -90,6 +90,6 @@ public class UserService {
         userDao.updateDisplayName(username, newDisplayName);
         User updatedUser = userDao.getUserByUsername(username)
                                   .orElseThrow(() -> new ResourceNotFoundException());
-        return updatedUser.displayName();
+        return updatedUser.getDisplayName();
     }
 }

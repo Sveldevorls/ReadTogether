@@ -13,17 +13,17 @@ public class UserRowMapper implements RowMapper<User> {
 
     @Override
     public User mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
-        User returnUser = new User(
-                rs.getInt("id"),
-                rs.getTimestamp("created_at").toString(), // fix
-                rs.getTimestamp("updated_at").toString(), // fix
-                rs.getString("username"),
-                rs.getString("email"),
-                rs.getString("display_name"),
-                rs.getString("password_hash"),
-                rs.getString("avatar_url"),
-                rs.getString("bio"),
-                Role.valueOf(rs.getString("user_role")));
-        return returnUser;
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setCreatedAt(rs.getTimestamp("created_at").toInstant());
+        user.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
+        user.setUsername(rs.getString("username"));
+        user.setEmail(rs.getString("email"));
+        user.setDisplayName(rs.getString("display_name"));
+        user.setPasswordHash(rs.getString("password_hash"));
+        user.setAvatarUrl(rs.getString("avatar_url"));
+        user.setBio(rs.getString("bio"));
+        user.setUserRole(Role.valueOf(rs.getString("user_role")));
+        return user;
     }
 }
