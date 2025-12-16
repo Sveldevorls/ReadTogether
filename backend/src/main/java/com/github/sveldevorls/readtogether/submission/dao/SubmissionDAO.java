@@ -5,5 +5,6 @@ import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 public interface SubmissionDAO {
 
     // C
-    void createAuthorSubmission(AuthorSubmission submission);
+    // Return: id of the created submission
+    int createAuthorSubmission(AuthorSubmission submission);
 }

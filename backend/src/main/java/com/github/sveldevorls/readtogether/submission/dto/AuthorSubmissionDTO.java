@@ -7,8 +7,9 @@ import com.github.sveldevorls.readtogether.submission.validation.ValidDobAndDod;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+// Todo: verify dob-dod non-future?
 @ValidDobAndDod
-public record NewAuthorSubmissionDTO(
+public record AuthorSubmissionDTO(
 
     @NotBlank(message = "Author name is required")
     @Size(max = 255, message= "Author name must be at most 255 characters long")
@@ -19,7 +20,7 @@ public record NewAuthorSubmissionDTO(
     String dateOfDeath,
 
     @URL(message = "Link to the author's image must be a valid URL")
-    String authorImageLink,
+    String authorImageUrl,
 
     @Size(max = 500, message= "Author biography must be at most 500 characters long")
     String biography,

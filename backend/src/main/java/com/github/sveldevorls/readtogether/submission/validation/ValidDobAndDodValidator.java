@@ -3,17 +3,17 @@ package com.github.sveldevorls.readtogether.submission.validation;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionDTO;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionDTO;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ValidDobAndDodValidator implements ConstraintValidator<ValidDobAndDod, NewAuthorSubmissionDTO> {
+public class ValidDobAndDodValidator implements ConstraintValidator<ValidDobAndDod, AuthorSubmissionDTO> {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
-    public boolean isValid(NewAuthorSubmissionDTO dto, ConstraintValidatorContext context) {
+    public boolean isValid(AuthorSubmissionDTO dto, ConstraintValidatorContext context) {
         if (dto.dateOfBirth() == null || dto.dateOfDeath() == null) return true; 
 
         boolean isValid = true;

@@ -1,7 +1,7 @@
 package com.github.sveldevorls.readtogether.submission.entity;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class AuthorSubmission {
 
@@ -19,8 +19,8 @@ public class AuthorSubmission {
     private ReviewStatus reviewStatus;
 
     private String authorName;
-    private Date dateOfBirth;
-    private Date dateOfDeath;
+    private LocalDate dateOfBirth;
+    private LocalDate dateOfDeath;
     private String authorImageUrl;
     private String biography;
 
@@ -120,19 +120,19 @@ public class AuthorSubmission {
         this.authorName = authorName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getDateOfDeath() {
+    public LocalDate getDateOfDeath() {
         return dateOfDeath;
     }
 
-    public void setDateOfDeath(Date dateOfDeath) {
+    public void setDateOfDeath(LocalDate dateOfDeath) {
         this.dateOfDeath = dateOfDeath;
     }
 

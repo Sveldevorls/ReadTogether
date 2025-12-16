@@ -1,5 +1,6 @@
 package com.github.sveldevorls.readtogether.common.exception;
 
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleInternalServerErrorException(InternalServerErrorException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
+
+        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataRetrievalFailureException.class)
+    public ResponseEntity<ErrorResponseDTO> handleDataRetrievalFailureException(DataRetrievalFailureException ex) {
+        List<Map<String, String>> errors = new ArrayList<>();
+        errors.add(ErrorMapper.map("general", ex.getMessage()));
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
     }
