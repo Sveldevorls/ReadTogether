@@ -47,8 +47,8 @@ public class JwtUtil {
                    .getPayload();
     }
 
-    public String getIdFromToken(String token) {
-        return validateToken(token).getSubject();
+    public int getIdFromToken(String token) {
+        return Integer.parseInt(validateToken(token).getSubject());
     }
 
     public String getUsernameFromToken(String token) {
