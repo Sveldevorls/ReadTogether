@@ -55,13 +55,15 @@ const submit = handleSubmit(
   async (values) => {
     // Todo: expand
     const payload = {
-      authorName: values.authorName,
-      dateOfBirth: convertDateToString(values.dateOfBirth),
-      dateOfDeath: convertDateToString(values.dateOfDeath),
-      authorImageUrl: values.authorImageUrl,
-      biography: values.biography,
+      authorData: {
+        authorName: values.authorName,
+        dateOfBirth: convertDateToString(values.dateOfBirth),
+        dateOfDeath: convertDateToString(values.dateOfDeath),
+        authorImageUrl: values.authorImageUrl,
+        biography: values.biography,
+      },
       submitterComment: values.submitterComment,
-    }
+    };
     console.log(payload);
     console.log(JSON.stringify(payload));
     api.post(ENDPOINTS.AUTHOR_SUBMISSIONS, payload);
