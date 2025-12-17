@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,18 +13,19 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 
 @Repository
-public class AuthorSubmissionDAOImpl implements AuthorSubmissionDAO {
+public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
 
     public final JdbcTemplate jdbcTemplate;
 
-    public AuthorSubmissionDAOImpl(JdbcTemplate jdbcTemplate) {
+    public AuthorSubmissionDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
+    // C
     public int createAuthorSubmission(AuthorSubmission submission) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = """
@@ -32,20 +35,19 @@ public class AuthorSubmissionDAOImpl implements AuthorSubmissionDAO {
                     (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         jdbcTemplate.update(
-            connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, submission.getAuthorId());
-                ps.setInt(2, submission.getSubmitterId());
-                ps.setString(3, submission.getSubmitterComment());
-                ps.setString(4, submission.getAuthorData().getAuthorName());
-                ps.setDate(5, parseNullableDate(submission.getAuthorData().getDateOfBirth()));
-                ps.setDate(6, parseNullableDate(submission.getAuthorData().getDateOfDeath()));
-                ps.setString(7, submission.getAuthorData().getAuthorImageUrl());
-                ps.setString(8, submission.getAuthorData().getBiography());
-                return ps;
-            },
-            keyHolder
-        );
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, submission.getAuthorId());
+                    ps.setInt(2, submission.getSubmitterId());
+                    ps.setString(3, submission.getSubmitterComment());
+                    ps.setString(4, submission.getAuthorData().getAuthorName());
+                    ps.setDate(5, parseNullableDate(submission.getAuthorData().getDateOfBirth()));
+                    ps.setDate(6, parseNullableDate(submission.getAuthorData().getDateOfDeath()));
+                    ps.setString(7, submission.getAuthorData().getAuthorImageUrl());
+                    ps.setString(8, submission.getAuthorData().getBiography());
+                    return ps;
+                },
+                keyHolder);
 
         Number key = keyHolder.getKey();
         if (key == null) {
@@ -54,6 +56,24 @@ public class AuthorSubmissionDAOImpl implements AuthorSubmissionDAO {
         int generatedId = key.intValue();
 
         return generatedId;
+    }
+
+    // R
+    public Optional<AuthorSubmissionResponse> getSubmissionById(int id) {
+        String sql = """
+            SELECT a.*, s.username AS "submitter_username", r.username AS "reviewer_username"
+            FROM author_submissions a
+            JOIN users s ON a.submitter_id = s.id
+            LEFT JOIN users r ON a.reviewer_id = r.id
+            WHERE a.id = ?;
+        """;
+
+        List<AuthorSubmissionResponse> result = jdbcTemplate.query(
+                sql,
+                new AuthorSubmissionResponseRowMapper(),
+                id);
+        
+        return result.stream().findFirst();
     }
 
     public Date parseNullableDate(LocalDate date) {

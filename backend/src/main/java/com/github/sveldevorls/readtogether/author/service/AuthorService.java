@@ -16,7 +16,7 @@ public class AuthorService {
         this.authorDao = authorDao;
     }
 
-    public int createAuthor(AuthorData authorData) {
+    public int fromData(AuthorData authorData) {
         Author author = AuthorMapper.toEntity(authorData);
         int createdId = authorDao.createAuthor(author);
 

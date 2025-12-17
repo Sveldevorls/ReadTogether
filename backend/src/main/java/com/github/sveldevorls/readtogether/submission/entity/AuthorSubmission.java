@@ -6,19 +6,22 @@ import com.github.sveldevorls.readtogether.author.entity.AuthorData;
 
 public class AuthorSubmission {
 
+    // Meta
     private int id;
     private Instant createdAt;
     private Instant updatedAt;
 
-    private int previousSubmissionId;
+    // Submission data
+    private Integer previousSubmissionId;
     private int authorId;
     private int submitterId;
     private String submitterComment;
-    private int reviewerId;
+    private Integer reviewerId;
     private String reviewerComment;
     private Instant reviewedAt;
     private ReviewStatus reviewStatus;
 
+    // Author data
     private AuthorData authorData;
 
     public int getId() {
@@ -45,11 +48,11 @@ public class AuthorSubmission {
         this.updatedAt = updatedAt;
     }
 
-    public int getPreviousSubmissionId() {
+    public Integer getPreviousSubmissionId() {
         return previousSubmissionId;
     }
 
-    public void setPreviousSubmissionId(int previousSubmissionId) {
+    public void setPreviousSubmissionId(Integer previousSubmissionId) {
         this.previousSubmissionId = previousSubmissionId;
     }
 
@@ -77,11 +80,11 @@ public class AuthorSubmission {
         this.submitterComment = submitterComment;
     }
 
-    public int getReviewerId() {
+    public Integer getReviewerId() {
         return reviewerId;
     }
 
-    public void setReviewerId(int reviewerId) {
+    public void setReviewerId(Integer reviewerId) {
         this.reviewerId = reviewerId;
     }
 

@@ -9,7 +9,7 @@ CREATE TABLE author_submissions (
 
     -- Submission data
     previous_submission_id INT, -- ID of previous approved submisison for comparison, NULL for new submissions
-    author_id INT, -- ID of original author in authors table
+    author_id INT NOT NULL, -- ID of original author in authors table
     submitter_id INT NOT NULL,
     submitter_comment TEXT,
     reviewer_id INT,

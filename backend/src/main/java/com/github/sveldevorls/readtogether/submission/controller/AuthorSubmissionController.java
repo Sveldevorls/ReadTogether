@@ -5,17 +5,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
-import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionDTO;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionRequest;
 import com.github.sveldevorls.readtogether.submission.service.AuthorSubmissionService;
 
 import jakarta.validation.Valid;
 
 import java.util.Map;
 
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,21 +27,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path = "/api/submissions/authors", produces = "application/json")
 public class AuthorSubmissionController {
 
-    private final AuthorSubmissionService submissionService;
+    private final AuthorSubmissionService authorSubmissionService;
 
-    public AuthorSubmissionController(AuthorSubmissionService submissionService) {
-        this.submissionService = submissionService;
+    public AuthorSubmissionController(AuthorSubmissionService authorSubmissionService) {
+        this.authorSubmissionService = authorSubmissionService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SuccessResponseDTO> getAuthorSubmissionDetails(@PathVariable int id) {
+        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionById(id);
+        return new ResponseEntity<>(
+                new SuccessResponseDTO(HttpStatus.OK, result),
+                HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<SuccessResponseDTO> createNewAuthorSubmission(
-            @Valid @RequestBody AuthorSubmissionDTO dto,
+            @Valid @RequestBody NewAuthorSubmissionRequest dto,
             @AuthenticationPrincipal JwtUserPrincipal principal) {
 
         int submitterId = principal.getId();
-        int createdId = submissionService.createNewAuthorSubmission(submitterId, dto);
-
+        int createdId = authorSubmissionService.createNewAuthorSubmission(submitterId, dto);
         return new ResponseEntity<>(
                 new SuccessResponseDTO(HttpStatus.CREATED, Map.of("id", createdId)),
                 HttpStatus.CREATED);

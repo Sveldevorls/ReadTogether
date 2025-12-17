@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
 import com.github.sveldevorls.readtogether.util.ErrorMapper;
@@ -57,5 +58,13 @@ public class GlobalExceptionHandler {
         errors.add(ErrorMapper.map("general", ex.getMessage()));
 
         return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        List<Map<String, String>> errors = new ArrayList<>();
+        errors.add(ErrorMapper.map("general", ex.getMessage()));
+
+        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 }

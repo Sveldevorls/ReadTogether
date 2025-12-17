@@ -5,7 +5,7 @@ import com.github.sveldevorls.readtogether.author.entity.AuthorData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 
-public record AuthorSubmissionDTO(
+public record NewAuthorSubmissionRequest(
 
     @Valid
     AuthorData authorData,

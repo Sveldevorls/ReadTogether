@@ -1,10 +1,10 @@
 package com.github.sveldevorls.readtogether.submission.entity;
 
-import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionDTO;
+import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionRequest;
 
 public class AuthorSubmissionMapper {
 
-    public static AuthorSubmission toEntity(int submitterId, AuthorSubmissionDTO dto) {
+    public static AuthorSubmission fromRequest(int submitterId, NewAuthorSubmissionRequest dto) {
         AuthorSubmission submission = new AuthorSubmission();
         submission.setSubmitterId(submitterId);
         submission.setAuthorData(dto.authorData());

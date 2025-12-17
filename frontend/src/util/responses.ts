@@ -58,3 +58,31 @@ export type ProfileUpdateResponse<fieldName extends ProfileUpdateFields> = Recor
 export type NewAuthorSubmissionResponse = {
   id: number,
 }
+
+// Author core data
+type AuthorData = {
+  authorName: string,
+  dateOfBirth: string | null,
+  dateOfDeath: string | null,
+  authorImageUrl: string | null,
+  biography: string | null,
+}
+
+// GET /api/submissions/authors/{id}
+export type AuthorSubmisisonResponse = {
+  // Meta
+  id: number,
+  createdAt: string,
+  updatedAt: string,
+  // Submission data
+  previousSubmissionId: number | null,
+  authorId: number,
+  submitterUsername: string,
+  submitterComment: string | null,
+  reviewerUsername: string | null,
+  reviewerComment: string | null,
+  reviewedAt: string | null,
+  reviewStatus: "approved" | "pending" | "rejected",
+  // Author data
+  authorData: AuthorData,
+}
