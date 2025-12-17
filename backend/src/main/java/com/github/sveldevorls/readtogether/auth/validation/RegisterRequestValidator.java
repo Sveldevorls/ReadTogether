@@ -1,14 +1,14 @@
 package com.github.sveldevorls.readtogether.auth.validation;
 
-import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequest;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class RegisterRequestValidator implements ConstraintValidator<PasswordsMatch, RegisterRequestDTO> {
+public class RegisterRequestValidator implements ConstraintValidator<PasswordsMatch, RegisterRequest> {
 
     @Override
-    public boolean isValid(RegisterRequestDTO request, ConstraintValidatorContext context) {
+    public boolean isValid(RegisterRequest request, ConstraintValidatorContext context) {
         if (request == null) {
             return true;
         }

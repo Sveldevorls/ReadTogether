@@ -3,7 +3,7 @@ package com.github.sveldevorls.readtogether.user.dto;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record ProfileUpdateDTO(
+public record ProfileUpdateRequest(
     @Size(max = 30, message = "Display name must be at most 30 characters long", groups = DisplayNameUpdate.class)
     @Pattern(regexp = "^[a-zA-Z0-9_ ]*$", message = "Display name can only contain letters, numbers, spaces, and underscores" , groups = DisplayNameUpdate.class)
     String displayName,

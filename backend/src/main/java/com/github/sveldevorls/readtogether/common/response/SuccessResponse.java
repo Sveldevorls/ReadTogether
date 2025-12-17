@@ -4,24 +4,24 @@ import java.util.Collections;
 
 import org.springframework.http.HttpStatus;
 
-public record SuccessResponseDTO(int statusCode, String message, Object data) {
+public record SuccessResponse(int statusCode, String message, Object data) {
 
-    public SuccessResponseDTO {
+    public SuccessResponse {
         data = data != null ? data : Collections.emptyList();
     }
 
     // Status only -> {statusCode: xxx, message: statusReasonPhrase, data: []}
-    public SuccessResponseDTO(HttpStatus status) {
+    public SuccessResponse(HttpStatus status) {
         this(status, Collections.emptyList());
     }
 
     // Status and data -> {statusCode: xxx, message: statusReasonPhrase, data: data}
-    public SuccessResponseDTO(HttpStatus status, Object data) {
+    public SuccessResponse(HttpStatus status, Object data) {
         this(status, status.getReasonPhrase(), data);
     }
 
     // All -> {statusCode: xxx, message: customMessage, data: data}
-    public SuccessResponseDTO(HttpStatus status, String customMessage, Object data) {
+    public SuccessResponse(HttpStatus status, String customMessage, Object data) {
         this(status.value(), customMessage, data);
     }
 }

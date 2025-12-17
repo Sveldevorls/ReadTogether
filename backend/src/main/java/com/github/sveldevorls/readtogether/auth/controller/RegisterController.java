@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
-import com.github.sveldevorls.readtogether.auth.dto.RegisterResponseDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequest;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterResponse;
 import com.github.sveldevorls.readtogether.auth.service.AuthService;
-import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
-import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
+import com.github.sveldevorls.readtogether.common.response.ErrorResponse;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 
 import jakarta.validation.Valid;
 
@@ -27,10 +27,10 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO request) {
-        RegisterResponseDTO response = authService.register(request);
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+        RegisterResponse response = authService.register(request);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(
+                new SuccessResponse(
                     HttpStatus.CREATED, 
                     "Registration completed", 
                     response),
@@ -38,9 +38,9 @@ public class RegisterController {
     }
 
     @GetMapping
-    public ResponseEntity<ErrorResponseDTO> doGet() {
+    public ResponseEntity<ErrorResponse> doGet() {
         return new ResponseEntity<>(
-                new ErrorResponseDTO(HttpStatus.METHOD_NOT_ALLOWED),
+                new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED),
                 HttpStatus.METHOD_NOT_ALLOWED);
     }
 }

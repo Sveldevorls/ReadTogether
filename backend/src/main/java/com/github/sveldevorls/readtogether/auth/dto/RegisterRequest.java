@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @PasswordsMatch
-public record RegisterRequestDTO(
+public record RegisterRequest(
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, message = "Username must be at least 3 characters long")

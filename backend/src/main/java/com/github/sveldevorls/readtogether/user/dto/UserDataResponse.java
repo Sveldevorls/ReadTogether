@@ -5,7 +5,7 @@ import java.time.Instant;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 // Basic user data, different from UserProfile where other fields for books and authors will exist
-public record UserDataDTO(
+public record UserDataResponse(
     String username,
     String displayName,
     String avatarUrl,
@@ -14,8 +14,8 @@ public record UserDataDTO(
     String userRole
 ) { 
 
-    public static UserDataDTO fromEntity(User user) {
-        return new UserDataDTO(
+    public static UserDataResponse fromEntity(User user) {
+        return new UserDataResponse(
             user.getUsername(), 
             user.getDisplayName(), 
             user.getAvatarUrl(), 

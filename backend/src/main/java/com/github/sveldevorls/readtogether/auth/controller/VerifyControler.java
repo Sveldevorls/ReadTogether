@@ -3,10 +3,10 @@ package com.github.sveldevorls.readtogether.auth.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.auth.dto.VerifyResponseDTO;
-import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
+import com.github.sveldevorls.readtogether.auth.dto.VerifyResponse;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
-import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserDataResponse;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 import org.springframework.http.HttpStatus;
@@ -25,14 +25,14 @@ public class VerifyControler {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDTO> verify(@AuthenticationPrincipal JwtUserPrincipal principal) {
+    public ResponseEntity<SuccessResponse> verify(@AuthenticationPrincipal JwtUserPrincipal principal) {
         String username = principal.getUsername();
-        UserDataDTO response = userService.getUserProfileData(username);
+        UserDataResponse response = userService.getUserProfileData(username);
         
         return new ResponseEntity<>(
-                new SuccessResponseDTO(
+                new SuccessResponse(
                     HttpStatus.OK,
-                    new VerifyResponseDTO(response)),
+                    new VerifyResponse(response)),
                 HttpStatus.OK);
     }
 

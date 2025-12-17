@@ -2,7 +2,7 @@ package com.github.sveldevorls.readtogether.author.service;
 
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.author.dao.AuthorDAO;
+import com.github.sveldevorls.readtogether.author.dao.AuthorDao;
 import com.github.sveldevorls.readtogether.author.entity.Author;
 import com.github.sveldevorls.readtogether.author.entity.AuthorData;
 import com.github.sveldevorls.readtogether.author.entity.AuthorMapper;
@@ -10,9 +10,9 @@ import com.github.sveldevorls.readtogether.author.entity.AuthorMapper;
 @Service
 public class AuthorService {
 
-    private final AuthorDAO authorDao;
+    private final AuthorDao authorDao;
 
-    public AuthorService(AuthorDAO authorDao) {
+    public AuthorService(AuthorDao authorDao) {
         this.authorDao = authorDao;
     }
 

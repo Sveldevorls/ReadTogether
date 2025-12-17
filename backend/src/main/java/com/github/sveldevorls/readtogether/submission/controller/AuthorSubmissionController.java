@@ -3,7 +3,7 @@ package com.github.sveldevorls.readtogether.submission.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionRequest;
@@ -33,23 +33,23 @@ public class AuthorSubmissionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponseDTO> getAuthorSubmissionDetails(@PathVariable int id) {
+    public ResponseEntity<SuccessResponse> getAuthorSubmissionDetails(@PathVariable int id) {
         AuthorSubmissionResponse result = authorSubmissionService.getSubmissionById(id);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.OK, result),
+                new SuccessResponse(HttpStatus.OK, result),
                 HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessResponseDTO> createNewAuthorSubmission(
-            @Valid @RequestBody NewAuthorSubmissionRequest dto,
+    public ResponseEntity<SuccessResponse> createNewAuthorSubmission(
+            @Valid @RequestBody NewAuthorSubmissionRequest request,
             @AuthenticationPrincipal JwtUserPrincipal principal) {
 
         int submitterId = principal.getId();
-        int createdId = authorSubmissionService.createNewAuthorSubmission(submitterId, dto);
+        int createdId = authorSubmissionService.createNewAuthorSubmission(submitterId, request);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.CREATED, Map.of("id", createdId)),
+                new SuccessResponse(HttpStatus.CREATED, Map.of("id", createdId)),
                 HttpStatus.CREATED);
     }
 }

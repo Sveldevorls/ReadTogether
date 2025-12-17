@@ -3,13 +3,13 @@ package com.github.sveldevorls.readtogether.auth.service;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.auth.dto.LoginRequestDTO;
-import com.github.sveldevorls.readtogether.auth.dto.LoginResponseDTO;
-import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
-import com.github.sveldevorls.readtogether.auth.dto.RegisterResponseDTO;
+import com.github.sveldevorls.readtogether.auth.dto.LoginRequest;
+import com.github.sveldevorls.readtogether.auth.dto.LoginResponse;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequest;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterResponse;
 import com.github.sveldevorls.readtogether.auth.exception.InvalidLoginCredentialsException;
 import com.github.sveldevorls.readtogether.security.JwtUtil;
-import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
+import com.github.sveldevorls.readtogether.user.dto.UserDataResponse;
 import com.github.sveldevorls.readtogether.user.entity.User;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
@@ -28,21 +28,21 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public RegisterResponseDTO register(RegisterRequestDTO dto) {
-        User createdUser = userService.createUser(dto);
+    public RegisterResponse register(RegisterRequest request) {
+        User createdUser = userService.createUser(request);
         String token = jwtUtil.generateToken(createdUser.getId() ,createdUser.getUsername(), createdUser.getUserRole().name());
-        return new RegisterResponseDTO(token, UserDataDTO.fromEntity(createdUser));
+        return new RegisterResponse(token, UserDataResponse.fromEntity(createdUser));
     }
 
-    public LoginResponseDTO login(LoginRequestDTO dto) {
-        String hashToCheck = userService.getPasswordHashByIdentifier(dto.identifier())
+    public LoginResponse login(LoginRequest request) {
+        String hashToCheck = userService.getPasswordHashByIdentifier(request.identifier())
                                         .orElse(dummyPasswordHash);
-        if (!encoder.matches(dto.password(), hashToCheck)) {
+        if (!encoder.matches(request.password(), hashToCheck)) {
             throw new InvalidLoginCredentialsException();
         }
 
-        User user = userService.getUserByIdentifier(dto.identifier());
+        User user = userService.getUserByIdentifier(request.identifier());
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getUserRole().name());
-        return new LoginResponseDTO(token, UserDataDTO.fromEntity(user));
+        return new LoginResponse(token, UserDataResponse.fromEntity(user));
     }   
 }

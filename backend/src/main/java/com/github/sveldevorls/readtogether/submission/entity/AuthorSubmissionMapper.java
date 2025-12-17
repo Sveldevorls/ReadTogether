@@ -4,11 +4,11 @@ import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionReq
 
 public class AuthorSubmissionMapper {
 
-    public static AuthorSubmission fromRequest(int submitterId, NewAuthorSubmissionRequest dto) {
+    public static AuthorSubmission fromRequest(int submitterId, NewAuthorSubmissionRequest request) {
         AuthorSubmission submission = new AuthorSubmission();
         submission.setSubmitterId(submitterId);
-        submission.setAuthorData(dto.authorData());
-        submission.setSubmitterComment(dto.submitterComment());
+        submission.setAuthorData(request.authorData());
+        submission.setSubmitterComment(request.submitterComment());
         return submission;
     }
 }

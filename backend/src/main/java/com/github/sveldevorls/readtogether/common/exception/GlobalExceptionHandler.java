@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
+import com.github.sveldevorls.readtogether.common.response.ErrorResponse;
 import com.github.sveldevorls.readtogether.util.ErrorMapper;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         ex.getBindingResult()
           .getFieldErrors()
@@ -33,38 +33,38 @@ public class GlobalExceptionHandler {
             errors.add(ErrorMapper.map(fieldName, error.getDefaultMessage()));
           });
 
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
 
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.NOT_FOUND, errors), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND, errors), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InternalServerErrorException.class)
-    public ResponseEntity<ErrorResponseDTO> handleInternalServerErrorException(InternalServerErrorException ex) {
+    public ResponseEntity<ErrorResponse> handleInternalServerErrorException(InternalServerErrorException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
 
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(DataRetrievalFailureException.class)
-    public ResponseEntity<ErrorResponseDTO> handleDataRetrievalFailureException(DataRetrievalFailureException ex) {
+    public ResponseEntity<ErrorResponse> handleDataRetrievalFailureException(DataRetrievalFailureException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(ErrorMapper.map("general", ex.getMessage()));
 
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(ErrorMapper.map("general", ex.getMessage()));
 
-        return new ResponseEntity<>(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
     }
 }

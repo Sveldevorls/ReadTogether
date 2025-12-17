@@ -5,7 +5,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
+import com.github.sveldevorls.readtogether.user.dto.AdminCreationCommand;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 @Component
@@ -28,7 +28,7 @@ public class StartupConfig {
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        AdminCreationDTO dto = new AdminCreationDTO(adminUsername, adminEmail, adminPassword);
-        userService.createAdminIfNotExists(dto);
+        AdminCreationCommand command = new AdminCreationCommand(adminUsername, adminEmail, adminPassword);
+        userService.createAdminIfNotExists(command);
     }
 }

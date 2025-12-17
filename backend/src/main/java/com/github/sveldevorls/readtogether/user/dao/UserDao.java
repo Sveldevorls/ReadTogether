@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.github.sveldevorls.readtogether.user.entity.User;
 
-public interface UserDAO {
+public interface UserDao {
 
     // C //
     void createAdmin(User newUser);

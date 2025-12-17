@@ -24,13 +24,13 @@ public class AuthorSubmissionService {
     }
 
     @Transactional
-    public int createNewAuthorSubmission(int submitterId, NewAuthorSubmissionRequest dto) {
+    public int createNewAuthorSubmission(int submitterId, NewAuthorSubmissionRequest request) {
 
         // Insert author into [authors] as pending author, retrieve created author id
-        int createdAuthorId = authorService.fromData(dto.authorData());
+        int createdAuthorId = authorService.fromData(request.authorData());
 
         // Create AuthorSubmission entity, set authorId as the returned id
-        AuthorSubmission submission = AuthorSubmissionMapper.fromRequest(submitterId, dto);
+        AuthorSubmission submission = AuthorSubmissionMapper.fromRequest(submitterId, request);
         submission.setAuthorId(createdAuthorId);
 
         //Insert submission into [author_submissions], retrieve created submission id for redirecting

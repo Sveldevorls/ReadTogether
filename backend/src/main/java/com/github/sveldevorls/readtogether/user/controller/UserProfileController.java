@@ -3,8 +3,8 @@ package com.github.sveldevorls.readtogether.user.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
+import com.github.sveldevorls.readtogether.user.dto.UserDataResponse;
 import com.github.sveldevorls.readtogether.user.service.UserService;
 
 import org.springframework.http.HttpStatus;
@@ -23,10 +23,10 @@ public class UserProfileController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<SuccessResponseDTO> getUserProfileData(@PathVariable String username) {
-        UserDataDTO response = userService.getUserProfileData(username);
+    public ResponseEntity<SuccessResponse> getUserProfileData(@PathVariable String username) {
+        UserDataResponse response = userService.getUserProfileData(username);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(HttpStatus.OK, response),
+                new SuccessResponse(HttpStatus.OK, response),
                 HttpStatus.OK);
     }
 

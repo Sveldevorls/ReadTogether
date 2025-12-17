@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.auth.dto.LoginRequestDTO;
-import com.github.sveldevorls.readtogether.auth.dto.LoginResponseDTO;
+import com.github.sveldevorls.readtogether.auth.dto.LoginRequest;
+import com.github.sveldevorls.readtogether.auth.dto.LoginResponse;
 import com.github.sveldevorls.readtogether.auth.service.AuthService;
-import com.github.sveldevorls.readtogether.common.response.ErrorResponseDTO;
-import com.github.sveldevorls.readtogether.common.response.SuccessResponseDTO;
+import com.github.sveldevorls.readtogether.common.response.ErrorResponse;
+import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 
 import jakarta.validation.Valid;
 
@@ -27,10 +27,10 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-        LoginResponseDTO response = authService.login(request);
+    public ResponseEntity<SuccessResponse> login(@Valid @RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
         return new ResponseEntity<>(
-                new SuccessResponseDTO(
+                new SuccessResponse(
                     HttpStatus.OK, 
                     "Logged in successfully", 
                     response),
@@ -38,9 +38,9 @@ public class LoginController {
     }
 
     @GetMapping
-    public ResponseEntity<ErrorResponseDTO> doGet() {
+    public ResponseEntity<ErrorResponse> doGet() {
         return new ResponseEntity<>(
-                new ErrorResponseDTO(HttpStatus.METHOD_NOT_ALLOWED),
+                new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED),
                 HttpStatus.METHOD_NOT_ALLOWED);
     }
 }

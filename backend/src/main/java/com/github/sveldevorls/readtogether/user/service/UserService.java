@@ -7,38 +7,38 @@ import java.util.Optional;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.auth.dto.RegisterRequestDTO;
+import com.github.sveldevorls.readtogether.auth.dto.RegisterRequest;
 import com.github.sveldevorls.readtogether.auth.exception.DuplicateUserException;
 import com.github.sveldevorls.readtogether.common.exception.InternalServerErrorException;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
-import com.github.sveldevorls.readtogether.user.dao.UserDAO;
-import com.github.sveldevorls.readtogether.user.dto.AdminCreationDTO;
-import com.github.sveldevorls.readtogether.user.dto.UserDataDTO;
+import com.github.sveldevorls.readtogether.user.dao.UserDao;
+import com.github.sveldevorls.readtogether.user.dto.AdminCreationCommand;
+import com.github.sveldevorls.readtogether.user.dto.UserDataResponse;
 import com.github.sveldevorls.readtogether.user.entity.User;
 
 @Service
 public class UserService {
     
-    public final UserDAO userDao;
+    public final UserDao userDao;
     public final Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
 
-    public UserService(UserDAO userDao) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public void createAdminIfNotExists(AdminCreationDTO dto) {
-        String hashedPassword = encoder.encode(dto.password());
-        if (!userDao.existsByUsername(dto.username())) {
-            userDao.createAdmin(User.createAdmin(dto.username(), dto.email(), hashedPassword));
+    public void createAdminIfNotExists(AdminCreationCommand command) {
+        String hashedPassword = encoder.encode(command.password());
+        if (!userDao.existsByUsername(command.username())) {
+            userDao.createAdmin(User.createAdmin(command.username(), command.email(), hashedPassword));
         }
     }
 
-    public User createUser(RegisterRequestDTO dto) {
+    public User createUser(RegisterRequest request) {
         List<String> errorFields = new ArrayList<>();
-        if (userDao.existsByUsername(dto.username())) {
+        if (userDao.existsByUsername(request.username())) {
             errorFields.add("username");
         }
-        if (userDao.existsByEmail(dto.email())) {
+        if (userDao.existsByEmail(request.email())) {
             errorFields.add("email");
         }
 
@@ -46,9 +46,9 @@ public class UserService {
             throw new DuplicateUserException(errorFields);
         }
 
-        String hashedPassword = encoder.encode(dto.password());
+        String hashedPassword = encoder.encode(request.password());
         User createdUser = userDao.createUser(
-            User.createUser(dto.username(), dto.email(), hashedPassword)
+            User.createUser(request.username(), request.email(), hashedPassword)
         ).orElseThrow(() -> new InternalServerErrorException());
 
         return createdUser;
@@ -63,11 +63,11 @@ public class UserService {
                       .orElseThrow(() -> new ResourceNotFoundException());
     }
 
-    // Todo: Change return type to UserProfileDTO once books and authors are added
-    public UserDataDTO getUserProfileData(String username) {
+    // Todo: Change return type to UserProfileResponse once books and authors are added
+    public UserDataResponse getUserProfileData(String username) {
         User user = userDao.getUserByUsername(username)
                            .orElseThrow(() -> new ResourceNotFoundException());
-        return new UserDataDTO(
+        return new UserDataResponse(
             user.getUsername(), 
             user.getDisplayName(), 
             user.getAvatarUrl(), 
