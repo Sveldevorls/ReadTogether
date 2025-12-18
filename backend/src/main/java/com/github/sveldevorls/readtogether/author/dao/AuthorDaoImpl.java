@@ -54,8 +54,19 @@ public class AuthorDaoImpl implements AuthorDao {
         return generatedId;
     }
 
+	// U
+	public void updateIsPendingById(int id) {
+		String sql = "UPDATE authors SET is_pending = false WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+	}
+
+	// D
+	public void deleteById(int id) {
+		String sql = "DELETE FROM authors WHERE id = ?";
+		jdbcTemplate.update(sql, id);
+	}
+
     public Date parseNullableDate(LocalDate date) {
         return date == null ? null : Date.valueOf(date);
     }
-
 }

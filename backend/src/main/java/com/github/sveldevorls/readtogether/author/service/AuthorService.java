@@ -16,10 +16,18 @@ public class AuthorService {
         this.authorDao = authorDao;
     }
 
-    public int fromData(AuthorData authorData) {
+    public int createFromAuthorData(AuthorData authorData) {
         Author author = AuthorMapper.toEntity(authorData);
         int createdId = authorDao.createAuthor(author);
 
         return createdId;
+    }
+
+    public void approveAuthor(int id) {
+        authorDao.updateIsPendingById(id);
+    }
+
+    public void deleteAuthor(int id) {
+        authorDao.deleteById(id);
     }
 }

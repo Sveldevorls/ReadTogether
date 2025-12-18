@@ -7,4 +7,10 @@ public interface AuthorDao {
     // C
     // Return: id of the created author
     int createAuthor(Author author); 
+
+    // U 
+    void updateIsPendingById(int id);
+    
+    // D
+    void deleteById(int id);
 }

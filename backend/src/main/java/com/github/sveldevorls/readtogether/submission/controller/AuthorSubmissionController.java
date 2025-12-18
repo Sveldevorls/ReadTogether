@@ -33,8 +33,8 @@ public class AuthorSubmissionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse> getAuthorSubmissionDetails(@PathVariable int id) {
-        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionById(id);
+    public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int id) {
+        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionResponseById(id);
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, result),
                 HttpStatus.OK);
@@ -51,5 +51,25 @@ public class AuthorSubmissionController {
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.CREATED, Map.of("id", createdId)),
                 HttpStatus.CREATED);
+    }
+
+    // Todo: set reviewer id, reviewed timestamp
+    @PostMapping("/{id}/approve")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<SuccessResponse> approveSubmission(@PathVariable int id, @RequestBody String reviewerComment) {
+        AuthorSubmissionResponse result = authorSubmissionService.approveSubmission(id, reviewerComment);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
+    }
+
+    // Todo: set reviewer id, reviewed timestamp
+    @PostMapping("/{id}/reject")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<SuccessResponse> rejectSubmission(@PathVariable int id, @RequestBody String reviewerComment) {
+        AuthorSubmissionResponse result = authorSubmissionService.rejectSubmission(id, reviewerComment);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
     }
 }

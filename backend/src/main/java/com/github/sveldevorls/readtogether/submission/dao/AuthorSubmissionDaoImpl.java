@@ -59,21 +59,54 @@ public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
     }
 
     // R
-    public Optional<AuthorSubmissionResponse> getSubmissionById(int id) {
+    public Optional<AuthorSubmissionResponse> getSubmissionResponseById(int id) {
         String sql = """
-            SELECT a.*, s.username AS "submitter_username", r.username AS "reviewer_username"
-            FROM author_submissions a
-            JOIN users s ON a.submitter_id = s.id
-            LEFT JOIN users r ON a.reviewer_id = r.id
-            WHERE a.id = ?;
-        """;
+                    SELECT a.*, s.username AS "submitter_username", r.username AS "reviewer_username"
+                    FROM author_submissions a
+                    JOIN users s ON a.submitter_id = s.id
+                    LEFT JOIN users r ON a.reviewer_id = r.id
+                    WHERE a.id = ?;
+                """;
 
         List<AuthorSubmissionResponse> result = jdbcTemplate.query(
                 sql,
                 new AuthorSubmissionResponseRowMapper(),
                 id);
-        
+
         return result.stream().findFirst();
+    }
+
+    /*
+     * public Optional<AuthorSubmission> getSubmissionEntityById(int id) {
+     * String sql = "SELECT * FROM author_submissions WHERE id = ?;";
+     * List<AuthorSubmission> result = jdbcTemplate.query(
+     * sql,
+     * new AuthorSubmissionEntityMapper(),
+     * id);
+     * 
+     * return result.stream().findFirst();
+     * }
+     */
+
+    public Optional<Integer> getAuthorIdById(int id) {
+        String sql = "SELECT author_id FROM author_submissions WHERE id = ?";
+        List<Integer> result = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> rs.getInt("author_id"),
+                id);
+        return result.stream().findFirst();
+    }
+
+    // U
+    public void updateReviewStatusById(int id, String status) {
+        String sql = "UPDATE author_submissions SET review_status = ? WHERE id = ?";
+        jdbcTemplate.update(sql, status, id);
+    }
+
+    @Override
+    public void updateReviewerCommentById(int id, String reviewerComment) {
+        String sql = "UPDATE author_submissions SET reviewer_comment = ? WHERE id = ?";
+        jdbcTemplate.update(sql, reviewerComment, id);
     }
 
     public Date parseNullableDate(LocalDate date) {

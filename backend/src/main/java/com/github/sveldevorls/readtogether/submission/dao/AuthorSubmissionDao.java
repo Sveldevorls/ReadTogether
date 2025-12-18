@@ -12,5 +12,14 @@ public interface AuthorSubmissionDao {
     int createAuthorSubmission(AuthorSubmission submission);
 
     // R
-    Optional<AuthorSubmissionResponse> getSubmissionById(int id);
+    Optional<AuthorSubmissionResponse> getSubmissionResponseById(int id);
+
+    /* Optional<AuthorSubmission> getSubmissionEntityById(int id); */
+
+    Optional<Integer> getAuthorIdById(int id);
+
+    // U
+    void updateReviewStatusById(int id, String status);
+
+    void updateReviewerCommentById(int id, String reviewerComment);
 }

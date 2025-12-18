@@ -12,4 +12,6 @@ export const ENDPOINTS = {
 
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",
   AUTHOR_SUBMISSION_PAGE: (id: string) => `/api/submissions/authors/${id}`,
+  AUTHOR_SUBMISSION_APPROVE: (id: string) => `/api/submissions/authors/${id}/approve`,
+  AUTHOR_SUBMISSION_REJECT: (id: string) => `/api/submissions/authors/${id}/reject`,
 }

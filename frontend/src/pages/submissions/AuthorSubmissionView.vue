@@ -1,19 +1,79 @@
 <script setup lang="ts">
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
+import { roles } from "@/util/enums";
 import { parseDate, parseReviewStatus, parseTimestamp } from "@/util/parser";
 import type { AuthorSubmisisonResponse, SuccessResponse } from "@/util/responses";
+import { useSingularToast } from "@/util/useSingularToast";
+import { useUserStore } from "@/util/userStore";
 import { Icon } from "@iconify/vue";
 import { isAxiosError } from "axios";
-import { Divider } from "primevue";
+import { Button, Dialog, Divider, Textarea } from "primevue";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const userStore = useUserStore();
+const toast = useSingularToast();
+
 const id = route.params.id as string;
 const submission = ref<AuthorSubmisisonResponse | null>(null);
 const isLoading = ref<boolean>(true);
 const errorStatus = ref<"error" | "notfound" | null>(null);
+
+const currentAction = ref<"approve" | "reject" | null>(null);
+const dialogVisible = ref<boolean>(false);
+const dialogHeader = ref<string>("");
+const reviewerComment = ref<string | null>(null);
+const dialogMainButtonProps = ref<{ label: string; severity: string } | null>(null);
+
+function showDialog(type: "approve" | "reject") {
+  switch (type) {
+    case "approve":
+      currentAction.value = "approve";
+      dialogHeader.value = "Approve this submission";
+      dialogVisible.value = true;
+      dialogMainButtonProps.value = { label: "Approve", severity: "success" };
+      break;
+    case "reject":
+      currentAction.value = "reject";
+      dialogHeader.value = "Reject this submission";
+      dialogVisible.value = true;
+      dialogMainButtonProps.value = { label: "Reject", severity: "danger" };
+      break;
+  }
+}
+
+function closeDialog() {
+  reviewerComment.value = null;
+  currentAction.value = null;
+  dialogVisible.value = false;
+}
+
+async function judgeSubmission(decision: "approve" | "reject") {
+  const destination =
+    decision == "approve" ? ENDPOINTS.AUTHOR_SUBMISSION_APPROVE(id) : ENDPOINTS.AUTHOR_SUBMISSION_REJECT(id);
+  const payload = { reviewerComment: reviewerComment.value };
+  try {
+    const { data: response } = await api.post<SuccessResponse<AuthorSubmisisonResponse>>(destination, payload);
+    submission.value = response.data;
+    toast({
+      severity: "success",
+      summary: "Review complete",
+      group: "message",
+      life: 3000,
+    });
+  } catch (error) {
+    toast({
+      severity: "error",
+      summary: "An unknown error had occurred. Please try again later.",
+      group: "message",
+      life: 3000,
+    });
+  } finally {
+    closeDialog();
+  }
+}
 
 onBeforeMount(async () => {
   try {
@@ -112,11 +172,61 @@ onBeforeMount(async () => {
         <dd>{{ submission.reviewerComment }}</dd>
       </dl>
 
+      <div
+        v-if="userStore.role >= roles.moderator && submission.reviewStatus == 'pending'"
+        class="flex mx-auto mt-8 gap-4"
+      >
+        <Button
+          label="Approve"
+          severity="success"
+          @click="showDialog('approve')"
+          class="w-[100px]"
+        />
+        <Button
+          label="Reject"
+          severity="danger"
+          @click="showDialog('reject')"
+          class="w-[100px]"
+        />
+      </div>
+
       <div class="mt-8">
         <Divider />
         <h3 class="text-center">Last updated: {{ parseTimestamp(submission!.updatedAt) }}</h3>
       </div>
     </div>
+
+    <Dialog
+      modal
+      position="center"
+      :draggable="false"
+      v-model:visible="dialogVisible"
+      :header="dialogHeader"
+      @hide="closeDialog"
+      class="w-[500px] mx-4"
+    >
+      <div class="flex flex-col gap-2">
+        <h2>Additional comments:</h2>
+        <Textarea
+          v-model="reviewerComment"
+          rows="5"
+        />
+        <div class="flex gap-4 self-end mt-4">
+          <Button
+            label="Cancel"
+            severity="secondary"
+            class="py-1! shrink-0"
+            @click="closeDialog"
+          />
+          <Button
+            :label="dialogMainButtonProps?.label"
+            :severity="dialogMainButtonProps?.severity"
+            class="py-1! shrink-0"
+            @click="currentAction && judgeSubmission(currentAction)"
+          />
+        </div>
+      </div>
+    </Dialog>
   </section>
 </template>
 
