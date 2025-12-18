@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Todo: Fix form validation flashing error on blur when previously invalid value becomes valid
 // Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
@@ -10,7 +9,6 @@ import { useUserStore } from "@/util/userStore";
 import { isAxiosError } from "axios";
 import { InputText, Message } from "primevue";
 import { useForm } from "vee-validate";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { object, string } from "yup";
 
@@ -22,30 +20,12 @@ const schema = object({
   password: string().required("Password is required"),
 });
 
-const fieldIsFocused = ref<Record<LoginPageFields, boolean>>({
-  identifier: false,
-  password: false,
-});
-
-const fieldConfig = {
-  validateOnBlur: true,
-  validateOnModelUpdate: false,
-};
-
 const { defineField, handleSubmit, setFieldError, errors } = useForm({
   validationSchema: schema,
 });
 
-const [identifier, identifierProps] = defineField<string>("identifier", fieldConfig);
-const [password, passwordProps] = defineField<string>("password", fieldConfig);
-
-function handleFocus(fieldName: LoginPageFields): void {
-  fieldIsFocused.value[fieldName] = true;
-}
-
-function handleBlur(fieldName: LoginPageFields): void {
-  fieldIsFocused.value[fieldName] = false;
-}
+const [identifier] = defineField<string>("identifier");
+const [password] = defineField<string>("password");
 
 const onSubmit = handleSubmit(
   async (values) => {
@@ -117,36 +97,36 @@ const onSubmit = handleSubmit(
         type="text"
         id="identifier"
         v-model="identifier"
-        v-bind="identifierProps"
-        @focus="handleFocus('identifier')"
-        @blur="handleBlur('identifier')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.identifier"
-      >
-        {{ errors.identifier }}
-      </Message>
+      <Transition>
+        <div v-if="errors.identifier">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.identifier }}
+          </Message>
+        </div>
+      </Transition>
       <label for="password">Password</label>
       <InputText
         :invalid="!!errors.password"
         type="password"
         id="password"
         v-model="password"
-        v-bind="passwordProps"
-        @focus="handleFocus('password')"
-        @blur="handleBlur('password')"
       />
-      <Message
-        severity="error"
-        variant="simple"
-        size="small"
-        v-if="!fieldIsFocused.password"
-      >
-        {{ errors.password }}
-      </Message>
+      <Transition>
+        <div v-if="errors.password">
+          <Message
+            severity="error"
+            variant="simple"
+            size="small"
+          >
+            {{ errors.password }}
+          </Message>
+        </div>
+      </Transition>
     </form>
     <button
       form="login"
@@ -171,5 +151,15 @@ const onSubmit = handleSubmit(
 
 label:not(:first-child) {
   @apply mt-4;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

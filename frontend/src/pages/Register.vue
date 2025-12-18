@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Todo: Fix error message display bug when after a 400 response manually populated errors disappear on blur at form level rather than field level
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
 import type { RegisterPageFields } from "@/util/fields";
