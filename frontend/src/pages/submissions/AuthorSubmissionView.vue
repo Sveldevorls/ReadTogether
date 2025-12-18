@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
-import { parseDate, parseTimestamp } from "@/util/parser";
+import { parseDate, parseReviewStatus, parseTimestamp } from "@/util/parser";
 import type { AuthorSubmisisonResponse, SuccessResponse } from "@/util/responses";
+import { Icon } from "@iconify/vue";
 import { isAxiosError } from "axios";
+import { Divider } from "primevue";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -12,19 +14,6 @@ const id = route.params.id as string;
 const submission = ref<AuthorSubmisisonResponse | null>(null);
 const isLoading = ref<boolean>(true);
 const errorStatus = ref<"error" | "notfound" | null>(null);
-
-function parseReviewStatus(status: "approved" | "pending" | "rejected") {
-  if (!submission.value) return null;
-
-  switch (submission.value.reviewStatus) {
-    case "approved":
-      return { style: "text-green-600", text: "Approved" };
-    case "pending":
-      return { style: "text-amber-400", text: "Pending" };
-    case "rejected":
-      return { style: "text-red-600", text: "Rejected" };
-  }
-}
 
 onBeforeMount(async () => {
   try {
@@ -47,72 +36,114 @@ onBeforeMount(async () => {
 <template>
   <section
     v-if="!isLoading"
-    class="w-[min(100%,80em)] p-4"
+    class="w-[min(100%,80em)] p-4 break-all"
   >
     <h1 v-if="errorStatus && errorStatus == 'notfound'">404 not found</h1>
     <h1 v-else-if="errorStatus && errorStatus === 'error'">Unknown error</h1>
     <!-- Author submission details -->
-    <div v-if="submission != null">
-      <RouterLink to="/submissions/authors">Back to submissions list</RouterLink>
+    <div
+      v-if="submission != null"
+      class="flex flex-col gap-2"
+    >
+      <RouterLink
+        to="/submissions/authors"
+        class="self-start flex hover:underline"
+      >
+        <Icon
+          icon="material-symbols:arrow-left"
+          width="24"
+          height="24"
+        />
+        List of submissions
+      </RouterLink>
       <h1 class="text-3xl">Submission #{{ submission.id }} by {{ submission.submitterUsername }}</h1>
-      <h2 class="text-2xl">Summary</h2>
-      <div class="grid grid-cols-[200px_1fr]">
-        <span>Submitted by</span>
-        <RouterLink :to="'/users/' + submission.submitterUsername">{{ submission.submitterUsername }}</RouterLink>
-
-        <span>Submission time</span>
-        <span>{{ parseTimestamp(submission.createdAt) }}</span>
-
-        <span>Review status</span>
-        <span
+      <h2 class="text-2xl mt-6">Summary</h2>
+      <dl class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400">
+        <dt>Submitted by</dt>
+        <dd>
+          <RouterLink
+            :to="'/users/' + submission.submitterUsername"
+            class="hover:underline"
+            >{{ submission.submitterUsername }}</RouterLink
+          >
+        </dd>
+        <dt>Submission time</dt>
+        <dd>{{ parseTimestamp(submission.createdAt) }}</dd>
+        <dt>Review status</dt>
+        <dd
           class="font-black"
           :class="parseReviewStatus(submission.reviewStatus)?.style"
         >
           {{ parseReviewStatus(submission.reviewStatus)?.text }}
-        </span>
-      </div>
+        </dd>
+      </dl>
 
-      <h2 class="text-2xl">Author details</h2>
-      <div class="grid grid-cols-[200px_1fr]">
-        <span>Author name</span>
-        <span>{{ submission.authorData.authorName }}</span>
+      <h2 class="text-2xl mt-6">Author details</h2>
+      <dl class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400">
+        <dt>Author name</dt>
+        <dd>{{ submission.authorData.authorName }}</dd>
+        <dt>Date of birth</dt>
+        <dd>{{ submission.authorData.dateOfBirth && parseDate(submission.authorData.dateOfBirth) }}</dd>
+        <dt>Date of death</dt>
+        <dd>{{ submission.authorData.dateOfDeath && parseDate(submission.authorData.dateOfDeath) }}</dd>
+        <dt>Author Image</dt>
+        <dd>{{ submission.authorData.authorImageUrl }}</dd>
+        <dt>Biography</dt>
+        <dd>{{ submission.authorData.biography }}</dd>
+      </dl>
 
-        <span>Date of birth</span>
-        <span>{{ submission.authorData.dateOfBirth && parseDate(submission.authorData.dateOfBirth) }}</span>
+      <h2 class="text-2xl mt-6">Additional information</h2>
+      <dl class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400">
+        <dt>Submitter comment</dt>
+        <dd>{{ submission.submitterComment }}</dd>
+      </dl>
 
-        <span>Date of death</span>
-        <span>{{ submission.authorData.dateOfDeath && parseDate(submission.authorData.dateOfDeath) }}</span>
-
-        <span>Author Image</span>
-        <span>{{ submission.authorData.authorImageUrl }}</span>
-
-        <span>Biography</span>
-        <span>{{ submission.authorData.biography }}</span>
-      </div>
-
-      <h2 class="text-2xl">Additional information</h2>
-      <div class="grid grid-cols-[200px_1fr]">
-        <span>Submitter comment</span>
-        <p>{{ submission.submitterComment }}</p>
-      </div>
-
-      <h2 class="text-2xl">Review result</h2>
-      <p v-if="submission.reviewStatus == 'pending'">This submission is still yet to be reviewed</p>
-      <div
+      <h2 class="text-2xl mt-6">Review result</h2>
+      <p v-if="submission.reviewStatus == 'pending'">This submission has not yeet been reviewed</p>
+      <dl
         v-else
-        class="grid grid-cols-[200px_1fr]"
+        class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400"
       >
-        <span>Reviewed at</span>
-        <span>{{ submission.reviewedAt && parseTimestamp(submission.reviewedAt) }}</span>
+        <dt>Reviewed at</dt>
+        <dd>{{ submission.reviewedAt && parseTimestamp(submission.reviewedAt) }}</dd>
+        <dt>Reviewed by</dt>
+        <dd>{{ submission.reviewerUsername }}</dd>
+        <dt>Review comments</dt>
+        <dd>{{ submission.reviewerComment }}</dd>
+      </dl>
 
-        <span>Reviewed by</span>
-        <span>{{ submission.reviewerUsername }}</span>
-
-        <span>Review comments</span>
-        <span>{{ submission.reviewerComment }}</span>
+      <div class="mt-8">
+        <Divider />
+        <h3 class="text-center">Last updated: {{ parseTimestamp(submission!.updatedAt) }}</h3>
       </div>
-
-      <h3>Last updated: {{ parseTimestamp(submission!.updatedAt) }}</h3>
     </div>
   </section>
 </template>
+
+<style>
+@reference "tailwindcss";
+
+dt {
+  @apply font-black p-2 max-sm:pb-0;
+
+  &:not(:last-of-type) {
+    @apply sm:border-b border-gray-400;
+  }
+
+  &:nth-of-type(even) {
+    @apply bg-neutral-100;
+  }
+}
+
+dd {
+  @apply p-2;
+
+  &:not(:last-of-type) {
+    @apply border-b border-gray-400;
+  }
+
+  &:nth-last-of-type(even) {
+    @apply bg-neutral-100;
+  }
+}
+</style>

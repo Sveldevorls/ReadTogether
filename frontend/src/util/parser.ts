@@ -20,3 +20,14 @@ export function parseDate(date: string): string {
   };
   return parsedDate.toLocaleDateString("en-US", options);
 }
+
+export function parseReviewStatus(status: "approved" | "pending" | "rejected"): {style: string, text: string} {
+  switch (status) {
+    case "approved":
+      return { style: "text-green-600", text: "Approved" };
+    case "pending":
+      return { style: "text-amber-400", text: "Pending" };
+    case "rejected":
+      return { style: "text-red-600", text: "Rejected" };
+  }
+}
