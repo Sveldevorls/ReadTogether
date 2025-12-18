@@ -26,18 +26,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path = "/api/submissions/authors", produces = "application/json")
 public class AuthorSubmissionController {
 
+    private record ReviewRequest(String reviewerComment) {}
+
     private final AuthorSubmissionService authorSubmissionService;
 
     public AuthorSubmissionController(AuthorSubmissionService authorSubmissionService) {
         this.authorSubmissionService = authorSubmissionService;
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int id) {
-        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionResponseById(id);
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.OK, result),
-                HttpStatus.OK);
     }
 
     @PostMapping
@@ -53,21 +47,45 @@ public class AuthorSubmissionController {
                 HttpStatus.CREATED);
     }
 
-    // Todo: set reviewer id, reviewed timestamp
-    @PostMapping("/{id}/approve")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public ResponseEntity<SuccessResponse> approveSubmission(@PathVariable int id, @RequestBody String reviewerComment) {
-        AuthorSubmissionResponse result = authorSubmissionService.approveSubmission(id, reviewerComment);
+    @GetMapping("/{submissionId}")
+    public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int submissionId) {
+        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionResponseById(submissionId);
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, result),
                 HttpStatus.OK);
     }
 
-    // Todo: set reviewer id, reviewed timestamp
-    @PostMapping("/{id}/reject")
+    @PostMapping("/{submissionId}/approve")
     @PreAuthorize("hasRole('MODERATOR')")
-    public ResponseEntity<SuccessResponse> rejectSubmission(@PathVariable int id, @RequestBody String reviewerComment) {
-        AuthorSubmissionResponse result = authorSubmissionService.rejectSubmission(id, reviewerComment);
+    public ResponseEntity<SuccessResponse> approveSubmission(
+            @PathVariable int submissionId,
+            @RequestBody ReviewRequest reviewRequest,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        int reviewerId = principal.getId();
+        AuthorSubmissionResponse result = authorSubmissionService.approveSubmission(
+                submissionId,
+                reviewerId,
+                reviewRequest.reviewerComment());
+
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/{submissionId}/reject")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<SuccessResponse> rejectSubmission(
+            @PathVariable int submissionId,
+            @RequestBody ReviewRequest reviewRequest,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        int reviewerId = principal.getId();
+        AuthorSubmissionResponse result = authorSubmissionService.rejectSubmission(
+                submissionId,
+                reviewerId,
+                reviewRequest.reviewerComment());
+
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, result),
                 HttpStatus.OK);

@@ -7,7 +7,7 @@ CREATE TABLE authors (
     slug VARCHAR(255) NOT NULL, -- URL, [id]-[author_name], id is the main identifier
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    is_pending BOOLEAN NOT NULL DEFAULT true,
+    review_status ENUM('approved', 'pending', 'rejected') DEFAULT 'pending',
 
     -- Author data
     author_name VARCHAR(255) NOT NULL,

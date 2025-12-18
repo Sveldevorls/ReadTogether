@@ -3,6 +3,7 @@ package com.github.sveldevorls.readtogether.submission.entity;
 import java.time.Instant;
 
 import com.github.sveldevorls.readtogether.author.entity.AuthorData;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 
 public class AuthorSubmission {
 

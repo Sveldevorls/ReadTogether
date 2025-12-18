@@ -61,14 +61,14 @@ async function judgeSubmission(decision: "approve" | "reject") {
       severity: "success",
       summary: "Review complete",
       group: "message",
-      life: 3000,
+      life: 5000,
     });
   } catch (error) {
     toast({
       severity: "error",
-      summary: "An unknown error had occurred. Please try again later.",
+      summary: "An unknown error had occurred. Please try again later or refresh the page.",
       group: "message",
-      life: 3000,
+      life: 5000,
     });
   } finally {
     closeDialog();
@@ -127,7 +127,7 @@ onBeforeMount(async () => {
             >{{ submission.submitterUsername }}</RouterLink
           >
         </dd>
-        <dt>Submission time</dt>
+        <dt>Submitted at</dt>
         <dd>{{ parseTimestamp(submission.createdAt) }}</dd>
         <dt>Review status</dt>
         <dd
@@ -164,10 +164,10 @@ onBeforeMount(async () => {
         v-else
         class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400"
       >
-        <dt>Reviewed at</dt>
-        <dd>{{ submission.reviewedAt && parseTimestamp(submission.reviewedAt) }}</dd>
         <dt>Reviewed by</dt>
         <dd>{{ submission.reviewerUsername }}</dd>
+        <dt>Reviewed at</dt>
+        <dd>{{ submission.reviewedAt && parseTimestamp(submission.reviewedAt) }}</dd>
         <dt>Review comments</dt>
         <dd>{{ submission.reviewerComment }}</dd>
       </dl>

@@ -1,5 +1,6 @@
 package com.github.sveldevorls.readtogether.common.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         List<Map<String, String>> errors = new ArrayList<>();
-        errors.add(ErrorMapper.map("general", ex.getErrorMessage()));
+        errors.add(ErrorMapper.map("general", ex.getMessage()));
 
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND, errors), HttpStatus.NOT_FOUND);
     }
@@ -66,5 +67,13 @@ public class GlobalExceptionHandler {
         errors.add(ErrorMapper.map("general", ex.getMessage()));
 
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, errors), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        List<Map<String, String>> errors = new ArrayList<>();
+        errors.add(ErrorMapper.map("general", ex.getMessage()));
+
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errors), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

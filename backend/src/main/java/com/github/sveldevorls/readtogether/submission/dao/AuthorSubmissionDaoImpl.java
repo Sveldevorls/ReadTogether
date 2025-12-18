@@ -3,6 +3,8 @@ package com.github.sveldevorls.readtogether.submission.dao;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 
@@ -98,15 +101,26 @@ public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
     }
 
     // U
-    public void updateReviewStatusById(int id, String status) {
-        String sql = "UPDATE author_submissions SET review_status = ? WHERE id = ?";
-        jdbcTemplate.update(sql, status, id);
-    }
-
-    @Override
-    public void updateReviewerCommentById(int id, String reviewerComment) {
-        String sql = "UPDATE author_submissions SET reviewer_comment = ? WHERE id = ?";
-        jdbcTemplate.update(sql, reviewerComment, id);
+    // Return: rows affected
+    public int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment) {
+        Instant now = Instant.now();
+        String sql = """
+                UPDATE author_submissions
+                SET reviewer_id = ?,
+                    reviewer_comment = ?,
+                    reviewed_at = ?,
+                    review_status = ?
+                WHERE id = ? AND review_status = 'pending'
+                """;
+        int rows = jdbcTemplate.update(
+                sql,
+                reviewerId,
+                reviewerComment,
+                Timestamp.from(now),
+                status.name(),
+                submissionId);
+        
+        return rows;
     }
 
     public Date parseNullableDate(LocalDate date) {

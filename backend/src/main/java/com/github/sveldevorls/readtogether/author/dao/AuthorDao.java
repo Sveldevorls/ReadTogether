@@ -1,6 +1,7 @@
 package com.github.sveldevorls.readtogether.author.dao;
 
 import com.github.sveldevorls.readtogether.author.entity.Author;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 
 public interface AuthorDao {
 
@@ -9,8 +10,8 @@ public interface AuthorDao {
     int createAuthor(Author author); 
 
     // U 
-    void updateIsPendingById(int id);
+    int updateReviewStatusById(int id, ReviewStatus status);
     
-    // D
-    void deleteById(int id);
+    /* // D
+    int deleteById(int id); */
 }

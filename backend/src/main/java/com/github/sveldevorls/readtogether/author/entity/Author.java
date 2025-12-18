@@ -2,13 +2,15 @@ package com.github.sveldevorls.readtogether.author.entity;
 
 import java.time.LocalDate;
 
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+
 public class Author {
 
     private int id;
     private String slug;
     private LocalDate createdAt;
     private LocalDate updatedAt;
-    private boolean isPending;
+    private ReviewStatus reviewStatus;
 
     private AuthorData authorData;
 
@@ -44,12 +46,12 @@ public class Author {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isPending() {
-        return isPending;
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
     }
 
-    public void setPending(boolean isPending) {
-        this.isPending = isPending;
+    public void setReviewStatus(ReviewStatus reviewStatus) {
+        this.reviewStatus = reviewStatus;
     }
 
     public AuthorData getAuthorData() {

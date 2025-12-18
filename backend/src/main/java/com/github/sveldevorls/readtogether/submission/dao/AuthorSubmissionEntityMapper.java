@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
 import com.github.sveldevorls.readtogether.author.entity.AuthorData;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
-import com.github.sveldevorls.readtogether.submission.entity.ReviewStatus;
 
 public class AuthorSubmissionEntityMapper implements RowMapper<AuthorSubmission> {
 

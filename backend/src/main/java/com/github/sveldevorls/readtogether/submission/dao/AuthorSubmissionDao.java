@@ -2,6 +2,7 @@ package com.github.sveldevorls.readtogether.submission.dao;
 
 import java.util.Optional;
 
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 
@@ -19,7 +20,5 @@ public interface AuthorSubmissionDao {
     Optional<Integer> getAuthorIdById(int id);
 
     // U
-    void updateReviewStatusById(int id, String status);
-
-    void updateReviewerCommentById(int id, String reviewerComment);
+    int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment);
 }

@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.author.entity.Author;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
@@ -55,16 +56,18 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
 	// U
-	public void updateIsPendingById(int id) {
-		String sql = "UPDATE authors SET is_pending = false WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+	public int updateReviewStatusById(int id, ReviewStatus status) {
+		String sql = "UPDATE authors SET review_status = ? WHERE id = ?";
+        int rows = jdbcTemplate.update(sql, status.name(), id);
+        return rows;
 	}
 
-	// D
-	public void deleteById(int id) {
+	/* // D
+	public int  deleteById(int id) {
 		String sql = "DELETE FROM authors WHERE id = ?";
-		jdbcTemplate.update(sql, id);
-	}
+		int rows = jdbcTemplate.update(sql, id);
+        return rows;
+	} */
 
     public Date parseNullableDate(LocalDate date) {
         return date == null ? null : Date.valueOf(date);
