@@ -1,16 +1,12 @@
 import type { ProfileUpdateFields } from "./fields";
+import type { AuthorData, ErrorData } from "./types";
 
-// Generic response data types
+// Generic response
 // Error response
 export type ErrorResponse<PageFields> = {
   statusCode: number;
   message: string;
   errors: ErrorData<PageFields>[];
-};
-
-export type ErrorData<PageFields> = {
-  field: PageFields | "general";
-  message: string;
 };
 
 // Success response
@@ -59,21 +55,13 @@ export type NewAuthorSubmissionResponse = {
   id: number,
 }
 
-// Author core data
-type AuthorData = {
-  authorName: string,
-  dateOfBirth: string | null,
-  dateOfDeath: string | null,
-  authorImageUrl: string | null,
-  biography: string | null,
-}
-
 // GET /api/submissions/authors/{id}
 export type AuthorSubmisisonResponse = {
   // Meta
   id: number,
   createdAt: string,
   updatedAt: string,
+
   // Submission data
   previousSubmissionId: number | null,
   authorId: number,
@@ -83,6 +71,7 @@ export type AuthorSubmisisonResponse = {
   reviewerComment: string | null,
   reviewedAt: string | null,
   reviewStatus: "approved" | "pending" | "rejected",
+
   // Author data
   authorData: AuthorData,
 }
