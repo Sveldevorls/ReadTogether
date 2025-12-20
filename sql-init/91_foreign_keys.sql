@@ -51,3 +51,15 @@ ADD FOREIGN KEY (author_id) REFERENCES authors(id);
 ALTER TABLE book_genre_map
 ADD FOREIGN KEY (book_id) REFERENCES books(id),
 ADD FOREIGN KEY (genre_id) REFERENCES genres(id);
+
+-- Book submission <-> Author
+ALTER TABLE book_submission_author_map
+ADD FOREIGN KEY (submission_id) REFERENCES book_submissions(id),
+ADD FOREIGN KEY (book_id) REFERENCES books(id),
+ADD FOREIGN KEY (author_id) REFERENCES authors(id);
+
+-- Book submission <-> Genre
+ALTER TABLE book_submission_genre_map
+ADD FOREIGN KEY (submission_id) REFERENCES book_submissions(id),
+ADD FOREIGN KEY (book_id) REFERENCES books(id),
+ADD FOREIGN KEY (genre_id) REFERENCES genres(id);

@@ -52,3 +52,21 @@ CREATE TABLE book_genre_map (
     genre_id INT NOT NULL,
     PRIMARY KEY (book_id, genre_id) 
 );
+
+-- Book submission mapping
+DROP TABLE IF EXISTS book_submission_author_map;
+DROP TABLE IF EXISTS book_submission_genre_map;
+
+CREATE TABLE book_submission_author_map (
+    submission_id INT NOT NULL,
+    book_id INT NOT NULL,
+    author_id INT NOT NULL,
+    PRIMARY KEY (submission_id, book_id, author_id) 
+);
+
+CREATE TABLE book_submission_genre_map (
+    submission_id INT NOT NULL,
+    book_id INT NOT NULL,
+    genre_id INT NOT NULL,
+    PRIMARY KEY (submission_id, book_id, genre_id)
+);
