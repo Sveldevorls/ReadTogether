@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -56,6 +57,12 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     // R
+    public Optional<Author> getAuthorById(int id) {
+        String sql = "SELECT * FROM authors WHERE id = ?";
+        List<Author> result = jdbcTemplate.query(sql, new AuthorRowMapper(), id);
+        return result.stream().findFirst();
+    }
+
     public List<Author> searchApprovedAuthorsByName(String name) {
         String sql = """
                 SELECT * FROM authors WHERE LOWER(author_name) LIKE ? AND review_status = 'Approved'

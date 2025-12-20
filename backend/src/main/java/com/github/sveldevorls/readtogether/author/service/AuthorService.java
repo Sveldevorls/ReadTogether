@@ -31,6 +31,13 @@ public class AuthorService {
     }
 
     // R
+    public AuthorResponse getAuthorById(int id) {
+        Author response = authorDao
+                .getAuthorById(id)
+                .orElseThrow(() -> new ResourceNotFoundException());
+        return AuthorMapper.toResponse(response);
+    }
+
     public List<AuthorResponse> searchApprovedAuthorsByName(String name) {
         List<Author> authors = authorDao.searchApprovedAuthorsByName(name);
         return authors.stream().map(author -> AuthorMapper.toResponse(author)).toList();
