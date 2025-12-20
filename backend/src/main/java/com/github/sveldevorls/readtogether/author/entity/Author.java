@@ -1,6 +1,6 @@
 package com.github.sveldevorls.readtogether.author.entity;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 
@@ -8,8 +8,8 @@ public class Author {
 
     private int id;
     private String slug;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
     private ReviewStatus reviewStatus;
 
     private AuthorData authorData;
@@ -30,19 +30,19 @@ public class Author {
         this.slug = slug;
     }
 
-    public LocalDate getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 

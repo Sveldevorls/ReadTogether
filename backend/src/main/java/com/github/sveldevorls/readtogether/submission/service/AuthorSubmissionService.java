@@ -108,7 +108,7 @@ public class AuthorSubmissionService {
             throw new DataIntegrityViolationException("Multiple submissions were found when only one was expected");
 
         // Remove the rejected author
-        authorService.deleteAuthor(authorId);
+        authorService.rejectAuthor(authorId);
 
         // Fetch the newly updated submission response
         AuthorSubmissionResponse response = authorSubmissionDao

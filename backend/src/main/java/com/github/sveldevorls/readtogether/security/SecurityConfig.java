@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/verify").authenticated()
                 .requestMatchers("/api/submissions/**").permitAll()
                 .requestMatchers("/api/genres").permitAll()
+                .requestMatchers("/api/authors").permitAll()
                 .anyRequest().hasRole("ADMIN")
             )
             .addFilterBefore(
