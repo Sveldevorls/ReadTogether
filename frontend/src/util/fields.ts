@@ -16,3 +16,14 @@ export type AuthorDataFields =
   | "authorImageUrl"
   | "biography"
   | "submitterComment";
+
+// Book submission form
+export type BookSubmissionFields =
+  | "title"
+  | "authors"
+  | "isbn"
+  | "bookDescription"
+  | "publisherName"
+  | "publishedDate"
+  | "coverUrl"
+  | "genres";

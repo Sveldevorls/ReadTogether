@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
-import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmissionMapper;
+import com.github.sveldevorls.readtogether.submission.mapper.AuthorSubmissionMapper;
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
@@ -32,7 +32,8 @@ public class AuthorSubmissionService {
         int createdAuthorId = authorService.createFromAuthorData(request.authorData());
 
         // Create AuthorSubmission entity, set authorId as the returned id
-        AuthorSubmission submission = AuthorSubmissionMapper.fromRequest(submitterId, request);
+        AuthorSubmission submission = AuthorSubmissionMapper.fromRequest(request);
+        submission.setSubmitterId(submitterId);
         submission.setAuthorId(createdAuthorId);
 
         // Insert submission into [author_submissions], retrieve created submission id

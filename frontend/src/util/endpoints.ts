@@ -10,10 +10,15 @@ export const ENDPOINTS = {
   MY_PROFILE: "/api/me",
   MY_PROFILE_UPDATE: (field: ProfileUpdateFields) => `/api/me/${field}`,
 
+  AUTHOR_PAGE: (id:string) => `/api/authors/${id}`,
+  AUTHOR_SEARCH_BY_NAME: (name: string) => `/api/authors?name=${name}`,
+
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",
   AUTHOR_SUBMISSION_PAGE: (id: string) => `/api/submissions/authors/${id}`,
   AUTHOR_SUBMISSION_APPROVE: (id: string) => `/api/submissions/authors/${id}/approve`,
   AUTHOR_SUBMISSION_REJECT: (id: string) => `/api/submissions/authors/${id}/reject`,
+
+  BOOK_SUBMISSIONS: "/api/submissions/books",
 
   GENRES: "/api/genres",
 }

@@ -119,7 +119,7 @@ public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
                 Timestamp.from(now),
                 status.name(),
                 submissionId);
-        
+
         return rows;
     }
 

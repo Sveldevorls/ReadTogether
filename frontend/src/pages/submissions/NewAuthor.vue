@@ -4,6 +4,7 @@ import { ENDPOINTS } from "@/util/endpoints";
 import type { AuthorDataFields } from "@/util/fields";
 import type { ErrorResponse, NewAuthorSubmissionResponse, SuccessResponse } from "@/util/responses";
 import { useSingularToast } from "@/util/useSingularToast";
+import { formatDate } from "@/util/utils";
 import { isAxiosError } from "axios";
 import { Button, DatePicker, Fieldset, InputText, Message, Textarea } from "primevue";
 import { useForm } from "vee-validate";
@@ -53,18 +54,13 @@ const [authorImageUrl] = defineField("authorImageUrl");
 const [biography] = defineField("biography");
 const [submitterComment] = defineField("submitterComment");
 
-function convertDateToString(date: Date | null): string | null {
-  if (!date) return null;
-  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-}
-
 const submit = handleSubmit(
   async (values) => {
     const payload = {
       authorData: {
         authorName: values.authorName,
-        dateOfBirth: convertDateToString(values.dateOfBirth),
-        dateOfDeath: convertDateToString(values.dateOfDeath),
+        dateOfBirth: formatDate(values.dateOfBirth),
+        dateOfDeath: formatDate(values.dateOfDeath),
         authorImageUrl: values.authorImageUrl,
         biography: values.biography,
       },

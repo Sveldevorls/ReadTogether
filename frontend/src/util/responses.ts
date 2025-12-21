@@ -55,6 +55,11 @@ export type NewAuthorSubmissionResponse = {
   id: number,
 }
 
+// POST /api/submissions/authors
+export type NewBookSubmissionResponse = {
+  id: number,
+}
+
 // GET /api/submissions/authors/{id}
 export type AuthorSubmisisonResponse = {
   // Meta
@@ -71,6 +76,18 @@ export type AuthorSubmisisonResponse = {
   reviewerComment: string | null,
   reviewedAt: string | null,
   reviewStatus: "approved" | "pending" | "rejected",
+
+  // Author data
+  authorData: AuthorData,
+}
+
+// GET /api/authors/{slug}
+export type AuthorResponse = {
+  // Meta
+  id: number,
+  slug: string,
+  createdAt: string,
+  updatedAt: string,
 
   // Author data
   authorData: AuthorData,
