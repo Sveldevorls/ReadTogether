@@ -1,5 +1,6 @@
 package com.github.sveldevorls.readtogether.submission.dao;
 
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 
 public interface BookSubmissionDao {
@@ -11,4 +12,7 @@ public interface BookSubmissionDao {
     public void mapSubmissionBookAuthor(int submissionId, int bookId, int authorId);
 
     public void mapSubmissionBookGenre(int submissionId, int bookId, int genreId);
+
+    // R
+    public BookSubmissionResponse getSubmissionResponseById(int id);
 }

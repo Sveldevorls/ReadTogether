@@ -1,4 +1,5 @@
 import AuthorSubmissionView from "@/pages/submissions/AuthorSubmissionView.vue";
+import BookSubmissionView from "@/pages/submissions/BookSubmissionView.vue";
 import NewAuthor from "@/pages/submissions/NewAuthor.vue";
 import NewBook from "@/pages/submissions/NewBook.vue";
 import { roles } from "@/util/enums";
@@ -27,6 +28,10 @@ const submissionsRoutes = [
       minimalRole: roles.user,
       redirectTo: "/submissions/books",
     },
+  },
+  {
+    path: "/submissions/books/:id",
+    component: BookSubmissionView,
   },
 ];
 

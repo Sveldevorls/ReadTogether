@@ -1,5 +1,6 @@
 package com.github.sveldevorls.readtogether.submission.service;
 
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionRequest;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.sveldevorls.readtogether.book.service.BookService;
+import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.submission.dao.BookSubmissionDao;
 
 @Service
@@ -50,5 +52,13 @@ public class BookSubmissionService {
         }
 
         return createdSubmissionId;
+    }
+
+    public BookSubmissionResponse getSubmissionResponseById(int id) {
+        BookSubmissionResponse submission = bookSubmissionDao
+                .getSubmissionResponseById(id)
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        return submission;
     }
 }

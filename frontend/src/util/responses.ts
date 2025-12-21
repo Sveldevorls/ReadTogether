@@ -1,5 +1,5 @@
 import type { ProfileUpdateFields } from "./fields";
-import type { AuthorData, ErrorData } from "./types";
+import type { AuthorData, BookData, ErrorData } from "./types";
 
 // Generic response
 // Error response
@@ -79,6 +79,28 @@ export type AuthorSubmisisonResponse = {
 
   // Author data
   authorData: AuthorData,
+}
+
+// GET /api/submissions/books/{id}
+export type BookSubmisisonResponse = {
+  // Meta
+  id: number,
+  createdAt: string,
+  updatedAt: string,
+
+  // Submission data
+  previousSubmissionId: number | null,
+  bookId: number,
+  submitterUsername: string,
+  submitterComment: string | null,
+  reviewerUsername: string | null,
+  reviewerComment: string | null,
+  reviewedAt: string | null,
+  reviewStatus: "approved" | "pending" | "rejected",
+
+  authors: {id: number, slug: string, authorName: string}[],
+  genres: {id: number, slug: string, genreName: string}[],
+  bookData: BookData,
 }
 
 // GET /api/authors/{slug}

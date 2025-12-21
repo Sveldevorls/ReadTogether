@@ -10,7 +10,7 @@ export const ENDPOINTS = {
   MY_PROFILE: "/api/me",
   MY_PROFILE_UPDATE: (field: ProfileUpdateFields) => `/api/me/${field}`,
 
-  AUTHOR_PAGE: (id:string) => `/api/authors/${id}`,
+  AUTHOR_PAGE: (id: string) => `/api/authors/${id}`,
   AUTHOR_SEARCH_BY_NAME: (name: string) => `/api/authors?name=${name}`,
 
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",
@@ -19,6 +19,9 @@ export const ENDPOINTS = {
   AUTHOR_SUBMISSION_REJECT: (id: string) => `/api/submissions/authors/${id}/reject`,
 
   BOOK_SUBMISSIONS: "/api/submissions/books",
+  BOOK_SUBMISSION_PAGE: (id: string) => `/api/submissions/books/${id}`,
+  BOOK_SUBMISSION_APPROVE: (id: string) => `/api/submissions/books/${id}/approve`,
+  BOOK_SUBMISSION_REJECT: (id: string) => `/api/submissions/books/${id}/reject`,
 
   GENRES: "/api/genres",
-}
+};

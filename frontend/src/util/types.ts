@@ -13,6 +13,17 @@ export type AuthorData = {
 	biography: string | null,
 }
 
+// Book core data
+export type BookData = {
+	title: string,
+	isbn: string | null,
+	book_description: string | null,
+	publisher_name: string | null,
+	published_date: string | null,
+	coverUrl: string | null,
+}
+
+
 // Basic genre data
 export type Genre = {
 	id: number,

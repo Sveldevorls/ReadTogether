@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.BookData;
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 
 @Repository
@@ -73,6 +74,12 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     public void mapSubmissionBookGenre(int submissionId, int bookId, int genreId) {
         String sql = "INSERT INTO book_submission_genre_map VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, submissionId, bookId, genreId);
+    }
+
+    // R
+    public BookSubmissionResponse getSubmissionResponseById(int id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSubmissionResponseById'");
     }
 
     // Util
