@@ -112,6 +112,7 @@ export type AuthorResponse = {
   slug: string;
   createdAt: string;
   updatedAt: string;
+  reviewStatus: "approved" | "pending" | "rejected";
 
   // Author data
   authorData: AuthorData;

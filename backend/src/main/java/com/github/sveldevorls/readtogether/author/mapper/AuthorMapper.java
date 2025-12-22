@@ -22,6 +22,7 @@ public class AuthorMapper {
             author.getSlug(),
             author.getCreatedAt(),
             author.getUpdatedAt(),
+            author.getReviewStatus(),
             author.getAuthorData()
         );
     }
