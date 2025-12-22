@@ -16,8 +16,6 @@ export type SuccessResponse<ResponseType> = {
   data: ResponseType;
 };
 
-
-
 // Endpoint specific response
 // POST /api/register
 export type RegisterResponse = {
@@ -52,65 +50,69 @@ export type ProfileUpdateResponse<fieldName extends ProfileUpdateFields> = Recor
 
 // POST /api/submissions/authors
 export type NewAuthorSubmissionResponse = {
-  id: number,
-}
+  id: number;
+};
 
 // POST /api/submissions/authors
 export type NewBookSubmissionResponse = {
-  id: number,
-}
+  id: number;
+};
 
 // GET /api/submissions/authors/{id}
 export type AuthorSubmisisonResponse = {
   // Meta
-  id: number,
-  createdAt: string,
-  updatedAt: string,
+  id: number;
+  createdAt: string;
+  updatedAt: string;
 
   // Submission data
-  previousSubmissionId: number | null,
-  authorId: number,
-  submitterUsername: string,
-  submitterComment: string | null,
-  reviewerUsername: string | null,
-  reviewerComment: string | null,
-  reviewedAt: string | null,
-  reviewStatus: "approved" | "pending" | "rejected",
+  previousSubmissionId: number | null;
+  authorId: number;
+  submitterUsername: string;
+  submitterComment: string | null;
+  reviewerUsername: string | null;
+  reviewerComment: string | null;
+  reviewedAt: string | null;
+  reviewStatus: "approved" | "pending" | "rejected";
 
   // Author data
-  authorData: AuthorData,
-}
+  authorData: AuthorData;
+};
 
 // GET /api/submissions/books/{id}
 export type BookSubmisisonResponse = {
   // Meta
-  id: number,
-  createdAt: string,
-  updatedAt: string,
+  id: number;
+  createdAt: string;
+  updatedAt: string;
 
   // Submission data
-  previousSubmissionId: number | null,
-  bookId: number,
-  submitterUsername: string,
-  submitterComment: string | null,
-  reviewerUsername: string | null,
-  reviewerComment: string | null,
-  reviewedAt: string | null,
-  reviewStatus: "approved" | "pending" | "rejected",
+  previousSubmissionId: number | null;
+  bookId: number;
+  submitterUsername: string;
+  submitterComment: string | null;
+  reviewerUsername: string | null;
+  reviewerComment: string | null;
+  reviewedAt: string | null;
+  reviewStatus: "approved" | "pending" | "rejected";
 
-  authors: {id: number, slug: string, authorName: string}[],
-  genres: {id: number, slug: string, genreName: string}[],
-  bookData: BookData,
-}
+  authors: { id: number; slug: string; authorName: string }[];
+  genres: { id: number; slug: string; genreName: string }[];
+  bookData: BookData;
+};
 
 // GET /api/authors/{slug}
+export type AuthorProfileResponse = {
+  author: AuthorResponse;
+};
+
 export type AuthorResponse = {
   // Meta
-  id: number,
-  slug: string,
-  createdAt: string,
-  updatedAt: string,
+  id: number;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
 
   // Author data
-  authorData: AuthorData,
-}
+  authorData: AuthorData;
+};

@@ -4,6 +4,7 @@ import { useUserStore } from "@/util/userStore";
 import { createRouter, createWebHistory } from "vue-router";
 
 import authRoutes from "./authRoutes";
+import authorRoutes from "./authorRoutes";
 import submissionsRoutes from "./submissionsRoutes";
 import usersRoutes from "./usersRoutes";
 
@@ -15,12 +16,7 @@ declare module "vue-router" {
   }
 }
 
-const routes = [
-  { path: "/", component: Index },
-  ...usersRoutes,
-  ...authRoutes,
-  ...submissionsRoutes
-];
+const routes = [{ path: "/", component: Index }, ...usersRoutes, ...authRoutes, ...submissionsRoutes, ...authorRoutes];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

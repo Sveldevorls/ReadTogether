@@ -10,7 +10,8 @@ export const ENDPOINTS = {
   MY_PROFILE: "/api/me",
   MY_PROFILE_UPDATE: (field: ProfileUpdateFields) => `/api/me/${field}`,
 
-  AUTHOR_PAGE: (id: string) => `/api/authors/${id}`,
+  AUTHOR_DATA: (id: string) => `/api/authors/${id}`,
+  AUTHOR_PROFILE: (id: string) => `/api/authors/${id}/profile`,
   AUTHOR_SEARCH_BY_NAME: (name: string) => `/api/authors?name=${name}`,
 
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",

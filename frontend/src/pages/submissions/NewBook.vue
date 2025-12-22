@@ -217,7 +217,7 @@ onMounted(async () => {
   if (defaultAuthorId == undefined) return;
 
   try {
-    const { data: response } = await api.get<SuccessResponse<AuthorResponse>>(ENDPOINTS.AUTHOR_PAGE(defaultAuthorId));
+    const { data: response } = await api.get<SuccessResponse<AuthorResponse>>(ENDPOINTS.AUTHOR_DATA(defaultAuthorId));
     authors.value.push(response.data.id);
     selectedAuthors.value.push(response.data);
   } catch (error) {}

@@ -3,6 +3,7 @@ package com.github.sveldevorls.readtogether.author.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.sveldevorls.readtogether.author.dto.AuthorProfileResponse;
 import com.github.sveldevorls.readtogether.author.dto.AuthorResponse;
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
@@ -30,6 +31,16 @@ public class AuthorController {
         AuthorResponse response = authorService.getAuthorById(id);
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, response),
+                HttpStatus.OK);
+    }
+
+    // Todo: expand once books are added
+    @GetMapping(path = "/{id}/profile")
+    public ResponseEntity<SuccessResponse> getAuthorProfile(@PathVariable int id) {
+        AuthorResponse response = authorService.getAuthorById(id);
+        AuthorProfileResponse profile = new AuthorProfileResponse(response);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, profile),
                 HttpStatus.OK);
     }
 
