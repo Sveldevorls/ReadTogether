@@ -252,7 +252,7 @@ dd {
     @apply border-b border-gray-400;
   }
 
-  &:nth-last-of-type(even) {
+  &:nth-of-type(even) {
     @apply bg-neutral-100;
   }
 }

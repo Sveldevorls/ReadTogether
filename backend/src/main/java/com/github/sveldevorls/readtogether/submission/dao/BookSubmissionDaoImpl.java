@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +15,10 @@ import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.GenreLink;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorLink;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 
 @Repository
 public class BookSubmissionDaoImpl implements BookSubmissionDao {
@@ -77,9 +82,65 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     }
 
     // R
-    public BookSubmissionResponse getSubmissionResponseById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSubmissionResponseById'");
+    public List<AuthorLink> getAuthorLinksById(int submissionId) {
+        String sql = """
+            SELECT a.id, a.slug, a.author_name
+            FROM book_submission_author_map AS m
+            JOIN authors AS a
+            ON m.author_id = a.id
+            WHERE m.submission_id = ?
+            """;
+        List<AuthorLink> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return new AuthorLink(
+                    rs.getInt("id"),
+                    rs.getString("slug"),
+                    rs.getString("author_name")
+                );
+            },
+            submissionId);
+        return result;
+    }
+
+    public List<GenreLink> getGenreLinksById(int submissionId) {
+        String sql = """
+            SELECT g.id, g.slug, g.genre_name
+            FROM book_submission_genre_map AS m
+            JOIN genres AS g
+            ON m.genre_id = g.id
+            WHERE m.submission_id = ?
+            """;
+        List<GenreLink> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return new GenreLink(
+                    rs.getInt("id"),
+                    rs.getString("slug"),
+                    rs.getString("genre_name")
+                );
+            },
+            submissionId);
+        return result;
+    }
+
+    public Optional<BookSubmissionResponse> getSubmissionResponseById(int id) {
+        List<AuthorLink> authors = getAuthorLinksById(id);
+        List<GenreLink> genres = getGenreLinksById(id);
+
+        String sql = """
+                    SELECT b.*, s.username AS "submitter_username", r.username AS "reviewer_username"
+                    FROM book_submissions b
+                    JOIN users s ON b.submitter_id = s.id
+                    LEFT JOIN users r ON b.reviewer_id = r.id
+                    WHERE b.id = ?;
+                """;
+        List<BookSubmissionResponse> result = jdbcTemplate.query(
+                sql,
+                new BookSubmissionResponseRowMapper(authors, genres),
+                id);
+
+        return result.stream().findFirst();
     }
 
     // Util

@@ -2,9 +2,7 @@ package com.github.sveldevorls.readtogether.submission.service;
 
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionRequest;
-import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
-import com.github.sveldevorls.readtogether.submission.mapper.AuthorSubmissionMapper;
 import com.github.sveldevorls.readtogether.submission.mapper.BookSubmissionMapper;
 
 import org.springframework.stereotype.Service;

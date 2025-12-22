@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
-import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionRequest;
 import com.github.sveldevorls.readtogether.submission.service.BookSubmissionService;

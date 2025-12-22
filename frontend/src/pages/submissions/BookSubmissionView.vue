@@ -51,7 +51,7 @@ function closeDialog() {
 }
 
 async function judgeSubmission(decision: "approve" | "reject") {
-/*   const destination =
+  /*   const destination =
     decision == "approve" ? ENDPOINTS.AUTHOR_SUBMISSION_APPROVE(id) : ENDPOINTS.AUTHOR_SUBMISSION_REJECT(id);
   const payload = { reviewerComment: reviewerComment.value };
   try {
@@ -138,18 +138,44 @@ onBeforeMount(async () => {
         </dd>
       </dl>
 
-      <h2 class="text-2xl mt-6">Author details</h2>
+      <h2 class="text-2xl mt-6">Book details</h2>
       <dl class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] border border-gray-400">
-        <dt>Author name</dt>
-        <dd>{{ submission.authorData.authorName }}</dd>
-        <dt>Date of birth</dt>
-        <dd>{{ submission.authorData.dateOfBirth && parseDate(submission.authorData.dateOfBirth) }}</dd>
-        <dt>Date of death</dt>
-        <dd>{{ submission.authorData.dateOfDeath && parseDate(submission.authorData.dateOfDeath) }}</dd>
-        <dt>Author Image</dt>
-        <dd>{{ submission.authorData.authorImageUrl }}</dd>
-        <dt>Biography</dt>
-        <dd>{{ submission.authorData.biography }}</dd>
+        <dt>Title</dt>
+        <dd>{{ submission.bookData.title }}</dd>
+        <dt>Author(s)</dt>
+        <dd>
+          <RouterLink
+            v-for="(author, index) in submission.authors"
+            :key="author.id"
+            :to="`/authors/${author.id}-${author.slug}`"
+            target="_blank"
+            class="hover:underline"
+          >
+            {{ author.authorName }}{{ index != submission.authors.length - 1 ? "," : "" }}
+          </RouterLink>
+        </dd>
+        <dt>ISBN</dt>
+        <dd>{{ submission.bookData.isbn }}</dd>
+        <dt>Description</dt>
+        <dd>{{ submission.bookData.bookDescription }}</dd>
+        <dt>Publisher</dt>
+        <dd>{{ submission.bookData.publisherName }}</dd>
+        <dt>Publication date</dt>
+        <dd>{{ parseDate(submission.bookData.publishedDate) }}</dd>
+        <dt>Cover Image</dt>
+        <dd>{{ submission.bookData.coverUrl }}</dd>
+        <dt>Genre(s)</dt>
+        <dd class="flex gap-2">
+          <RouterLink
+            v-for="(genre, index) in submission.genres"
+            :key="genre.id"
+            :to="`/genres/${genre.slug}`"
+            target="_blank"
+            class="hover:underline"
+          >
+            {{ genre.genreName }}{{ index != submission.genres.length - 1 ? "," : "" }}
+          </RouterLink>
+        </dd>
       </dl>
 
       <h2 class="text-2xl mt-6">Additional information</h2>
@@ -252,7 +278,7 @@ dd {
     @apply border-b border-gray-400;
   }
 
-  &:nth-last-of-type(even) {
+  &:nth-of-type(even) {
     @apply bg-neutral-100;
   }
 }

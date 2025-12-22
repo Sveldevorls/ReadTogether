@@ -11,7 +11,9 @@ export function parseTimestamp(timestamp: string): string {
   return formattedTimestamp;
 }
 
-export function parseDate(date: string): string {
+export function parseDate(date: string | null): string | null {
+  if (!date) return null;
+  
   const parsedDate = new Date(date);
   const options: Intl.DateTimeFormatOptions = {
     month: "long",

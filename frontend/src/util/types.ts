@@ -17,9 +17,9 @@ export type AuthorData = {
 export type BookData = {
 	title: string,
 	isbn: string | null,
-	book_description: string | null,
-	publisher_name: string | null,
-	published_date: string | null,
+	bookDescription: string | null,
+	publisherName: string | null,
+	publishedDate: string | null,
 	coverUrl: string | null,
 }
 
