@@ -5,10 +5,14 @@ import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionReque
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 import com.github.sveldevorls.readtogether.submission.mapper.BookSubmissionMapper;
 
+import java.util.List;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.sveldevorls.readtogether.book.service.BookService;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.submission.dao.BookSubmissionDao;
 
@@ -58,5 +62,85 @@ public class BookSubmissionService {
                 .orElseThrow(() -> new ResourceNotFoundException());
 
         return submission;
+    }
+
+    @Transactional
+    public BookSubmissionResponse approveSubmission(
+            int submissionId,
+            int reviewerId,
+            String reviewerComment) {
+
+        // Fetch original book id for the submission
+        int bookId = bookSubmissionDao
+                .getBookIdById(submissionId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        // Update submission review status
+        int submissionRows = bookSubmissionDao.updateReviewById(
+                submissionId,
+                ReviewStatus.approved,
+                reviewerId,
+                reviewerComment);
+
+        if (submissionRows == 0)
+            throw new ResourceNotFoundException("Submission was not found, try refreshing the page");
+        if (submissionRows > 1)
+            throw new DataIntegrityViolationException("Multiple submissions were found when only one was expected");
+
+        // Mark the corresponding book as approved
+        bookService.approveBook(bookId);
+
+        // Add corresponding book <-> author map
+        List<Integer> authorIds = bookSubmissionDao.getMappedAuthorsById(submissionId);
+        for (int authorId: authorIds) {
+            bookService.mapBookAuthor(bookId, authorId);
+        }
+        
+        // Add corresponding book <-> genre map
+        List<Integer> genreIds = bookSubmissionDao.getMappedGenresById(submissionId);
+        for (int genreId: genreIds) {
+            bookService.mapBookGenre(bookId, genreId);
+        }
+
+        // Fetch the newly updated submission response
+        BookSubmissionResponse response = bookSubmissionDao
+                .getSubmissionResponseById(submissionId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        return response;
+    }
+
+    @Transactional
+    public BookSubmissionResponse rejectSubmission(
+            int submissionId,
+            int reviewerId,
+            String reviewerComment) {
+
+        // Fetch original author id for the submission
+        int bookId = bookSubmissionDao
+                .getBookIdById(submissionId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        // Update submission review status
+        int rows = bookSubmissionDao.updateReviewById(
+                submissionId,
+                ReviewStatus.rejected,
+                reviewerId,
+                reviewerComment);
+
+        if (rows == 0)
+            throw new ResourceNotFoundException("Submission was not found, try refreshing the page");
+        if (rows > 1)
+            throw new DataIntegrityViolationException("Multiple submissions were found when only one was expected");
+
+        // Remove the rejected author
+        bookService.rejectBook(bookId);
+
+        // Fetch the newly updated submission response
+        BookSubmissionResponse response = bookSubmissionDao
+                .getSubmissionResponseById(submissionId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        return response;
     }
 }

@@ -25,6 +25,8 @@ import jakarta.validation.Valid;
 @RequestMapping(path = "/api/submissions/books", produces = "application/json")
 public class BookSubmissionController {
 
+    private record ReviewRequest(String reviewerComment) {}
+
     private final BookSubmissionService bookSubmissionService;
 
     public BookSubmissionController(BookSubmissionService bookSubmissionService) {
@@ -47,6 +49,42 @@ public class BookSubmissionController {
     @GetMapping("/{submissionId}")
     public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int submissionId) {
         BookSubmissionResponse result = bookSubmissionService.getSubmissionResponseById(submissionId);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/{submissionId}/approve")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<SuccessResponse> approveSubmission(
+            @PathVariable int submissionId,
+            @RequestBody ReviewRequest reviewRequest,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        int reviewerId = principal.getId();
+        BookSubmissionResponse result = bookSubmissionService.approveSubmission(
+                submissionId,
+                reviewerId,
+                reviewRequest.reviewerComment());
+
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/{submissionId}/reject")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<SuccessResponse> rejectSubmission(
+            @PathVariable int submissionId,
+            @RequestBody ReviewRequest reviewRequest,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        int reviewerId = principal.getId();
+        BookSubmissionResponse result = bookSubmissionService.rejectSubmission(
+                submissionId,
+                reviewerId,
+                reviewRequest.reviewerComment());
+
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, result),
                 HttpStatus.OK);

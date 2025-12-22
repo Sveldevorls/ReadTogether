@@ -3,6 +3,8 @@ package com.github.sveldevorls.readtogether.submission.dao;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +16,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.BookData;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.dto.GenreLink;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
+import com.github.sveldevorls.readtogether.submission.rowmapper.BookSubmissionResponseRowMapper;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorLink;
-import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 
 @Repository
 public class BookSubmissionDaoImpl implements BookSubmissionDao {
@@ -103,6 +106,15 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
         return result;
     }
 
+    public Optional<Integer> getBookIdById(int id) {
+        String sql = "SELECT book_id FROM book_submissions WHERE id = ?";
+        List<Integer> result = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> rs.getInt("book_id"),
+                id);
+        return result.stream().findFirst();
+    }
+
     public List<GenreLink> getGenreLinksById(int submissionId) {
         String sql = """
             SELECT g.id, g.slug, g.genre_name
@@ -124,6 +136,30 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
         return result;
     }
 
+    public List<Integer> getMappedAuthorsById(int id) {
+        String sql = "SELECT author_id FROM book_submission_author_map WHERE submission_id = ?";
+        List<Integer> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return rs.getInt("author_id");
+            },
+            id
+        );
+        return result;
+    }
+
+    public List<Integer> getMappedGenresById(int id) {
+        String sql = "SELECT genre_id FROM book_submission_genre_map WHERE submission_id = ?";
+        List<Integer> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return rs.getInt("genre_id");
+            },
+            id
+        );
+        return result;
+    }
+
     public Optional<BookSubmissionResponse> getSubmissionResponseById(int id) {
         List<AuthorLink> authors = getAuthorLinksById(id);
         List<GenreLink> genres = getGenreLinksById(id);
@@ -141,6 +177,29 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
                 id);
 
         return result.stream().findFirst();
+    }
+
+     // U
+    // Return: rows affected
+    public int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment) {
+        Instant now = Instant.now();
+        String sql = """
+                UPDATE book_submissions
+                SET reviewer_id = ?,
+                    reviewer_comment = ?,
+                    reviewed_at = ?,
+                    review_status = ?
+                WHERE id = ? AND review_status = 'pending'
+                """;
+        int rows = jdbcTemplate.update(
+                sql,
+                reviewerId,
+                reviewerComment,
+                Timestamp.from(now),
+                status.name(),
+                submissionId);
+
+        return rows;
     }
 
     // Util

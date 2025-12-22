@@ -1,4 +1,4 @@
-package com.github.sveldevorls.readtogether.submission.dao;
+package com.github.sveldevorls.readtogether.submission.rowmapper;
 
 import java.sql.Date;
 import java.sql.ResultSet;

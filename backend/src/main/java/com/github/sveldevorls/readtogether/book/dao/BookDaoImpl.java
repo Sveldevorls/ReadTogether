@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.Book;
+import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -54,8 +55,25 @@ public class BookDaoImpl implements BookDao {
         return generatedId;
     }
 
+    public void mapBookAuthor(int bookId, int authorId) {
+        String sql = "INSERT INTO book_author_map VALUES (?, ?)";
+        jdbcTemplate.update(sql, bookId, authorId);
+    }
+
+    public void mapBookGenre(int bookId, int genreId) {
+        String sql = "INSERT INTO book_genre_map VALUES (?, ?)";
+        jdbcTemplate.update(sql, bookId, genreId);
+    }
+
+    // U
+    public int updateReviewStatusById(int id, ReviewStatus status) {
+        String sql = "UPDATE books SET review_status = ? WHERE id = ?";
+        int rows = jdbcTemplate.update(sql, status.name(), id);
+        return rows;
+    }
+
+    // Util
     public Date parseNullableDate(LocalDate date) {
         return date == null ? null : Date.valueOf(date);
     }
-
 }

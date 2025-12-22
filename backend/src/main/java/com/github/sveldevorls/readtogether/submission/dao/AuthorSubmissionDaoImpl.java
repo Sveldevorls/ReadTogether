@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
+import com.github.sveldevorls.readtogether.submission.rowmapper.AuthorSubmissionResponseRowMapper;
 
 @Repository
 public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {

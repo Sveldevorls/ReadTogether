@@ -51,11 +51,11 @@ function closeDialog() {
 }
 
 async function judgeSubmission(decision: "approve" | "reject") {
-  /*   const destination =
-    decision == "approve" ? ENDPOINTS.AUTHOR_SUBMISSION_APPROVE(id) : ENDPOINTS.AUTHOR_SUBMISSION_REJECT(id);
+    const destination =
+    decision == "approve" ? ENDPOINTS.BOOK_SUBMISSION_APPROVE(id) : ENDPOINTS.BOOK_SUBMISSION_REJECT(id);
   const payload = { reviewerComment: reviewerComment.value };
   try {
-    const { data: response } = await api.post<SuccessResponse<AuthorSubmisisonResponse>>(destination, payload);
+    const { data: response } = await api.post<SuccessResponse<BookSubmisisonResponse>>(destination, payload);
     submission.value = response.data;
     toast({
       severity: "success",
@@ -72,7 +72,7 @@ async function judgeSubmission(decision: "approve" | "reject") {
     });
   } finally {
     closeDialog();
-  } */
+  }
 }
 
 onBeforeMount(async () => {
