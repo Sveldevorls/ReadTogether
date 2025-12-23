@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import authRoutes from "./authRoutes";
 import authorRoutes from "./authorRoutes";
+import bookRoutes from "./bookRoutes";
 import submissionsRoutes from "./submissionsRoutes";
 import usersRoutes from "./usersRoutes";
 
@@ -16,7 +17,7 @@ declare module "vue-router" {
   }
 }
 
-const routes = [{ path: "/", component: Index }, ...usersRoutes, ...authRoutes, ...submissionsRoutes, ...authorRoutes];
+const routes = [{ path: "/", component: Index }, ...usersRoutes, ...authRoutes, ...submissionsRoutes, ...authorRoutes, ...bookRoutes];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

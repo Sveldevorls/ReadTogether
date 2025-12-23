@@ -31,6 +31,11 @@ export type Genre = {
 	genreName: string
 }
 
+export type GenreSummary = {
+	slug: string,
+	genreName: string
+}
+
 // Barebones data to generate links to an author
 export type AuthorLink = {
 	id: number,

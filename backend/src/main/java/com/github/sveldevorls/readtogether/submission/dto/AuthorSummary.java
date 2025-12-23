@@ -1,8 +1,8 @@
 package com.github.sveldevorls.readtogether.submission.dto;
 
-public record GenreLink(
+public record AuthorSummary(
 
     int id,
     String slug,
-    String genreName
+    String authorName
 ) {}

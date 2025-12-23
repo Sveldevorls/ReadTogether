@@ -17,11 +17,11 @@ import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
-import com.github.sveldevorls.readtogether.submission.dto.GenreLink;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 import com.github.sveldevorls.readtogether.submission.rowmapper.BookSubmissionResponseRowMapper;
-import com.github.sveldevorls.readtogether.submission.dto.AuthorLink;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Repository
 public class BookSubmissionDaoImpl implements BookSubmissionDao {
@@ -85,7 +85,7 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     }
 
     // R
-    public List<AuthorLink> getAuthorLinksById(int submissionId) {
+    public List<AuthorSummary> getAuthorLinksById(int submissionId) {
         String sql = """
             SELECT a.id, a.slug, a.author_name
             FROM book_submission_author_map AS m
@@ -93,10 +93,10 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
             ON m.author_id = a.id
             WHERE m.submission_id = ?
             """;
-        List<AuthorLink> result = jdbcTemplate.query(
+        List<AuthorSummary> result = jdbcTemplate.query(
             sql,
             (rs, rowNum) -> {
-                return new AuthorLink(
+                return new AuthorSummary(
                     rs.getInt("id"),
                     rs.getString("slug"),
                     rs.getString("author_name")
@@ -115,7 +115,7 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
         return result.stream().findFirst();
     }
 
-    public List<GenreLink> getGenreLinksById(int submissionId) {
+    public List<GenreSummary> getGenreSummarysById(int submissionId) {
         String sql = """
             SELECT g.id, g.slug, g.genre_name
             FROM book_submission_genre_map AS m
@@ -123,11 +123,10 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
             ON m.genre_id = g.id
             WHERE m.submission_id = ?
             """;
-        List<GenreLink> result = jdbcTemplate.query(
+        List<GenreSummary> result = jdbcTemplate.query(
             sql,
             (rs, rowNum) -> {
-                return new GenreLink(
-                    rs.getInt("id"),
+                return new GenreSummary(
                     rs.getString("slug"),
                     rs.getString("genre_name")
                 );
@@ -161,8 +160,8 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     }
 
     public Optional<BookSubmissionResponse> getSubmissionResponseById(int id) {
-        List<AuthorLink> authors = getAuthorLinksById(id);
-        List<GenreLink> genres = getGenreLinksById(id);
+        List<AuthorSummary> authors = getAuthorLinksById(id);
+        List<GenreSummary> genres = getGenreSummarysById(id);
 
         String sql = """
                     SELECT b.*, s.username AS "submitter_username", r.username AS "reviewer_username"

@@ -1,17 +1,29 @@
 package com.github.sveldevorls.readtogether.book.dao;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 public interface BookDao {
 
     // C
     // Return: id of the created book
-    public int createBook(Book book);
+    int createBook(Book book);
 
-    public void mapBookAuthor(int bookId, int authorId);
+    void mapBookAuthor(int bookId, int authorId);
 
-    public void mapBookGenre(int bookId, int genreId);
+    void mapBookGenre(int bookId, int genreId);
+
+    // R
+    Optional<Book> getBookById(int id);
+
+    List<AuthorSummary> getAuthorSummariesById(int id);
+
+    List<GenreSummary> getGenreSummariesById(int id);
 
     // U
     int updateReviewStatusById(int id, ReviewStatus status);

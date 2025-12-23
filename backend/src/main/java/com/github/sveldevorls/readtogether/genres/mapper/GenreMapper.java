@@ -1,13 +1,12 @@
 package com.github.sveldevorls.readtogether.genres.mapper;
 
-import com.github.sveldevorls.readtogether.genres.dto.GenreResponse;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.genres.entity.Genre;
 
 public class GenreMapper {
 
-    public static GenreResponse toResponse(Genre genre) {
-        return new GenreResponse(
-            genre.getId(),
+    public static GenreSummary toResponse(Genre genre) {
+        return new GenreSummary(
             genre.getSlug(),
             genre.getGenreName()
         );

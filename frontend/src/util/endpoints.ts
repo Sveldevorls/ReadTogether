@@ -14,6 +14,8 @@ export const ENDPOINTS = {
   AUTHOR_PROFILE: (id: string) => `/api/authors/${id}/profile`,
   AUTHOR_SEARCH_BY_NAME: (name: string) => `/api/authors?name=${name}`,
 
+  BOOK_DETAILS: (id: string) => `/api/books/${id}/details`,
+
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",
   AUTHOR_SUBMISSION_PAGE: (id: string) => `/api/submissions/authors/${id}`,
   AUTHOR_SUBMISSION_APPROVE: (id: string) => `/api/submissions/authors/${id}/approve`,

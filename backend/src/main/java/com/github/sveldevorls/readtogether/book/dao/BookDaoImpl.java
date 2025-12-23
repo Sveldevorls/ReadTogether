@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +14,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.Book;
+import com.github.sveldevorls.readtogether.book.rowmapper.BookRowMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -23,7 +28,7 @@ public class BookDaoImpl implements BookDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
+    // C
     public int createBook(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = """
@@ -63,6 +68,57 @@ public class BookDaoImpl implements BookDao {
     public void mapBookGenre(int bookId, int genreId) {
         String sql = "INSERT INTO book_genre_map VALUES (?, ?)";
         jdbcTemplate.update(sql, bookId, genreId);
+    }
+
+    // R
+    public Optional<Book> getBookById(int id) {
+        String sql = "SELECT * FROM books WHERE id = ?";
+        List<Book> result = jdbcTemplate.query(
+                sql,
+                new BookRowMapper(),
+                id);
+        return result.stream().findFirst();
+    }
+
+    public List<AuthorSummary> getAuthorSummariesById(int id) {
+        String sql = """
+                SELECT a.id, a.slug, a.author_name
+                FROM authors AS a
+                JOIN book_author_map AS m
+                ON m.author_id = a.id
+                WHERE m.book_id = ?;
+                """;
+        List<AuthorSummary> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return new AuthorSummary(
+                    rs.getInt("id"),
+                    rs.getString("slug"),
+                    rs.getString("author_name")
+                );
+            },
+            id);
+        return result;
+    }
+
+    public List<GenreSummary> getGenreSummariesById(int id) {
+        String sql = """
+            SELECT g.id, g.slug, g.genre_name
+            FROM book_genre_map AS m
+            JOIN genres AS g
+            ON m.genre_id = g.id
+            WHERE m.book_id = ?
+            """;
+        List<GenreSummary> result = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return new GenreSummary(
+                    rs.getString("slug"),
+                    rs.getString("genre_name")
+                );
+            },
+            id);
+        return result;
     }
 
     // U

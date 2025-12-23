@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
-import com.github.sveldevorls.readtogether.genres.dto.GenreResponse;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.genres.service.GenreService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class GenreController {
 
     @GetMapping()
     public ResponseEntity<SuccessResponse> getAllGenres() {
-        List<GenreResponse> response = genreService.getAll();
+        List<GenreSummary> response = genreService.getAll();
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, response),
                 HttpStatus.OK);

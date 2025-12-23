@@ -230,7 +230,7 @@ onBeforeMount(async () => {
   </section>
 </template>
 
-<style>
+<style scoped>
 @reference "tailwindcss";
 
 dt {

@@ -14,15 +14,15 @@ import org.springframework.lang.NonNull;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
-import com.github.sveldevorls.readtogether.submission.dto.AuthorLink;
-import com.github.sveldevorls.readtogether.submission.dto.GenreLink;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 public class BookSubmissionResponseRowMapper implements RowMapper<BookSubmissionResponse> {
 
-    private final List<AuthorLink> authors;
-    private final List<GenreLink> genres;
+    private final List<AuthorSummary> authors;
+    private final List<GenreSummary> genres;
 
-    public BookSubmissionResponseRowMapper(List<AuthorLink> authors, List<GenreLink> genres) {
+    public BookSubmissionResponseRowMapper(List<AuthorSummary> authors, List<GenreSummary> genres) {
         this.authors = authors;
         this.genres = genres;
     }

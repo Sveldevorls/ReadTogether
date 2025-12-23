@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 
 public record BookSubmissionResponse(
 
@@ -27,8 +28,8 @@ public record BookSubmissionResponse(
     BookData bookData,
 
     // List of authors
-    List<AuthorLink> authors,
+    List<AuthorSummary> authors,
 
     // List of genres
-    List<GenreLink> genres
+    List<GenreSummary> genres
 ) {}

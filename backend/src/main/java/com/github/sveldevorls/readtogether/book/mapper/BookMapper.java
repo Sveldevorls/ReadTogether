@@ -22,6 +22,7 @@ public class BookMapper {
             book.getSlug(),
             book.getCreatedAt(),
             book.getUpdatedAt(),
+            book.getReviewStatus(),
             book.getBookData()
         );
     }
