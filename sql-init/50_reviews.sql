@@ -16,5 +16,6 @@ CREATE TABLE reviews (
     is_featured BOOLEAN DEFAULT false,
     
     PRIMARY KEY (id),
+    UNIQUE KEY (user_Id, book_id),
     CHECK (rating >= 1 AND rating <= 5)
 );

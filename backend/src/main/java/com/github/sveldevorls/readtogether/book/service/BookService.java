@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.book.dao.BookDao;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
+import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.entity.BookData;
@@ -47,29 +48,39 @@ public class BookService {
 
     public BookResponse getBookById(int id) {
         Book book = bookDao.getBookById(id)
-                            .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException());
         BookResponse response = BookMapper.toResponse(book);
-        
+
         return response;
     }
 
     public BookDetailsResponse getBookDetailsById(int id) {
         // Book response
         Book book = bookDao.getBookById(id)
-                           .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException());
         BookResponse bookResponse = BookMapper.toResponse(book);
-        
+
         // Author summaries
         List<AuthorSummary> authors = getAuthorSummariesById(id);
 
         // Genre summaries
         List<GenreSummary> genres = getGenreSummariesById(id);
 
+        // Ratings summary
+        BookRatingsResponse ratings = getRatingSummaryById(id);
+
         return new BookDetailsResponse(
-            bookResponse,
-            authors,
-            genres
-        );
+                bookResponse,
+                authors,
+                genres,
+                ratings);
+    }
+
+    public BookRatingsResponse getRatingSummaryById(int id) {
+        BookRatingsResponse response = bookDao
+                .getBookRatingResponse(id)
+                .orElseThrow(() -> new ResourceNotFoundException());
+        return response;
     }
 
     // U

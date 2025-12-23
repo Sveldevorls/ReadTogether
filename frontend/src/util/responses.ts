@@ -123,6 +123,7 @@ export type BookDetailsResponse = {
   book: BookResponse;
   authors: AuthorSummary[];
   genres: GenreSummary[];
+  ratings: BookRatingSummary
 };
 
 export type BookResponse = {
@@ -137,3 +138,8 @@ export type BookResponse = {
   bookData: BookData;
 };
 
+export type BookRatingSummary = {
+  average: number,
+  count: number,
+  distributions: Record<1 | 2 | 3 | 4 | 5, number>;
+}

@@ -14,5 +14,8 @@ public record BookDetailsResponse(
     List<AuthorSummary> authors,
 
     // Link to genres
-    List<GenreSummary> genres
+    List<GenreSummary> genres,
+
+    // Ratings summary
+    BookRatingsResponse ratings
 ) {}

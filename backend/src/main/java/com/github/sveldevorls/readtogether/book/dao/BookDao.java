@@ -3,6 +3,7 @@ package com.github.sveldevorls.readtogether.book.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
@@ -24,6 +25,8 @@ public interface BookDao {
     List<AuthorSummary> getAuthorSummariesById(int id);
 
     List<GenreSummary> getGenreSummariesById(int id);
+
+    Optional<BookRatingsResponse> getBookRatingResponse(int id);
 
     // U
     int updateReviewStatusById(int id, ReviewStatus status);

@@ -13,7 +13,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.entity.Book;
+import com.github.sveldevorls.readtogether.book.rowmapper.BookRatingsResponseRowMapper;
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRowMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
@@ -89,35 +91,33 @@ public class BookDaoImpl implements BookDao {
                 WHERE m.book_id = ?;
                 """;
         List<AuthorSummary> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return new AuthorSummary(
-                    rs.getInt("id"),
-                    rs.getString("slug"),
-                    rs.getString("author_name")
-                );
-            },
-            id);
+                sql,
+                (rs, rowNum) -> {
+                    return new AuthorSummary(
+                            rs.getInt("id"),
+                            rs.getString("slug"),
+                            rs.getString("author_name"));
+                },
+                id);
         return result;
     }
 
     public List<GenreSummary> getGenreSummariesById(int id) {
         String sql = """
-            SELECT g.id, g.slug, g.genre_name
-            FROM book_genre_map AS m
-            JOIN genres AS g
-            ON m.genre_id = g.id
-            WHERE m.book_id = ?
-            """;
+                SELECT g.id, g.slug, g.genre_name
+                FROM book_genre_map AS m
+                JOIN genres AS g
+                ON m.genre_id = g.id
+                WHERE m.book_id = ?
+                """;
         List<GenreSummary> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return new GenreSummary(
-                    rs.getString("slug"),
-                    rs.getString("genre_name")
-                );
-            },
-            id);
+                sql,
+                (rs, rowNum) -> {
+                    return new GenreSummary(
+                            rs.getString("slug"),
+                            rs.getString("genre_name"));
+                },
+                id);
         return result;
     }
 
@@ -131,5 +131,26 @@ public class BookDaoImpl implements BookDao {
     // Util
     public Date parseNullableDate(LocalDate date) {
         return date == null ? null : Date.valueOf(date);
+    }
+
+    @Override
+    public Optional<BookRatingsResponse> getBookRatingResponse(int id) {
+        String sql = """
+                SELECT
+                    COUNT(rating) AS total,
+                    AVG(rating) AS average,
+                    COUNT(CASE WHEN rating = 1 THEN 1 END) AS ones,
+                    COUNT(CASE WHEN rating = 2 THEN 1 END) AS twos,
+                    COUNT(CASE WHEN rating = 3 THEN 1 END) AS threes,
+                    COUNT(CASE WHEN rating = 4 THEN 1 END) AS fours,
+                    COUNT(CASE WHEN rating = 5 THEN 1 END) AS fives
+                FROM reviews
+                WHERE book_id = ?
+                """;
+        List<BookRatingsResponse> result = jdbcTemplate.query(
+                sql,
+                new BookRatingsResponseRowMapper(),
+                id);
+        return result.stream().findFirst();
     }
 }
