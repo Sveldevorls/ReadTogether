@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sveldevorls.readtogether.author.dto.AuthorProfileResponse;
-import com.github.sveldevorls.readtogether.author.dto.AuthorResponse;
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;

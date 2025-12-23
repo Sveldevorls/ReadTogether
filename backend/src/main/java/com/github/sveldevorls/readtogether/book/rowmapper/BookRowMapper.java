@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
-import com.github.sveldevorls.readtogether.author.entity.Author;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
