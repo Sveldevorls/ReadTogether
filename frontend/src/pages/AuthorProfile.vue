@@ -46,22 +46,22 @@ onBeforeMount(async () => {
     <!-- Author profile -->
     <div
       v-if="profile != null"
-      class="flex flex-wrap md:grid md:grid-cols-[1fr_3fr] gap-4"
+      class="flex flex-wrap md:grid md:grid-cols-[250px_auto] gap-4"
     >
       <img
         :src="profile.author.authorData.authorImageUrl ?? defaultAvatar"
         :alt="profile.author.authorData.authorName"
-        class="mx-auto h-50 w-50 object-cover"
+        class="mx-auto w-[200px] h-auto"
       />
-      <div class="flex flex-col grow">
-        <span class="text-3xl font-black">{{ profile.author.authorData.authorName }}</span>
+      <div class="flex flex-col grow gap-2">
+        <span class="text-4xl font-black">{{ profile.author.authorData.authorName }}</span>
         <dl class="grid grid-cols-[1fr_3fr] w-50">
           <dt v-if="profile.author.authorData.dateOfBirth">Born</dt>
           <dd v-if="profile.author.authorData.dateOfBirth">{{ profile.author.authorData.dateOfBirth }}</dd>
           <dt v-if="profile.author.authorData.dateOfDeath">Died</dt>
           <dd v-if="profile.author.authorData.dateOfDeath">{{ profile.author.authorData.dateOfDeath }}</dd>
         </dl>
-        <p>{{ profile.author.authorData.biography }}</p>
+        <p class="mt-4">{{ profile.author.authorData.biography }}</p>
       </div>
     </div>
   </section>

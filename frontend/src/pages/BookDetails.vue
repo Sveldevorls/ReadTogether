@@ -56,7 +56,7 @@ onBeforeMount(async () => {
       />
       <div class="flex flex-col grow gap-4">
         <div>
-          <span class="text-4xl font-black mb-2">{{ details.book.bookData.title }}</span>
+          <span class="text-4xl font-black">{{ details.book.bookData.title }}</span>
           <div class="mt-1">
             <RouterLink
               v-for="(author, index) in details.authors"
@@ -72,7 +72,7 @@ onBeforeMount(async () => {
           <span class="font-black text-lg">Genres</span>
           <ul class="flex gap-2">
             <li v-for="(genre) in details.genres" class="border-b">
-              <RouterLink :to="URLS.GENRE_PAGE(genre.genreName)">
+              <RouterLink :to="URLS.GENRE_PAGE(genre.slug)">
                 {{ genre.genreName }}
               </RouterLink>
             </li>
