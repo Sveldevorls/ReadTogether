@@ -1,5 +1,5 @@
 import type { ProfileUpdateFields } from "./fields";
-import type { AuthorData, AuthorLink, BookData, ErrorData, GenreSummary } from "./types";
+import type { AuthorData, AuthorSummary, BookData, ErrorData, GenreSummary } from "./types";
 
 // Generic response
 // Error response
@@ -121,7 +121,7 @@ export type AuthorResponse = {
 // GET /api/authors/{slug}
 export type BookDetailsResponse = {
   book: BookResponse;
-  authors: AuthorLink[];
+  authors: AuthorSummary[];
   genres: GenreSummary[];
 };
 

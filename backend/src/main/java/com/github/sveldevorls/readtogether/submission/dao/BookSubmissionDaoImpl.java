@@ -85,24 +85,23 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     }
 
     // R
-    public List<AuthorSummary> getAuthorLinksById(int submissionId) {
+    public List<AuthorSummary> getAuthorSummariesById(int submissionId) {
         String sql = """
-            SELECT a.id, a.slug, a.author_name
-            FROM book_submission_author_map AS m
-            JOIN authors AS a
-            ON m.author_id = a.id
-            WHERE m.submission_id = ?
-            """;
+                SELECT a.id, a.slug, a.author_name
+                FROM book_submission_author_map AS m
+                JOIN authors AS a
+                ON m.author_id = a.id
+                WHERE m.submission_id = ?
+                """;
         List<AuthorSummary> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return new AuthorSummary(
-                    rs.getInt("id"),
-                    rs.getString("slug"),
-                    rs.getString("author_name")
-                );
-            },
-            submissionId);
+                sql,
+                (rs, rowNum) -> {
+                    return new AuthorSummary(
+                            rs.getInt("id"),
+                            rs.getString("slug"),
+                            rs.getString("author_name"));
+                },
+                submissionId);
         return result;
     }
 
@@ -115,53 +114,50 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
         return result.stream().findFirst();
     }
 
-    public List<GenreSummary> getGenreSummarysById(int submissionId) {
+    public List<GenreSummary> getGenreSummariesById(int submissionId) {
         String sql = """
-            SELECT g.id, g.slug, g.genre_name
-            FROM book_submission_genre_map AS m
-            JOIN genres AS g
-            ON m.genre_id = g.id
-            WHERE m.submission_id = ?
-            """;
+                SELECT g.id, g.slug, g.genre_name
+                FROM book_submission_genre_map AS m
+                JOIN genres AS g
+                ON m.genre_id = g.id
+                WHERE m.submission_id = ?
+                """;
         List<GenreSummary> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return new GenreSummary(
-                    rs.getString("slug"),
-                    rs.getString("genre_name")
-                );
-            },
-            submissionId);
+                sql,
+                (rs, rowNum) -> {
+                    return new GenreSummary(
+                            rs.getString("slug"),
+                            rs.getString("genre_name"));
+                },
+                submissionId);
         return result;
     }
 
     public List<Integer> getMappedAuthorsById(int id) {
         String sql = "SELECT author_id FROM book_submission_author_map WHERE submission_id = ?";
         List<Integer> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return rs.getInt("author_id");
-            },
-            id
-        );
+                sql,
+                (rs, rowNum) -> {
+                    return rs.getInt("author_id");
+                },
+                id);
         return result;
     }
 
     public List<Integer> getMappedGenresById(int id) {
         String sql = "SELECT genre_id FROM book_submission_genre_map WHERE submission_id = ?";
         List<Integer> result = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                return rs.getInt("genre_id");
-            },
-            id
-        );
+                sql,
+                (rs, rowNum) -> {
+                    return rs.getInt("genre_id");
+                },
+                id);
         return result;
     }
 
     public Optional<BookSubmissionResponse> getSubmissionResponseById(int id) {
-        List<AuthorSummary> authors = getAuthorLinksById(id);
-        List<GenreSummary> genres = getGenreSummarysById(id);
+        List<AuthorSummary> authors = getAuthorSummariesById(id);
+        List<GenreSummary> genres = getGenreSummariesById(id);
 
         String sql = """
                     SELECT b.*, s.username AS "submitter_username", r.username AS "reviewer_username"
@@ -178,7 +174,7 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
         return result.stream().findFirst();
     }
 
-     // U
+    // U
     // Return: rows affected
     public int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment) {
         Instant now = Instant.now();
