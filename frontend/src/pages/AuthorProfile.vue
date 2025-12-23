@@ -46,7 +46,7 @@ onBeforeMount(async () => {
     <!-- Author profile -->
     <div
       v-if="profile != null"
-      class="flex flex-wrap md:grid md:grid-cols-[250px_auto] gap-4"
+      class="flex flex-wrap md:grid md:grid-cols-[200px_auto] mx-10 gap-10"
     >
       <img
         :src="profile.author.authorData.authorImageUrl ?? defaultAvatar"

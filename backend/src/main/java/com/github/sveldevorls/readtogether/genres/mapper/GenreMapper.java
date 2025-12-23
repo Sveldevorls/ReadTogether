@@ -7,6 +7,7 @@ public class GenreMapper {
 
     public static GenreSummary toResponse(Genre genre) {
         return new GenreSummary(
+            genre.getId(),
             genre.getSlug(),
             genre.getGenreName()
         );

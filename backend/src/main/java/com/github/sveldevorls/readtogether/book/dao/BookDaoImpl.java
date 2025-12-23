@@ -114,6 +114,7 @@ public class BookDaoImpl implements BookDao {
                 sql,
                 (rs, rowNum) -> {
                     return new GenreSummary(
+                            rs.getInt("id"),
                             rs.getString("slug"),
                             rs.getString("genre_name"));
                 },

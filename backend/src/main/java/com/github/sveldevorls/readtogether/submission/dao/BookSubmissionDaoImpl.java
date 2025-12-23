@@ -126,6 +126,7 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
                 sql,
                 (rs, rowNum) -> {
                     return new GenreSummary(
+                            rs.getInt("id"),
                             rs.getString("slug"),
                             rs.getString("genre_name"));
                 },
