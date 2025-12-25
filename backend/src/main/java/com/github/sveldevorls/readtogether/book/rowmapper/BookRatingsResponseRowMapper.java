@@ -8,12 +8,12 @@ import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
-import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
+import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
 
 
-public class BookRatingsResponseRowMapper implements RowMapper<BookRatingsResponse> {
+public class BookRatingsResponseRowMapper implements RowMapper<RatingsSummary> {
 
-    public BookRatingsResponse mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
+    public RatingsSummary mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
         Map<Integer, Integer> distributions = new HashMap<>();
         distributions.put(1, rs.getInt("ones"));
         distributions.put(2, rs.getInt("twos"));
@@ -21,7 +21,7 @@ public class BookRatingsResponseRowMapper implements RowMapper<BookRatingsRespon
         distributions.put(4, rs.getInt("fours"));
         distributions.put(5, rs.getInt("fives"));
     
-        return new BookRatingsResponse(
+        return new RatingsSummary(
             rs.getFloat("average"),
             rs.getInt("total"),
             distributions

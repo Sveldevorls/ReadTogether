@@ -13,12 +13,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRatingsResponseRowMapper;
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRowMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
+import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
+import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Repository
@@ -134,24 +135,4 @@ public class BookDaoImpl implements BookDao {
         return date == null ? null : Date.valueOf(date);
     }
 
-    @Override
-    public Optional<BookRatingsResponse> getBookRatingResponse(int id) {
-        String sql = """
-                SELECT
-                    COUNT(rating) AS total,
-                    AVG(rating) AS average,
-                    COUNT(CASE WHEN rating = 1 THEN 1 END) AS ones,
-                    COUNT(CASE WHEN rating = 2 THEN 1 END) AS twos,
-                    COUNT(CASE WHEN rating = 3 THEN 1 END) AS threes,
-                    COUNT(CASE WHEN rating = 4 THEN 1 END) AS fours,
-                    COUNT(CASE WHEN rating = 5 THEN 1 END) AS fives
-                FROM reviews
-                WHERE book_id = ?
-                """;
-        List<BookRatingsResponse> result = jdbcTemplate.query(
-                sql,
-                new BookRatingsResponseRowMapper(),
-                id);
-        return result.stream().findFirst();
-    }
 }

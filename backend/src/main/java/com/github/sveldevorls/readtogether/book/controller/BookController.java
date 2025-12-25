@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
-import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
 import com.github.sveldevorls.readtogether.book.service.BookService;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
+import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
+import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path = "/api/books", produces = "application/json")
 public class BookController {
 
-    private record RateRequest(int score) {}
+    private record ReviewRequest(int rating, String comment) {
+    }
 
     private final BookService bookService;
 
@@ -40,23 +42,32 @@ public class BookController {
     }
 
     // Todo: expand once reviews are added
-    @GetMapping(path = "/{id}/details")
-    public ResponseEntity<SuccessResponse> getBookDetails(@PathVariable int id) {
-        BookDetailsResponse response = bookService.getBookDetailsById(id);
+    @GetMapping(path = "/{bookId}/details")
+    public ResponseEntity<SuccessResponse> getBookDetails(
+            @PathVariable int bookId,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        Integer userId = principal != null ? principal.getId() : null;
+        BookDetailsResponse response = bookService.getBookDetailsById(bookId, userId);
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, response),
                 HttpStatus.OK);
     }
 
-    /* @PostMapping(path = "/{id}/rate")
+    @PostMapping(path = "/{id}/review")
     public ResponseEntity<SuccessResponse> rateBook(
+            @AuthenticationPrincipal JwtUserPrincipal principal,
             @PathVariable int id,
-            @RequestBody RateRequest request,
-            @AuthenticationPrincipal JwtUserPrincipal principal) {
+            @RequestBody ReviewRequest request) {
 
-        BookRatingsResponse response = bookService.rateBook(id, request.score());
+        ReviewSubmissionResponse response = bookService.reviewBook(
+                principal.getId(),
+                id,
+                request.rating(),
+                request.comment());
+
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, response),
                 HttpStatus.OK);
-    } */
+    }
 }

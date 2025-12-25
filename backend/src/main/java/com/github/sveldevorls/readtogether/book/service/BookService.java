@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.book.dao.BookDao;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
-import com.github.sveldevorls.readtogether.book.dto.BookRatingsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.entity.BookData;
@@ -16,14 +14,21 @@ import com.github.sveldevorls.readtogether.book.mapper.BookMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
+import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
+import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
+import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
+import com.github.sveldevorls.readtogether.review.service.ReviewService;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Service
 public class BookService {
 
+    private final ReviewService reviewService;
+
     private final BookDao bookDao;
 
-    public BookService(AuthorService authorService, BookDao bookDao) {
+    public BookService(ReviewService reviewService, BookDao bookDao) {
+        this.reviewService = reviewService;
         this.bookDao = bookDao;
     }
 
@@ -54,33 +59,31 @@ public class BookService {
         return response;
     }
 
-    public BookDetailsResponse getBookDetailsById(int id) {
+    public BookDetailsResponse getBookDetailsById(int bookId, Integer userId) {
         // Book response
-        Book book = bookDao.getBookById(id)
+        Book book = bookDao
+                .getBookById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException());
         BookResponse bookResponse = BookMapper.toResponse(book);
 
         // Author summaries
-        List<AuthorSummary> authors = getAuthorSummariesById(id);
+        List<AuthorSummary> authors = getAuthorSummariesById(bookId);
 
         // Genre summaries
-        List<GenreSummary> genres = getGenreSummariesById(id);
+        List<GenreSummary> genres = getGenreSummariesById(bookId);
 
         // Ratings summary
-        BookRatingsResponse ratings = getRatingSummaryById(id);
+        RatingsSummary ratings = reviewService.getBookRatingsSummary(bookId);
+
+        // User review
+        ReviewSummary userReview = userId != null ? reviewService.getUserBookReview(userId, bookId) : null;
 
         return new BookDetailsResponse(
                 bookResponse,
                 authors,
                 genres,
-                ratings);
-    }
-
-    public BookRatingsResponse getRatingSummaryById(int id) {
-        BookRatingsResponse response = bookDao
-                .getBookRatingResponse(id)
-                .orElseThrow(() -> new ResourceNotFoundException());
-        return response;
+                ratings,
+                userReview);
     }
 
     // U
@@ -108,6 +111,13 @@ public class BookService {
             throw new ResourceNotFoundException("Book was not found, try refreshing the page");
         if (rows > 1)
             throw new DataIntegrityViolationException("Multiple books were found when only one was expected");
+    }
+
+    public ReviewSubmissionResponse reviewBook(int userId, int bookId, int rating, String comment) {
+        int createdId = reviewService.createReview(userId, bookId, rating, comment);
+        RatingsSummary ratings = reviewService.getBookRatingsSummary(bookId);
+        ReviewSummary userReviewSummary = reviewService.getReviewSummaryById(createdId);
+        return new ReviewSubmissionResponse(ratings, userReviewSummary);
     }
 
 }

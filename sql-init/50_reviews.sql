@@ -10,9 +10,9 @@ CREATE TABLE reviews (
     -- Review data
     user_id INT NOT NULL,
     book_id INT NOT NULL,
-    content TEXT, -- Null for simple ratings
-    like_count INT DEFAULT 0,
     rating INT NOT NULL,
+    comment TEXT, -- Null for simple ratings
+    like_count INT DEFAULT 0,
     is_featured BOOLEAN DEFAULT false,
     
     PRIMARY KEY (id),
