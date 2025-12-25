@@ -118,12 +118,13 @@ export type AuthorResponse = {
   authorData: AuthorData;
 };
 
-// GET /api/authors/{slug}
+// GET /api/book/{slug}
 export type BookDetailsResponse = {
   book: BookResponse;
   authors: AuthorSummary[];
   genres: GenreSummary[];
-  ratings: BookRatingSummary
+  ratings: RatingsSummary;
+  userReview: ReviewSummary
 };
 
 export type BookResponse = {
@@ -138,8 +139,23 @@ export type BookResponse = {
   bookData: BookData;
 };
 
-export type BookRatingSummary = {
-  average: number,
-  count: number,
+export type RatingsSummary = {
+  average: number;
+  count: number;
   distributions: Record<1 | 2 | 3 | 4 | 5, number>;
+};
+
+export type ReviewSummary = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  rating: number;
+  comment: string;
+  likeCount: number;
+  isFeatured: boolean;
+};
+
+export type ReviewSubmissionResponse = {
+  ratings: RatingsSummary
+  userReview: ReviewSummary
 }
