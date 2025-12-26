@@ -96,7 +96,7 @@ onBeforeMount(async () => {
 <template>
   <section
     v-if="!isLoading"
-    class="w-[min(100%,80em)] p-4 break-all"
+    class="w-[min(100%,80em)] p-4 whitespace-pre-wrap"
   >
     <h1 v-if="errorStatus && errorStatus == 'notfound'">404 not found</h1>
     <h1 v-else-if="errorStatus && errorStatus === 'error'">Unknown error</h1>
@@ -163,7 +163,7 @@ onBeforeMount(async () => {
         <dt>Publication date</dt>
         <dd>{{ parseDate(submission.bookData.publishedDate) }}</dd>
         <dt>Cover Image</dt>
-        <dd>{{ submission.bookData.coverUrl }}</dd>
+        <dd class="break-all">{{ submission.bookData.coverUrl }}</dd>
         <dt>Genre(s)</dt>
         <dd class="flex gap-2">
           <RouterLink

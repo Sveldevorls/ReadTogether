@@ -96,7 +96,7 @@ onBeforeMount(async () => {
 <template>
   <section
     v-if="!isLoading"
-    class="w-[min(100%,80em)] p-4 break-all"
+    class="w-[min(100%,80em)] p-4 whitespace-pre-wrap"
   >
     <h1 v-if="errorStatus && errorStatus == 'notfound'">404 not found</h1>
     <h1 v-else-if="errorStatus && errorStatus === 'error'">Unknown error</h1>
@@ -147,7 +147,7 @@ onBeforeMount(async () => {
         <dt>Date of death</dt>
         <dd>{{ submission.authorData.dateOfDeath && parseDate(submission.authorData.dateOfDeath) }}</dd>
         <dt>Author Image</dt>
-        <dd>{{ submission.authorData.authorImageUrl }}</dd>
+        <dd class="break-all">{{ submission.authorData.authorImageUrl }}</dd>
         <dt>Biography</dt>
         <dd>{{ submission.authorData.biography }}</dd>
       </dl>

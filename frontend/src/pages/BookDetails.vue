@@ -104,7 +104,7 @@ async function submitReview() {
     <!-- Book details -->
     <div
       v-if="details != null"
-      class="flex flex-wrap md:grid md:grid-cols-[200px_auto] mx-4 gap-10"
+      class="flex flex-wrap md:grid md:grid-cols-[200px_1fr] mx-4 gap-10 whitespace-pre-wrap"
     >
       <div class="flex flex-col gap-4 mx-auto">
         <img

@@ -14,7 +14,6 @@ import com.github.sveldevorls.readtogether.book.dto.BookResponse;
 import com.github.sveldevorls.readtogether.book.service.BookService;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
-import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 
 import org.springframework.web.bind.annotation.PostMapping;
