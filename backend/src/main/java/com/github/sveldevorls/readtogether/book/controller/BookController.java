@@ -1,7 +1,10 @@
 package com.github.sveldevorls.readtogether.book.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
 import com.github.sveldevorls.readtogether.book.service.BookService;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
+import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 
@@ -53,7 +57,20 @@ public class BookController {
                 HttpStatus.OK);
     }
 
-    @PostMapping(path = "/{id}/review")
+    /* @GetMapping("/{bookId}/reviews")
+    public ResponseEntity<SuccessResponse> getCommunityReviews(
+            @PathVariable int bookId,
+            @AuthenticationPrincipal JwtUserPrincipal principal) {
+
+        Integer userId = principal != null ? principal.getId() : null;
+        List<ReviewResponse> response = bookService.getCommunityReviews(bookId, userId);
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, response),
+                HttpStatus.OK);
+    } */
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(path = "/{id}/reviews")
     public ResponseEntity<SuccessResponse> rateBook(
             @AuthenticationPrincipal JwtUserPrincipal principal,
             @PathVariable int id,

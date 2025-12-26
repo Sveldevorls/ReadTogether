@@ -1,12 +1,13 @@
 package com.github.sveldevorls.readtogether.review.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.review.dao.ReviewDao;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
+import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.review.entity.Review;
 import com.github.sveldevorls.readtogether.review.mapper.ReviewMapper;
@@ -49,6 +50,11 @@ public class ReviewService {
                 .getBookRatingsResponse(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException());
 
+        return response;
+    }
+
+    public List<ReviewResponse> getCommunityReviewsByBookId(int bookId, Integer userId) {
+        List<ReviewResponse> response = reviewDao.getCommunityReviewsByBookId(bookId, userId);
         return response;
     }
 

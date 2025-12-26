@@ -69,7 +69,7 @@ async function submitReview() {
   };
   try {
     const { data: response } = await api.post<SuccessResponse<ReviewSubmissionResponse>>(
-      ENDPOINTS.BOOK_REVIEW(id),
+      ENDPOINTS.BOOK_REVIEWS(id),
       payload,
     );
     if (details.value) {
@@ -205,6 +205,7 @@ async function submitReview() {
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
         <h2>{{ details.userReview }}</h2>
+        <h2>{{ details.communityReviews }}</h2>
       </div>
     </div>
 

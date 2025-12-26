@@ -15,6 +15,7 @@ import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
+import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.review.service.ReviewService;
@@ -78,12 +79,15 @@ public class BookService {
         // User review
         ReviewSummary userReview = userId != null ? reviewService.getUserBookReview(userId, bookId) : null;
 
+        List<ReviewResponse> communityReviews = reviewService.getCommunityReviewsByBookId(bookId, userId);
+
         return new BookDetailsResponse(
                 bookResponse,
                 authors,
                 genres,
                 ratings,
-                userReview);
+                userReview,
+                communityReviews);
     }
 
     // U

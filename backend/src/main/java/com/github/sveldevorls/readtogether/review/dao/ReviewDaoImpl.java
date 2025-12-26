@@ -13,8 +13,10 @@ import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRatingsResponseRowMapper;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
+import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.review.entity.Review;
+import com.github.sveldevorls.readtogether.review.rowmapper.ReviewResponseRowMapper;
 import com.github.sveldevorls.readtogether.review.rowmapper.ReviewSummaryRowMapper;
 
 @Repository
@@ -93,5 +95,32 @@ public class ReviewDaoImpl implements ReviewDao {
                 new BookRatingsResponseRowMapper(),
                 id);
         return result.stream().findFirst();
+    }
+
+    public List<ReviewResponse> getCommunityReviewsByBookId(int bookId, Integer userId) {
+        String sql = """
+                SELECT u.username, u.display_name, u.avatar_url, r.*
+                FROM reviews AS r
+                JOIN users AS u
+                ON r.user_id = u.id
+                WHERE r.book_id = ?
+                """;
+        List<ReviewResponse> result;
+
+        if (userId == null) {
+            result = jdbcTemplate.query(
+                    sql,
+                    new ReviewResponseRowMapper(),
+                    bookId);
+        } else {
+            sql += "AND r.user_id != ?";
+            result = jdbcTemplate.query(
+                    sql,
+                    new ReviewResponseRowMapper(),
+                    bookId,
+                    userId);
+        }
+
+        return result;
     }
 }
