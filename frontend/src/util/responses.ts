@@ -124,7 +124,7 @@ export type BookDetailsResponse = {
   authors: AuthorSummary[];
   genres: GenreSummary[];
   ratings: RatingsSummary;
-  userReview: ReviewSummary;
+  userReview: ReviewResponse;
   communityReviews: ReviewResponse[];
 };
 
@@ -158,7 +158,7 @@ export type ReviewSummary = {
 
 export type ReviewSubmissionResponse = {
   ratings: RatingsSummary
-  userReview: ReviewSummary
+  userReview: ReviewResponse
 }
 
 export type ReviewResponse = {

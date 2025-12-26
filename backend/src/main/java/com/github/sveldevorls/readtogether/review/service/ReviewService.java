@@ -37,8 +37,8 @@ public class ReviewService {
         return response;
     }
 
-    public ReviewSummary getUserBookReview(int userId, int bookId) {
-        ReviewSummary response = reviewDao
+    public ReviewResponse getUserBookReview(int userId, int bookId) {
+        ReviewResponse response = reviewDao
                 .getUserBookReview(userId, bookId)
                 .orElse(null);
 

@@ -17,7 +17,6 @@ import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
 import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSubmissionResponse;
-import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.review.service.ReviewService;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
@@ -77,7 +76,7 @@ public class BookService {
         RatingsSummary ratings = reviewService.getBookRatingsSummary(bookId);
 
         // User review
-        ReviewSummary userReview = userId != null ? reviewService.getUserBookReview(userId, bookId) : null;
+        ReviewResponse userReview = userId != null ? reviewService.getUserBookReview(userId, bookId) : null;
 
         List<ReviewResponse> communityReviews = reviewService.getCommunityReviewsByBookId(bookId, userId);
 
@@ -118,9 +117,9 @@ public class BookService {
     }
 
     public ReviewSubmissionResponse reviewBook(int userId, int bookId, int rating, String comment) {
-        int createdId = reviewService.createReview(userId, bookId, rating, comment);
+        reviewService.createReview(userId, bookId, rating, comment);
         RatingsSummary ratings = reviewService.getBookRatingsSummary(bookId);
-        ReviewSummary userReviewSummary = reviewService.getReviewSummaryById(createdId);
+        ReviewResponse userReviewSummary = reviewService.getUserBookReview(userId, bookId);
         return new ReviewSubmissionResponse(ratings, userReviewSummary);
     }
 

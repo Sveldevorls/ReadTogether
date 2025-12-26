@@ -67,11 +67,18 @@ public class ReviewDaoImpl implements ReviewDao {
         return result.stream().findFirst();
     }
 
-    public Optional<ReviewSummary> getUserBookReview(int userId, int bookId) {
-        String sql = "SELECT * FROM reviews WHERE user_id = ? AND book_id = ?";
-        List<ReviewSummary> result = jdbcTemplate.query(
+    public Optional<ReviewResponse> getUserBookReview(int userId, int bookId) {
+        String sql = """
+                SELECT u.username, u.display_name, u.avatar_url, r.*
+                FROM reviews AS r
+                JOIN users AS u
+                ON r.user_id = u.id
+                WHERE r.book_id = ? AND r.user_id = ?
+                """;
+        ;
+        List<ReviewResponse> result = jdbcTemplate.query(
                 sql,
-                new ReviewSummaryRowMapper(),
+                new ReviewResponseRowMapper(),
                 userId,
                 bookId);
         return result.stream().findFirst();
@@ -104,23 +111,15 @@ public class ReviewDaoImpl implements ReviewDao {
                 JOIN users AS u
                 ON r.user_id = u.id
                 WHERE r.book_id = ?
+                AND (? IS NULL OR r.user_id != ?)
+                LIMIT 10
                 """;
-        List<ReviewResponse> result;
-
-        if (userId == null) {
-            result = jdbcTemplate.query(
-                    sql,
-                    new ReviewResponseRowMapper(),
-                    bookId);
-        } else {
-            sql += "AND r.user_id != ?";
-            result = jdbcTemplate.query(
-                    sql,
-                    new ReviewResponseRowMapper(),
-                    bookId,
-                    userId);
-        }
-
+        List<ReviewResponse> result = jdbcTemplate.query(
+                sql,
+                new ReviewResponseRowMapper(),
+                bookId,
+                userId,
+                userId);
         return result;
     }
 }

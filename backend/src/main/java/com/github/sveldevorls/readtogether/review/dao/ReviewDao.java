@@ -16,7 +16,7 @@ public interface ReviewDao {
     // R
     Optional<ReviewSummary> getReviewSummaryById(int id);
 
-    Optional<ReviewSummary> getUserBookReview(int userId, int bookId);
+    Optional<ReviewResponse> getUserBookReview(int userId, int bookId);
 
     Optional<RatingsSummary> getBookRatingsResponse(int id);
 
