@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import defaultCover from "@/assets/default_cover.svg";
 import RatingDistributionChart from "@/components/RatingDistributionChart.vue";
+import StarRatingDisplay from "@/components/StarRatingDisplay.vue";
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
 import { roles } from "@/util/enums";
@@ -112,7 +113,10 @@ async function submitReview() {
           :alt="details.book.bookData.title"
           class="mx-auto w-[200px] h-auto"
         />
-        <div class="flex flex-col items-center gap-2">
+        <div
+          v-if="details.userReview == null"
+          class="flex flex-col items-center gap-2"
+        >
           <Rating
             :stars="5"
             v-model="rating"
@@ -165,7 +169,7 @@ async function submitReview() {
           </div>
         </div>
         <div>
-          <div>{{ details.ratings.average }}</div>
+          <StarRatingDisplay :rating="details.ratings.average" />
           <div>{{ details.ratings.count }} ratings</div>
         </div>
         <p>{{ details.book.bookData.bookDescription }}</p>
@@ -194,11 +198,13 @@ async function submitReview() {
           </dl>
         </div>
         <Divider />
-        <h2>{{ details.userReview }}</h2>
+        <h2 class="text-3xl font-bold">Community reviews</h2>
+        <StarRatingDisplay :rating="details.ratings.average" />
         <div v-if="details.ratings.count == 0">No one has reviewed this book yet. Be the first to do it</div>
         <div v-else>
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
+        <h2>{{ details.userReview }}</h2>
       </div>
     </div>
 

@@ -10,13 +10,12 @@ function getBarWidth(votes: number): string {
 </script>
 
 <template>
-  <h2>{{ ratings.average.toFixed(2) }}</h2>
   <div
     v-for="[k, v] in Object.entries(ratings.distributions).reverse()"
-    class="grid grid-cols-[50px_3fr_1fr] gap-4 items-center"
+    class="grid grid-cols-[25px_3fr_1fr] gap-4 gap-y-8 items-center"
   >
     <div class="contents">
-      <span>{{ k }} stars</span>
+      <span>{{ k }}</span>
       <div class="relative">
         <div class="bg-gray-300 w-full h-3 rounded-full"></div>
         <div
