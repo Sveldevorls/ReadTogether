@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import defaultCover from "@/assets/default_cover.svg";
 import RatingDistributionChart from "@/components/RatingDistributionChart.vue";
+import ReviewBlock from "@/components/ReviewBlock.vue";
 import StarRatingDisplay from "@/components/StarRatingDisplay.vue";
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
@@ -204,8 +205,11 @@ async function submitReview() {
         <div v-else>
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
-        <h2>{{ details.userReview }}</h2>
-        <h2>{{ details.communityReviews }}</h2>
+        <ReviewBlock :review="details.userReview" />
+        <ReviewBlock
+          v-for="review in details.communityReviews"
+          :review="review"
+        />
       </div>
     </div>
 
