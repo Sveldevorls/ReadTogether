@@ -58,4 +58,17 @@ public class ReviewService {
         return response;
     }
 
+    public boolean isInitialized() {
+        return reviewDao.isInitialized();
+    }
+
+    // U
+    public void setReviewAsFeatured(int id) {
+        reviewDao.updateReviewFeaturedStatus(id, true);
+    }
+
+    public void removeRevieFromFeatured(int id) {
+        reviewDao.updateReviewFeaturedStatus(id, false);
+    }
+
 }

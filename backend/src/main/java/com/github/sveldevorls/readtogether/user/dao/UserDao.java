@@ -24,8 +24,12 @@ public interface UserDao {
 
     Optional<User> getUserByUsername(String username);
 
+    boolean isInitialized();
+    
     // U //
     void updateBio(String username, String newBio);
-
+    
     void updateDisplayName(String username, String newDisplayName);
+    
+    void updateAvatarUrl(String username, String newAvatarUrl);
 }

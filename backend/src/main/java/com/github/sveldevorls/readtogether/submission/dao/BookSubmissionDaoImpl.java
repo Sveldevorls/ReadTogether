@@ -85,6 +85,12 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
     }
 
     // R
+    public boolean isInitialized() {
+        String sql = "SELECT COUNT(*) FROM book_submissions;";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+        return count != null && count > 0;
+    }
+
     public List<AuthorSummary> getAuthorSummariesById(int submissionId) {
         String sql = """
                 SELECT a.id, a.slug, a.author_name

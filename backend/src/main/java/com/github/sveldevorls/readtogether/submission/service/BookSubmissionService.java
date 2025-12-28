@@ -28,6 +28,10 @@ public class BookSubmissionService {
         this.bookSubmissionDao = bookSubmissionDao;
     }
 
+    public boolean isInitialized() {
+        return bookSubmissionDao.isInitialized();
+    }
+
     @Transactional
     public int createNewBookSubmission(int submitterId, NewBookSubmissionRequest request) {
 

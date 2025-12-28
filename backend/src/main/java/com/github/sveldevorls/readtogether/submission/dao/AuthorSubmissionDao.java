@@ -15,6 +15,8 @@ public interface AuthorSubmissionDao {
     // R
     Optional<AuthorSubmissionResponse> getSubmissionResponseById(int id);
 
+    boolean isInitialized();
+
     /* Optional<AuthorSubmission> getSubmissionEntityById(int id); */
 
     Optional<Integer> getAuthorIdById(int id);

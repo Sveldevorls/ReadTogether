@@ -99,7 +99,7 @@ async function submitReview() {
 <template>
   <section
     v-if="!isLoading"
-    class="w-[min(100%,80em)] p-4"
+    class="w-[min(100%,80em)] p-1"
   >
     <h1 v-if="errorStatus && errorStatus === 'notfound'">404 author not found</h1>
     <h1 v-else-if="errorStatus && errorStatus === 'error'">Unknown error</h1>
@@ -205,7 +205,10 @@ async function submitReview() {
         <div v-else>
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
-        <ReviewBlock :review="details.userReview" />
+        <ReviewBlock
+          v-if="details.userReview"
+          :review="details.userReview"
+        />
         <ReviewBlock
           v-for="review in details.communityReviews"
           :review="review"

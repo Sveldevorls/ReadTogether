@@ -63,6 +63,12 @@ public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
     }
 
     // R
+    public boolean isInitialized() {
+        String sql = "SELECT COUNT(*) FROM author_submissions;";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+        return count != null && count > 0;
+    }
+
     public Optional<AuthorSubmissionResponse> getSubmissionResponseById(int id) {
         String sql = """
                     SELECT a.*, s.username AS "submitter_username", r.username AS "reviewer_username"

@@ -106,6 +106,12 @@ public class UserDaoImpl implements UserDao {
         return result.stream().findFirst();
     }
 
+    public boolean isInitialized() {
+        String sql = "SELECT COUNT(*) FROM users;";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+        return count != null && count > 0;
+    }
+
     // U //
     public void updateBio(String username, String newBio) {
         String sql = "UPDATE users SET bio = ? WHERE username = ?";
@@ -115,5 +121,10 @@ public class UserDaoImpl implements UserDao {
     public void updateDisplayName(String username, String newDisplayName) {
         String sql = "UPDATE users SET display_name = ? WHERE username = ?";
         jdbcTemplate.update(sql, newDisplayName, username);
+    }
+
+    public void updateAvatarUrl(String username, String newAvatarUrl) {
+        String sql = "UPDATE users SET avatar_url = ? WHERE username = ?";
+        jdbcTemplate.update(sql, newAvatarUrl, username);
     }
 }

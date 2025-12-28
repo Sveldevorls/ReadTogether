@@ -111,6 +111,7 @@ public class ReviewDaoImpl implements ReviewDao {
                 JOIN users AS u
                 ON r.user_id = u.id
                 WHERE r.book_id = ?
+                AND r.comment IS NOT NULL
                 AND (? IS NULL OR r.user_id != ?)
                 LIMIT 10
                 """;
@@ -121,5 +122,17 @@ public class ReviewDaoImpl implements ReviewDao {
                 userId,
                 userId);
         return result;
+    }
+
+    public boolean isInitialized() {
+        String sql = "SELECT COUNT(*) FROM reviews";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+        return count != null && count > 0;
+    }
+
+    // U
+    public void updateReviewFeaturedStatus(int id, boolean isFeatured){
+        String sql = "UPDATE reviews SET is_featured = ? WHERE id = ?";
+        jdbcTemplate.update(sql, isFeatured, id);
     }
 }

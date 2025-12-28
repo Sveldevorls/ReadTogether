@@ -25,6 +25,10 @@ public class AuthorSubmissionService {
         this.authorService = authorService;
     }
 
+    public boolean isInitialized() {
+        return authorSubmissionDao.isInitialized();
+    }
+
     @Transactional
     public int createNewAuthorSubmission(int submitterId, NewAuthorSubmissionRequest request) {
 

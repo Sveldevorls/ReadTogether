@@ -14,12 +14,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.entity.Book;
-import com.github.sveldevorls.readtogether.book.rowmapper.BookRatingsResponseRowMapper;
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRowMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
-import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
-import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Repository

@@ -21,4 +21,9 @@ public interface ReviewDao {
     Optional<RatingsSummary> getBookRatingsResponse(int id);
 
     List<ReviewResponse> getCommunityReviewsByBookId(int bookId, Integer userId);
+
+    boolean isInitialized();
+
+    // U
+    void updateReviewFeaturedStatus(int id, boolean isFeatured);
 }

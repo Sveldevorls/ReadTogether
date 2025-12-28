@@ -1,0 +1,37 @@
+[
+    {
+        "username": "simonscott",
+        "email": "simonscott@example.com",
+        "displayName": "Simon Scott",
+        "bio": "I'm always looking for my next favorite book, so please send recs my way! I tend to gravitate toward stories that make me feel something, whether that's laughing out loud on the subway or ugly crying at 11pm. No judgment on genre - if it's good, it's good.",
+        "avatarUrl": "https://picsum.photos/id/43/200/200"
+    },
+    {
+        "username": "logan1999",
+        "email": "logan@example.com",
+        "displayName": null,
+        "bio": null,
+        "avatarUrl": "https://picsum.photos/id/392/200/200"
+    },
+    {
+        "username": "dannnn",
+        "email": "daniel@example.com",
+        "displayName": "Daniel",
+        "bio": null,
+        "avatarUrl": null
+    },
+    {
+        "username": "javier_",
+        "email": "javier@example.com",
+        "displayName": null,
+        "bio": "I'm Javier",
+        "avatarUrl": "https://picsum.photos/id/453/200/200"
+    },
+    {
+        "username": "krystyna",
+        "email": "krystyna@example.com",
+        "displayName": "Krystyna L.",
+        "bio": null,
+        "avatarUrl": "https://picsum.photos/id/177/200/200"
+    }
+]
