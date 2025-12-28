@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/books").permitAll()
                 .requestMatchers("/api/books/**").permitAll()
                 .requestMatchers("/api/reviews/**").permitAll()
+                .requestMatchers("/api/homepage").permitAll()
                 .anyRequest().hasRole("ADMIN")
             )
             .addFilterBefore(

@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { Skeleton } from "primevue";
+import defaultCover from "@/assets/default_cover.svg";
+import type { BookSummary } from "@/util/responses";
+
+const props = defineProps<{ book: BookSummary }>();
 </script>
 <template>
   <div class="flex gap-2 p-2">
-    <Skeleton
-      width="120px"
-      height="auto"
-      class="aspect-2/3"
-    ></Skeleton>
-    <div class="flex flex-col grow gap-2">
-      <Skeleton></Skeleton>
-      <Skeleton></Skeleton>
+    <img
+      width="100px"
+      :src="props.book.coverUrl ?? defaultCover"
+      class="self-start"
+    />
+    <div class="flex flex-col grow">
+      <span class="text-xl font-bold">{{ props.book.title }}</span>
+      <span
+        v-for="author in props.book.authors"
+        :key="author.authorName"
+      >
+        {{ author.authorName }}
+      </span>
     </div>
   </div>
 </template>

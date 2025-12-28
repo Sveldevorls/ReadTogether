@@ -13,8 +13,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.github.sveldevorls.readtogether.book.dto.BookSummary;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRowMapper;
+import com.github.sveldevorls.readtogether.book.rowmapper.BookSummaryRowMapper;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
@@ -117,6 +119,60 @@ public class BookDaoImpl implements BookDao {
                             rs.getString("genre_name"));
                 },
                 id);
+        return result;
+    }
+
+    public List<BookSummary> getWeeklyPopularBooks() {
+        String sql = """
+                SELECT
+                    a.id AS author_id,
+                    a.slug AS author_slug,
+                    a.author_name,
+                    b.id AS book_id,
+                    b.slug,
+                    b.title,
+                    b.cover_url,
+                    popular_books.review_count
+                FROM (
+                    SELECT book_id, COUNT(*) as review_count
+                    FROM reviews
+                    WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                    GROUP BY book_id
+                    ORDER BY review_count DESC
+                    LIMIT 5
+                ) AS popular_books
+                JOIN books AS b ON popular_books.book_id = b.id
+                JOIN book_author_map AS bam ON b.id = bam.book_id
+                JOIN authors AS a ON bam.author_id = a.id
+                ORDER BY popular_books.review_count DESC, b.id, a.id;
+                """;
+        
+        List<BookSummary> result = jdbcTemplate.query(
+                sql,
+                new BookSummaryRowMapper());
+        return result;
+    }
+
+    public List<BookSummary> getLatestBooks() {
+        String sql = """
+                SELECT
+                    a.id AS author_id,
+                    a.slug AS author_slug,
+                    a.author_name,
+                    b.id AS book_id,
+                    b.slug,
+                    b.title,
+                    b.cover_url
+                FROM books AS b
+                JOIN book_author_map AS bam ON b.id = bam.book_id
+                JOIN authors AS a ON bam.author_id = a.id
+                ORDER BY b.created_at DESC
+                LIMIT 5;
+                """;
+        
+        List<BookSummary> result = jdbcTemplate.query(
+                sql,
+                new BookSummaryRowMapper());
         return result;
     }
 

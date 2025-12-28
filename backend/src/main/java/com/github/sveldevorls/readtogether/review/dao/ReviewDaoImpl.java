@@ -12,10 +12,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.book.rowmapper.BookRatingsResponseRowMapper;
+import com.github.sveldevorls.readtogether.review.dto.FeaturedReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
 import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
 import com.github.sveldevorls.readtogether.review.entity.Review;
+import com.github.sveldevorls.readtogether.review.rowmapper.FeaturedReviewResponseRowMapper;
 import com.github.sveldevorls.readtogether.review.rowmapper.ReviewResponseRowMapper;
 import com.github.sveldevorls.readtogether.review.rowmapper.ReviewSummaryRowMapper;
 
@@ -79,8 +81,8 @@ public class ReviewDaoImpl implements ReviewDao {
         List<ReviewResponse> result = jdbcTemplate.query(
                 sql,
                 new ReviewResponseRowMapper(),
-                userId,
-                bookId);
+                bookId,
+                userId);
         return result.stream().findFirst();
     }
 
@@ -130,8 +132,39 @@ public class ReviewDaoImpl implements ReviewDao {
         return count != null && count > 0;
     }
 
+    // Todo: multiauthor select?
+    public List<FeaturedReviewResponse> getFeaturedReviews() {
+        String sql = """
+                SELECT
+                    b.id AS book_id,
+                    b.slug AS book_slug,
+                    b.title,
+                    b.cover_url,
+                    a.id AS author_id,
+                    a.slug AS author_slug,
+                    a.author_name,
+                    u.username,
+                    u.display_name,
+                    u.avatar_url,
+                    r.id AS review_id,
+                    r.*
+                FROM reviews r
+                JOIN books b ON r.book_id = b.id
+                JOIN users u ON r.user_id = u.id
+                JOIN book_author_map bam ON b.id = bam.book_id
+                JOIN authors a ON bam.author_id = a.id
+                WHERE r.is_featured = true
+                ORDER BY r.updated_at DESC
+                LIMIT 5;
+                """;
+        List<FeaturedReviewResponse> result = jdbcTemplate.query(
+                sql,
+                new FeaturedReviewResponseRowMapper());
+        return result;
+    }
+
     // U
-    public void updateReviewFeaturedStatus(int id, boolean isFeatured){
+    public void updateReviewFeaturedStatus(int id, boolean isFeatured) {
         String sql = "UPDATE reviews SET is_featured = ? WHERE id = ?";
         jdbcTemplate.update(sql, isFeatured, id);
     }

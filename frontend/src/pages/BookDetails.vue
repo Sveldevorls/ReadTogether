@@ -45,6 +45,7 @@ onBeforeMount(async () => {
     }
   } finally {
     isLoading.value = false;
+    console.log(details.value)
   }
 });
 
@@ -106,7 +107,7 @@ async function submitReview() {
     <!-- Book details -->
     <div
       v-if="details != null"
-      class="flex flex-wrap md:grid md:grid-cols-[200px_1fr] mx-4 gap-10 whitespace-pre-wrap"
+      class="flex flex-wrap md:grid md:grid-cols-[min(25%,200px)_1fr] mx-5 md:mx-[min(5%,100px)] gap-10 whitespace-pre-wrap"
     >
       <div class="flex flex-col gap-4 mx-auto">
         <img
@@ -156,7 +157,7 @@ async function submitReview() {
           />
         </div>
       </div>
-      <div class="flex flex-col grow gap-4">
+      <div class="flex flex-col gap-4 grow">
         <div>
           <h1 class="text-4xl font-black">{{ details.book.bookData.title }}</h1>
           <div class="mt-1">
@@ -205,14 +206,19 @@ async function submitReview() {
         <div v-else>
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
-        <ReviewBlock
-          v-if="details.userReview"
-          :review="details.userReview"
-        />
-        <ReviewBlock
-          v-for="review in details.communityReviews"
-          :review="review"
-        />
+        <div>
+          <ReviewBlock
+            v-if="details.userReview"
+            :review="details.userReview"
+          />
+        </div>
+        <Divider />
+        <div class="flex flex-col gap-2">
+          <template v-for="(review, index) in details.communityReviews">
+            <ReviewBlock :review="review" />
+            <Divider v-if="index != details.communityReviews.length - 1" />
+          </template>
+        </div>
       </div>
     </div>
 

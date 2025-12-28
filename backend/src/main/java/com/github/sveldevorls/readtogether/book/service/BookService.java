@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.github.sveldevorls.readtogether.book.dao.BookDao;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
+import com.github.sveldevorls.readtogether.book.dto.BookSummary;
 import com.github.sveldevorls.readtogether.book.entity.Book;
 import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.book.mapper.BookMapper;
@@ -87,6 +88,14 @@ public class BookService {
                 ratings,
                 userReview,
                 communityReviews);
+    }
+
+    public List<BookSummary> getWeeklyPopularBooks() {
+        return bookDao.getWeeklyPopularBooks();
+    }
+
+     public List<BookSummary> getLatestBooks() {
+        return bookDao.getLatestBooks();
     }
 
     // U

@@ -33,7 +33,8 @@ public class StartupConfig {
             int userId,
             int bookId,
             int rating,
-            String comment) {
+            String comment,
+            boolean isFeatured) {
     }
 
     @Value("${admin.username}")
@@ -125,13 +126,18 @@ public class StartupConfig {
                 DefaultReview[] reviews = objectMapper.readValue(
                         reviewStream,
                         DefaultReview[].class);
-                for (DefaultReview review : reviews) {
+                for (int i = 0; i < reviews.length; i++) {
+                    DefaultReview review = reviews[i];
                     reviewService.createReview(
                             review.userId(),
                             review.bookId(),
                             review.rating(),
                             review.comment());
+                    if (review.isFeatured()) {
+                        reviewService.setReviewAsFeatured(i + 1);
+                    }
                 }
+
             }
 
         } catch (IOException e) {

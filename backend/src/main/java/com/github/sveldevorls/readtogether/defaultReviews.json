@@ -3,204 +3,238 @@
     "userId": 3,
     "bookId": 2,
     "rating": 3,
-    "comment": "average"
+    "comment": "average",
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 2,
     "rating": 5,
-    "comment": "great read"
+    "comment": "great read",
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 2,
     "rating": 4,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 2,
     "rating": 5,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 3,
     "rating": 5,
-    "comment": "Rowling's world-building is simply magical. From the moment Harry receives his Hogwarts letter, you're transported into a universe that feels both whimsical and lived-in. The magical system has clear rules that make sense, and Hogwarts itself is a character in its own right. The way she weaves themes of friendship, courage, and standing up against prejudice into what could have been just another fantasy adventure is masterful. Perfect for readers of all ages discovering the wizarding world for the first time."
+    "comment": "Rowling's world-building is simply magical. From the moment Harry receives his Hogwarts letter, you're transported into a universe that feels both whimsical and lived-in. The magical system has clear rules that make sense, and Hogwarts itself is a character in its own right. The way she weaves themes of friendship, courage, and standing up against prejudice into what could have been just another fantasy adventure is masterful. Perfect for readers of all ages discovering the wizarding world for the first time.",
+    "isFeatured": true
   },
   {
     "userId": 6,
     "bookId": 3,
     "rating": 3,
-    "comment": "okay i guess"
+    "comment": "okay i guess",
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 4,
     "rating": 4,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 5,
     "rating": 5,
-    "comment": "Stephen King's ability to tap into primal childhood fears is on full display here. Pennywise is one of the most terrifying villains in horror literature, but what makes this book truly special is the portrayal of the Losers Club and their bond. The way King interweaves the past and present timelines creates a sense of inevitable dread. The book explores trauma, memory, and the power of friendship in facing our deepest fears. It's long, but every page serves the story. The sewer scenes are genuinely disturbing and will stay with you."
+    "comment": "Stephen King's ability to tap into primal childhood fears is on full display here. Pennywise is one of the most terrifying villains in horror literature, but what makes this book truly special is the portrayal of the Losers Club and their bond. The way King interweaves the past and present timelines creates a sense of inevitable dread. The book explores trauma, memory, and the power of friendship in facing our deepest fears. It's long, but every page serves the story. The sewer scenes are genuinely disturbing and will stay with you.",
+    "isFeatured": true
   },
   {
     "userId": 2,
     "bookId": 5,
     "rating": 5,
-    "comment": "loved it"
+    "comment": "loved it",
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 5,
     "rating": 3,
-    "comment": "okay i guess"
+    "comment": "okay i guess",
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 5,
     "rating": 1,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 6,
     "bookId": 5,
     "rating": 2,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 6,
     "rating": 4,
-    "comment": "A delightful addition to the sports romance genre. The hockey setting is well-researched and adds authenticity to the story, while the enemies-to-lovers progression feels natural despite being a familiar trope. The banter between the main characters is witty and engaging, and there's genuine chemistry that builds throughout. It's the perfect comfort read - not groundbreaking, but executed well with likeable characters and enough steam to satisfy romance readers. Great for a weekend beach read."
+    "comment": "A delightful addition to the sports romance genre. The hockey setting is well-researched and adds authenticity to the story, while the enemies-to-lovers progression feels natural despite being a familiar trope. The banter between the main characters is witty and engaging, and there's genuine chemistry that builds throughout. It's the perfect comfort read - not groundbreaking, but executed well with likeable characters and enough steam to satisfy romance readers. Great for a weekend beach read.",
+    "isFeatured": true
   },
   {
     "userId": 2,
     "bookId": 6,
     "rating": 2,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 6,
     "rating": 1,
-    "comment": "terrible"
+    "comment": "terrible",
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 7,
     "rating": 3,
-    "comment": "decent"
+    "comment": "decent",
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 7,
     "rating": 3,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 7,
     "rating": 2,
-    "comment": "meh"
+    "comment": "meh",
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 7,
     "rating": 2,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 8,
     "rating": 2,
-    "comment": "disappointing"
+    "comment": "disappointing",
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 8,
     "rating": 1,
-    "comment": "waste of time"
+    "comment": "waste of time",
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 8,
     "rating": 5,
-    "comment": "masterpiece"
+    "comment": "masterpiece",
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 8,
     "rating": 3,
-    "comment": "okay i guess"
+    "comment": "okay i guess",
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 9,
     "rating": 4,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 9,
     "rating": 2,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 9,
     "rating": 3,
-    "comment": "not bad"
+    "comment": "not bad",
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 9,
     "rating": 3,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 6,
     "bookId": 9,
     "rating": 3,
-    "comment": "average"
+    "comment": "average",
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 10,
     "rating": 4,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 4,
     "bookId": 10,
     "rating": 3,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 6,
     "bookId": 10,
     "rating": 1,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 2,
     "bookId": 10,
     "rating": 1,
-    "comment": null
+    "comment": null,
+    "isFeatured": false
   },
   {
     "userId": 5,
     "bookId": 10,
     "rating": 1,
-    "comment": "waste of time"
+    "comment": "waste of time",
+    "isFeatured": false
   },
   {
     "userId": 3,
     "bookId": 11,
     "rating": 1,
-    "comment": "awful"
+    "comment": "awful",
+    "isFeatured": false
   }
 ]

@@ -28,4 +28,6 @@ export const ENDPOINTS = {
   BOOK_SUBMISSION_REJECT: (id: string) => `/api/submissions/books/${id}/reject`,
 
   GENRES: "/api/genres",
+
+  HOMEPAGE: "/api/homepage",
 };

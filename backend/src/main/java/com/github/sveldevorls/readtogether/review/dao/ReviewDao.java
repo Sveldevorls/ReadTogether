@@ -3,6 +3,7 @@ package com.github.sveldevorls.readtogether.review.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.sveldevorls.readtogether.review.dto.FeaturedReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
 import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
@@ -23,6 +24,8 @@ public interface ReviewDao {
     List<ReviewResponse> getCommunityReviewsByBookId(int bookId, Integer userId);
 
     boolean isInitialized();
+
+    List<FeaturedReviewResponse> getFeaturedReviews();
 
     // U
     void updateReviewFeaturedStatus(int id, boolean isFeatured);

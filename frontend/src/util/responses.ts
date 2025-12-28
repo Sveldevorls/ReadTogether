@@ -171,3 +171,23 @@ export type UserSummary = {
   displayName: string;
   avatarUrl: string;
 }
+
+export type BookSummary = {
+  authors: AuthorSummary[];
+  id: number;
+  slug: string;
+  title: string;
+  coverUrl: string | null;
+}
+
+export type FeaturedReviewResponse = {
+  book: BookSummary;
+  reviewer: UserSummary;
+  content: ReviewSummary;
+}
+
+export type HomepageResponse = {
+  featuredReviews: FeaturedReviewResponse[];
+  weeklyPopularBooks: BookSummary[];
+  latestBooks: BookSummary[];
+}

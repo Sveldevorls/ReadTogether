@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.review.dao.ReviewDao;
+import com.github.sveldevorls.readtogether.review.dto.FeaturedReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.RatingsSummary;
 import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewSummary;
@@ -60,6 +61,10 @@ public class ReviewService {
 
     public boolean isInitialized() {
         return reviewDao.isInitialized();
+    }
+
+    public List<FeaturedReviewResponse> getFeaturedReviews() {
+        return reviewDao.getFeaturedReviews();
     }
 
     // U
