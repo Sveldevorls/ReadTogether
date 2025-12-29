@@ -87,8 +87,8 @@
     "userId": 5,
     "bookId": 6,
     "rating": 4,
-    "comment": "A delightful addition to the sports romance genre. The hockey setting is well-researched and adds authenticity to the story, while the enemies-to-lovers progression feels natural despite being a familiar trope. The banter between the main characters is witty and engaging, and there's genuine chemistry that builds throughout. It's the perfect comfort read - not groundbreaking, but executed well with likeable characters and enough steam to satisfy romance readers. Great for a weekend beach read.",
-    "isFeatured": true
+    "comment": "pretty good",
+    "isFeatured": false
   },
   {
     "userId": 2,
@@ -147,11 +147,11 @@
     "isFeatured": false
   },
   {
-    "userId": 4,
+    "userId": 2,
     "bookId": 8,
     "rating": 5,
-    "comment": "masterpiece",
-    "isFeatured": false
+    "comment": "Jeff Kinney hits the nail on the head with this hilarious look into middle school life. Greg Heffley is a brilliantly flawed lead—his ego and constant schemes make for comedy gold. The blend of simple doodles and 'handwritten' diary entries creates a fast-paced, nostalgic experience that perfectly captures the awkwardness of growing up. From the social minefield of the cafeteria to the dreaded Cheese Touch, it’s an absolute classic that still holds up for readers of all ages.",
+    "isFeatured": true
   },
   {
     "userId": 5,
