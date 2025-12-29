@@ -2,6 +2,7 @@
 import defaultAvatar from "@/assets/default_avatar.svg";
 import defaultCover from "@/assets/default_cover.svg";
 import type { FeaturedReviewResponse } from "@/util/responses";
+import { URLS } from "@/util/urls";
 import { Icon } from "@iconify/vue";
 import { Rating } from "primevue";
 
@@ -11,25 +12,53 @@ const props = defineProps<{
 </script>
 <template>
   <div class="flex gap-4 p-2 flex-wrap">
-    <img
-      width="200px"
-      class="mx-auto self-start"
-      :src="props.review.book.coverUrl ?? defaultCover"
-    />
+    <RouterLink
+      :to="URLS.BOOK_PAGE(props.review.book.id, props.review.book.slug)"
+      class="h-fit mx-auto"
+    >
+      <img
+        width="200px"
+        class="mx-auto self-start"
+        :src="props.review.book.coverUrl ?? defaultCover"
+      />
+    </RouterLink>
     <div class="flex flex-col grow w-100">
-      <span class="text-xl font-bold">{{ props.review.book.title }}</span>
-      <span v-for="author in props.review.book.authors">
+      <RouterLink
+        :to="URLS.BOOK_PAGE(props.review.book.id, props.review.book.slug)"
+        class="text-xl font-bold hover:underline w-fit"
+      >
+        {{ props.review.book.title }}
+      </RouterLink>
+      <RouterLink
+        v-for="author in props.review.book.authors"
+        :to="URLS.AUTHOR_PROFILE(author.id, author.slug)"
+        class="hover:underline w-fit"
+      >
         {{ author.authorName }}
-      </span>
+      </RouterLink>
+
       <div class="flex gap-2 mt-4 mb-4">
-        <img
-          width="40px"
-          height="40px"
-          class="shrink-0 rounded-full self-center"
-          :src="props.review.reviewer.avatarUrl ?? defaultAvatar"
-        />
+        <RouterLink
+          :to="URLS.USER_PROFILE(review.reviewer.username)"
+          class="h-fit"
+        >
+          <img
+            width="40px"
+            height="40px"
+            class="shrink-0 rounded-full self-center"
+            :src="props.review.reviewer.avatarUrl ?? defaultAvatar"
+          />
+        </RouterLink>
         <div class="flex flex-col">
-          <span>Review by {{ props.review.reviewer.displayName ?? props.review.reviewer.username }}</span>
+          <span>
+            Review by
+            <RouterLink
+              :to="URLS.USER_PROFILE(review.reviewer.username)"
+              class="w-fit hover:underline"
+            >
+              {{ props.review.reviewer.displayName ?? props.review.reviewer.username }}
+            </RouterLink>
+          </span>
           <Rating
             :stars="5"
             v-model="props.review.content.rating"
