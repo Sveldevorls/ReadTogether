@@ -1,8 +1,15 @@
 <script setup lang="ts">
 // Todo: If switched to access-refresh token system: update logout function
+import defaultCover from "@/assets/default_cover.svg";
+import api from "@/util/api";
+import { ENDPOINTS } from "@/util/endpoints";
+import type { BookSummary, SuccessResponse } from "@/util/responses";
+import { URLS } from "@/util/urls";
 import { useSingularToast } from "@/util/useSingularToast";
 import { useUserStore } from "@/util/userStore";
-import { Menu, Menubar } from "primevue";
+import { Icon } from "@iconify/vue";
+import { AutoComplete, Menu, Menubar } from "primevue";
+import type { AutoCompleteCompleteEvent, AutoCompleteOptionSelectEvent } from "primevue";
 import type { MenuItem } from "primevue/menuitem";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -24,7 +31,7 @@ const menuItems = computed(() => [
         route: "/settings",
       },
       {
-        separator: true
+        separator: true,
       },
       {
         label: "Log out",
@@ -67,6 +74,23 @@ function logout() {
     life: 3000,
   });
 }
+
+const searchInput = ref<string>("");
+const bookSearchResult = ref<BookSummary[]>([]);
+const showMobileSearch = ref(false);
+
+async function searchBooks(e: AutoCompleteCompleteEvent) {
+  const title = e.query;
+  try {
+    const { data: response } = await api.get<SuccessResponse<BookSummary[]>>(ENDPOINTS.BOOK_SEARCH_BY_TITLE(title));
+    bookSearchResult.value = response.data;
+  } catch (error) {}
+}
+
+function navigateToBook(e: AutoCompleteOptionSelectEvent) {
+  router.push(URLS.BOOK_PAGE(e.value.id, e.value.slug));
+  searchInput.value = "";
+}
 </script>
 
 <template>
@@ -85,7 +109,7 @@ function logout() {
         button: '!h-12 !w-12 !rounded-none !px-4 hover:!bg-slate-200',
         item: 'bg-slate-50',
         itemContent: '!rounded-none hover:!bg-slate-200',
-        end: '!h-12 hover:bg-slate-200',
+        end: '!h-12 flex items-center',
       }"
     >
       <template #item="{ item }">
@@ -104,39 +128,129 @@ function logout() {
         </a>
       </template>
       <template #end>
-        <router-link
-          v-if="userStore.role == 0"
-          to="/login"
-          class="flex items-center h-full px-4"
-        >
-          <span>Log in</span>
-        </router-link>
-        <div
-          v-else
-          @click="toggle"
-          class="flex items-center h-full"
-        >
-          <button class="flex items-center h-full px-4">
-            {{ userStore.username }}
-          </button>
-          <Menu
-            ref="menu"
-            :model="menuItems"
-            :popup="true"
+        <div class="flex items-center">
+          <!-- Inline search for large screens -->
+          <div class="hidden lg:flex items-center">
+            <AutoComplete
+              v-model="searchInput"
+              :delay="500"
+              :suggestions="bookSearchResult"
+              placeholder="Search books"
+              @complete="searchBooks"
+              @option-select="navigateToBook"
+              :pt="{ input: 'w-[300px]! h-[36px]!' }"
+              :inputStyle="{ width: '300px', height: '36px' }"
+              :panelStyle="{ width: '300px' }"
+              class="shrink"
+            >
+              <template #option="result: { option: BookSummary }">
+                <div class="flex w-full gap-3 items-center" :key="result.option.id">
+                  <img
+                    :src="result.option.coverUrl ?? defaultCover"
+                    class="w-12 aspect-square object-cover"
+                  />
+                  <div class="flex flex-col truncate">
+                    <span class="truncate font-bold">{{ result.option.title }}</span>
+                    <div>
+                      <span
+                        v-for="author in result.option.authors"
+                        :key="author.id"
+                        class="truncate"
+                        >{{ author.authorName }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </AutoComplete>
+          </div>
+
+          <!-- Search button for md and smaller (toggles a row beneath the menubar) -->
+          <button
+            @click="showMobileSearch = !showMobileSearch"
+            class="flex items-center h-full px-4 lg:hidden"
+            aria-label="Toggle search"
           >
-            <template #item="{ item }">
-              <router-link
-                v-if="item.route"
-                :to="item.route"
-                class="flex items-center px-4 py-2"
+            <Icon
+              icon="material-symbols:search"
+              width="24"
+              height="24"
+            />
+          </button>
+          <div class="hover:bg-slate-200">
+            <router-link
+              v-if="userStore.role == 0"
+              to="/login"
+              class="flex items-center h-full px-4"
+            >
+              <span>Log in</span>
+            </router-link>
+            <div
+              v-else
+              @click="toggle"
+              class="flex items-center h-full"
+            >
+              <button class="flex items-center h-12 px-4">
+                {{ userStore.username }}
+              </button>
+              <Menu
+                ref="menu"
+                :model="menuItems"
+                :popup="true"
               >
-                <span :class="item.class">{{ item.label }}</span>
-              </router-link>
-            </template>
-          </Menu>
+                <template #item="{ item }">
+                  <router-link
+                    v-if="item.route"
+                    :to="item.route"
+                    class="flex items-center px-4 py-2"
+                  >
+                    <span :class="item.class">{{ item.label }}</span>
+                  </router-link>
+                </template>
+              </Menu>
+            </div>
+          </div>
         </div>
       </template>
     </Menubar>
+
+    <!-- Mobile search row (appears under the menubar when toggled) -->
+    <div
+      v-if="showMobileSearch"
+      class="bg-slate-50 border-t border-t-slate-200 lg:hidden"
+    >
+      <div class="max-w-[80em] mx-auto py-2 flex justify-center">
+        <AutoComplete
+          v-model="searchInput"
+          :delay="500"
+          :suggestions="bookSearchResult"
+          placeholder="Search books"
+          @complete="searchBooks"
+          @option-select="navigateToBook"
+          :inputStyle="{ width: '300px', height: '36px' }"
+          :panelStyle="{ width: '300px' }"
+        >
+          <template #option="result: { option: BookSummary }">
+            <div class="flex w-full gap-1 items-center" :key="result.option.id">
+              <img
+                :src="result.option.coverUrl ?? defaultCover"
+                class="w-12 aspect-square object-cover"
+              />
+              <div class="flex flex-col truncate">
+                <span class="truncate font-bold">{{ result.option.title }}</span>
+                <div>
+                  <span
+                    v-for="author in result.option.authors"
+                    class="truncate"
+                    >{{ author.authorName }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </template>
+        </AutoComplete>
+      </div>
+    </div>
   </header>
 </template>
 

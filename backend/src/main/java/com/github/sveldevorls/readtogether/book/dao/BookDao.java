@@ -30,6 +30,8 @@ public interface BookDao {
 
     List<BookSummary> getLatestBooks();
 
+    List<BookSummary> searchApprovedBooksByTitle(String title);
+
     // U
     int updateReviewStatusById(int id, ReviewStatus status);
 }

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import defautlAvatar from "@/assets/default_avatar.svg";
+import api from "@/util/api";
+import { ENDPOINTS } from "@/util/endpoints";
 import { roles } from "@/util/enums";
 import { parseDate } from "@/util/parser";
 import type { ReviewResponse } from "@/util/responses";
@@ -44,7 +46,16 @@ function getMenuItems() {
 }
 
 
-function setAsFeatured() {}
+async function setAsFeatured() {
+  try {
+   api.post(ENDPOINTS.REVIEW_SET_FEATURED(props.review.content.id)); 
+  } catch (error) {
+    
+  }
+}
+
+function removeFromFeatured() {
+}
 
 function editReview() {}
 
@@ -114,7 +125,7 @@ onMounted(() => {
         severity="secondary"
         type="button"
         @click="toggle"
-        class="p-1!"
+        class="p-1! bg-transparent! border-none!"
       >
         <Icon
           icon="material-symbols:more-horiz"

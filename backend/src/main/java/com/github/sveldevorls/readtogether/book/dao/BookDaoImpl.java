@@ -166,12 +166,39 @@ public class BookDaoImpl implements BookDao {
                 FROM books AS b
                 JOIN book_author_map AS bam ON b.id = bam.book_id
                 JOIN authors AS a ON bam.author_id = a.id
+                WHERE b.review_status = 'approved'
                 ORDER BY b.created_at DESC
                 LIMIT 5;
                 """;
         
         List<BookSummary> result = jdbcTemplate.query(
                 sql,
+                new BookSummaryRowMapper());
+        return result;
+    }
+
+    public List<BookSummary> searchApprovedBooksByTitle(String title) {
+        String sql = """
+                SELECT
+                    a.id AS author_id,
+                    a.slug AS author_slug,
+                    a.author_name,
+                    b.id AS book_id,
+                    b.slug,
+                    b.title,
+                    b.cover_url
+                FROM books AS b
+                JOIN book_author_map AS bam ON b.id = bam.book_id
+                JOIN authors AS a ON bam.author_id = a.id
+                WHERE LOWER(title) LIKE ? AND b.review_status = 'approved'
+                LIMIT 5
+                """;
+        List<BookSummary> result = jdbcTemplate.query(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, "%" + title + "%");
+                    return ps;
+                },
                 new BookSummaryRowMapper());
         return result;
     }

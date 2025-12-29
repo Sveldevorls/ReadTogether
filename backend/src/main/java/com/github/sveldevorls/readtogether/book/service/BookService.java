@@ -98,6 +98,10 @@ public class BookService {
         return bookDao.getLatestBooks();
     }
 
+    public List<BookSummary> searchApprovedBooksByTitle(String title) {
+        return bookDao.searchApprovedBooksByTitle(title);
+    }
+
     // U
     public void approveBook(int id) {
         int rows = bookDao.updateReviewStatusById(id, ReviewStatus.approved);

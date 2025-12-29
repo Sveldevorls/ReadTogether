@@ -9,11 +9,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.sveldevorls.readtogether.author.dto.AuthorResponse;
 import com.github.sveldevorls.readtogether.author.service.AuthorService;
 import com.github.sveldevorls.readtogether.book.dto.BookDetailsResponse;
 import com.github.sveldevorls.readtogether.book.dto.BookResponse;
+import com.github.sveldevorls.readtogether.book.dto.BookSummary;
 import com.github.sveldevorls.readtogether.book.service.BookService;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.review.dto.ReviewResponse;
@@ -82,6 +85,15 @@ public class BookController {
                 request.rating(),
                 request.comment());
 
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, response),
+                HttpStatus.OK);
+    }
+
+    // /books?title=
+    @GetMapping()
+    public ResponseEntity<SuccessResponse> searchByName(@RequestParam String title) {
+        List<BookSummary> response = bookService.searchApprovedBooksByTitle(title);
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.OK, response),
                 HttpStatus.OK);

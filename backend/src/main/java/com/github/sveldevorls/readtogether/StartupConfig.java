@@ -78,6 +78,7 @@ public class StartupConfig {
                 userService.createAdmin(adminUsername, adminEmail, adminPassword);
 
                 InputStream userStream = StartupConfig.class.getResourceAsStream("defaultUsers.json");
+                System.out.println(userStream);
                 DefaultUser[] users = objectMapper.readValue(
                         userStream,
                         DefaultUser[].class);

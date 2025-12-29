@@ -16,6 +16,7 @@ export const ENDPOINTS = {
 
   BOOK_DETAILS: (id: string) => `/api/books/${id}/details`,
   BOOK_REVIEWS: (id: string) => `/api/books/${id}/reviews`,
+  BOOK_SEARCH_BY_TITLE: (title: string) => `/api/books?title=${title}`,
 
   AUTHOR_SUBMISSIONS: "/api/submissions/authors",
   AUTHOR_SUBMISSION_PAGE: (id: string) => `/api/submissions/authors/${id}`,
@@ -26,6 +27,8 @@ export const ENDPOINTS = {
   BOOK_SUBMISSION_PAGE: (id: string) => `/api/submissions/books/${id}`,
   BOOK_SUBMISSION_APPROVE: (id: string) => `/api/submissions/books/${id}/approve`,
   BOOK_SUBMISSION_REJECT: (id: string) => `/api/submissions/books/${id}/reject`,
+
+  REVIEW_SET_FEATURED: (id: number) => `/api/reviews/${id}/featured`,
 
   GENRES: "/api/genres",
 
