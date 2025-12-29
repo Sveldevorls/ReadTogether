@@ -39,23 +39,20 @@ function getMenuItems() {
       },
       {
         label: "Delete",
+        class: "text-red-400!",
         command: () => deleteReview(),
       },
     );
   }
 }
 
-
 async function setAsFeatured() {
   try {
-   api.post(ENDPOINTS.REVIEW_SET_FEATURED(props.review.content.id)); 
-  } catch (error) {
-    
-  }
+    api.post(ENDPOINTS.REVIEW_SET_FEATURED(props.review.content.id));
+  } catch (error) {}
 }
 
-function removeFromFeatured() {
-}
+function removeFromFeatured() {}
 
 function editReview() {}
 

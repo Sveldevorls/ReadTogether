@@ -45,7 +45,7 @@ onBeforeMount(async () => {
     }
   } finally {
     isLoading.value = false;
-    console.log(details.value)
+    console.log(details.value);
   }
 });
 
@@ -177,12 +177,12 @@ async function submitReview() {
         <p>{{ details.book.bookData.bookDescription }}</p>
         <div>
           <h3 class="font-black text-lg">Genres</h3>
-          <ul class="flex gap-2">
-            <li
-              v-for="genre in details.genres"
-              class="border-b"
-            >
-              <RouterLink :to="URLS.GENRE_PAGE(genre.slug)">
+          <ul class="flex flex-wrap gap-4">
+            <li v-for="(genre, index) in details.genres">
+              <RouterLink
+                :to="URLS.GENRE_PAGE(genre.slug)"
+                class="border-b"
+              >
                 {{ genre.genreName }}
               </RouterLink>
             </li>
@@ -207,6 +207,7 @@ async function submitReview() {
           <RatingDistributionChart :ratings="details.ratings" />
         </div>
         <div>
+          <h3 class="text-2xl font-bold my-4">Your review</h3>
           <ReviewBlock
             v-if="details.userReview"
             :review="details.userReview"
