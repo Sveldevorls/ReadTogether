@@ -11,16 +11,6 @@
   },
   {
     "authorData": {
-      "authorName": "Zana Kheiron",
-      "dateOfBirth": null,
-      "dateOfDeath": null,
-      "authorImageUrl": null,
-      "biography": null
-    },
-    "submitterComment": "Default author"
-  },
-  {
-    "authorData": {
       "authorName": "J. K. Rowling",
       "dateOfBirth": "1965-07-31",
       "dateOfDeath": null,
@@ -45,16 +35,6 @@
       "dateOfBirth": "1947-09-21",
       "dateOfDeath": null,
       "authorImageUrl": "https://covers.openlibrary.org/a/olid/OL19981A-M.jpg",
-      "biography": null
-    },
-    "submitterComment": "Default author"
-  },
-  {
-    "authorData": {
-      "authorName": "Hannah Grace",
-      "dateOfBirth": null,
-      "dateOfDeath": null,
-      "authorImageUrl": null,
       "biography": null
     },
     "submitterComment": "Default author"

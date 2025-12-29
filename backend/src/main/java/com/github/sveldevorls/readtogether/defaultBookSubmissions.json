@@ -22,23 +22,6 @@
       2
     ],
     "genres": [
-      20
-    ],
-    "bookData": {
-      "title": "Um casamento arranjado",
-      "isbn": null,
-      "bookDescription": null,
-      "publisherName": "Lera.mobi",
-      "publishedDate": "",
-      "coverUrl": "https://covers.openlibrary.org/b/olid/OL47766650M-M.jpg"
-    },
-    "submitterComment": "Default book"
-  },
-  {
-    "authors": [
-      3
-    ],
-    "genres": [
       7,
       8,
       11,
@@ -58,7 +41,7 @@
   },
   {
     "authors": [
-      4
+      3
     ],
     "genres": [
       7,
@@ -78,7 +61,7 @@
   },
   {
     "authors": [
-      5
+      4
     ],
     "genres": [
       8,
@@ -96,25 +79,7 @@
   },
   {
     "authors": [
-      6
-    ],
-    "genres": [
-      20,
-      23
-    ],
-    "bookData": {
-      "title": "Icebreaker",
-      "isbn": "9781398525689",
-      "bookDescription": "**A TikTok sensation! Sparks fly when a competitive figure skater and hockey team captain are forced to share a rink.**\r\n\r\nAnastasia Allen has worked her entire life for a shot at Team USA. It looks like everything is going according to plan when she gets a full scholarship to the University of California, Maple Hills and lands a place on their competitive figure skating team.\r\n\r\nNothing will stand in her way, not even the captain of the hockey team, Nate Hawkins.\r\n\r\nNate is focus as team captain is on keeping his team on the ice. Which is tricky when a facilities mishap means they are forced to share a rink with the figure skating team including Anastasia, who clearly can't stand him.\r\n\r\nBut when Anastasia's skating partner faces an uncertain future, she may have to look to Nate to take her shot.\r\n\r\nSparks fly, but Anastasia isn't worried because she could never like a hockey player, right?",
-      "publisherName": "Simon & Schuster, Limited",
-      "publishedDate": "2022-08-23",
-      "coverUrl": "https://covers.openlibrary.org/b/olid/OL46070146M-M.jpg"
-    },
-    "submitterComment": "Default book"
-  },
-  {
-    "authors": [
-      7
+      5
     ],
     "genres": [
       7,
@@ -135,7 +100,7 @@
   },
   {
     "authors": [
-      8
+      6
     ],
     "genres": [
       4,
@@ -154,7 +119,7 @@
   },
   {
     "authors": [
-      9
+      7
     ],
     "genres": [
       8,
@@ -174,7 +139,7 @@
   },
   {
     "authors": [
-      10
+      8
     ],
     "genres": [
       7,
@@ -194,7 +159,7 @@
   },
   {
     "authors": [
-      11
+      9
     ],
     "genres": [
       7,

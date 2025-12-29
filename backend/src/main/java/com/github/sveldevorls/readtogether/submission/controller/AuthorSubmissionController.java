@@ -1,6 +1,7 @@
 package com.github.sveldevorls.readtogether.submission.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
@@ -45,6 +46,19 @@ public class AuthorSubmissionController {
         return new ResponseEntity<>(
                 new SuccessResponse(HttpStatus.CREATED, Map.of("id", createdId)),
                 HttpStatus.CREATED);
+    }
+
+    //?limit, ?page, ?status
+    @GetMapping
+    public ResponseEntity<SuccessResponse> getSubmissionListing(
+        @RequestParam(required = false) String limit,
+        @RequestParam(required = false) String page,
+        @RequestParam(required = false) String status
+    ) {
+        List<SubmissionSummary> result = authorSubmissionService.getSubmissionListing();
+        return new ResponseEntity<>(
+                new SuccessResponse(HttpStatus.OK, result),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{submissionId}")
