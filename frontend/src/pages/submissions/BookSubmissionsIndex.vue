@@ -2,18 +2,23 @@
 import api from "@/util/api";
 import { ENDPOINTS } from "@/util/endpoints";
 import { parseTimestamp } from "@/util/parser";
-import type { AuthorSubmissionSummary, SubmissionListResponse, SuccessResponse } from "@/util/responses";
+import type {
+  AuthorSubmissionSummary,
+  BookSubmissionSummary,
+  SubmissionListResponse,
+  SuccessResponse,
+} from "@/util/responses";
 import { URLS } from "@/util/urls";
 import { isAxiosError } from "axios";
 import { Column, DataTable, type DataTableRowClickEvent, type PageState, Paginator } from "primevue";
-import Button from "primevue/button";
 import Tab from "primevue/tab";
 import TabPanel from "primevue/tabpanel";
 import Tabs from "primevue/tabs";
 import { onBeforeMount, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import Button from "primevue/button";
 
-const submissions = ref<SubmissionListResponse<AuthorSubmissionSummary> | null>(null);
+const submissions = ref<SubmissionListResponse<BookSubmissionSummary> | null>(null);
 const isLoading = ref<boolean>(true);
 const errorStatus = ref<"error" | "notfound" | null>(null);
 
@@ -27,8 +32,8 @@ const options = ["pending", "approved", "rejected"];
 
 async function fetchSubmissions() {
   try {
-    const { data: response } = await api.get<SuccessResponse<SubmissionListResponse<AuthorSubmissionSummary>>>(
-      ENDPOINTS.AUTHOR_SUBMISSIONS_LIST(limit.value, currentPage.value, status.value),
+    const { data: response } = await api.get<SuccessResponse<SubmissionListResponse<BookSubmissionSummary>>>(
+      ENDPOINTS.BOOK_SUBMISSIONS_LIST(limit.value, currentPage.value, status.value),
     );
     console.log("Author submissions response:", response.data);
     submissions.value = response.data;
@@ -67,12 +72,12 @@ function handleRowChange(e: number) {
   fetchSubmissions();
 }
 
-function getSubmitterName(submission: AuthorSubmissionSummary): string {
+function getSubmitterName(submission: BookSubmissionSummary): string {
   return submission.submitter.displayName ?? submission.submitter.username;
 }
 
 function handleRowClick(e: DataTableRowClickEvent) {
-  router.push(URLS.AUTHOR_SUBMISSION_PAGE(e.data.id));
+  router.push(URLS.BOOK_SUBMISSION_PAGE(e.data.id));
 }
 </script>
 
@@ -81,23 +86,23 @@ function handleRowClick(e: DataTableRowClickEvent) {
     v-if="!isLoading"
     class="w-[min(100%,80em)] p-4 whitespace-pre-wrap"
   >
+    <div class="flex items-center justify-between px-4">
+      <h1 class="text-2xl font-black">Book submissions</h1>
+      <RouterLink
+        :to="URLS.NEW_BOOK_SUBMISSION"
+        class="self-end"
+      >
+        <Button label="Add a new book" />
+      </RouterLink>
+    </div>
     <h1 v-if="errorStatus && errorStatus == 'notfound'">404 not found</h1>
     <h1 v-else-if="errorStatus && errorStatus === 'error'">Unknown error</h1>
 
     <!-- Tabs for filtering by status -->
     <div
       v-if="submissions != null"
-      class="flex flex-col gap-2 relative"
+      class="flex flex-col gap-2"
     >
-      <div class="flex items-center justify-between px-4">
-        <h1 class="text-2xl font-black">Author submissions</h1>
-        <RouterLink
-          :to="URLS.NEW_AUTHOR_SUBMISSION"
-          class="self-end"
-        >
-          <Button label="Add a new submission" />
-        </RouterLink>
-      </div>
       <Tabs v-model:value="status">
         <TabList>
           <Tab
@@ -137,8 +142,8 @@ function handleRowClick(e: DataTableRowClickEvent) {
               header="Type"
             />
             <Column
-              field="author.authorName"
-              header="Author"
+              field="book.title"
+              header="Title"
             />
             <Column
               :field="getSubmitterName"

@@ -25,6 +25,7 @@ export const ENDPOINTS = {
   AUTHOR_SUBMISSION_REJECT: (id: string) => `/api/submissions/authors/${id}/reject`,
 
   BOOK_SUBMISSIONS: "/api/submissions/books",
+  BOOK_SUBMISSIONS_LIST: (limit: number, page: number, status: string) => `/api/submissions/books?limit=${limit}&page=${page}&status=${status}`,
   BOOK_SUBMISSION_PAGE: (id: string) => `/api/submissions/books/${id}`,
   BOOK_SUBMISSION_APPROVE: (id: string) => `/api/submissions/books/${id}/approve`,
   BOOK_SUBMISSION_REJECT: (id: string) => `/api/submissions/books/${id}/reject`,

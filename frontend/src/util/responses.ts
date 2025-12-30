@@ -209,3 +209,13 @@ export type SubmissionListResponse<T> = {
   currentPage: number;
   pageSize: number;
 };
+
+export type BookSubmissionSummary = {
+  submitter: UserSummary;
+  book: BookSummary;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  type: string;
+}

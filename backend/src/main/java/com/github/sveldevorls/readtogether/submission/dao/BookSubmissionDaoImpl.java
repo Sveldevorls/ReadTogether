@@ -19,8 +19,13 @@ import com.github.sveldevorls.readtogether.book.entity.BookData;
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.genres.dto.GenreSummary;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionSummary;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
+import com.github.sveldevorls.readtogether.submission.rowmapper.AuthorSubmissionSummaryRowMapper;
 import com.github.sveldevorls.readtogether.submission.rowmapper.BookSubmissionResponseRowMapper;
+import com.github.sveldevorls.readtogether.submission.rowmapper.BookSubmissionSummaryRowMapper;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSummary;
 
 @Repository
@@ -179,6 +184,62 @@ public class BookSubmissionDaoImpl implements BookSubmissionDao {
                 id);
 
         return result.stream().findFirst();
+    }
+
+    // Todo: add a book link only dto
+    public SubmissionListingResponse<BookSubmissionSummary> getSubmissionListing(
+            Integer limit,
+            Integer page,
+            String status) {
+
+        String sql = """
+                SELECT
+                    u.username,
+                    u.display_name,
+                    u.avatar_url,
+                    b.id AS book_id,
+                    b.slug,
+                    b.title,
+                    s.id AS submission_id,
+                    s.created_at,
+                    s.updated_at,
+                    s.review_status,
+                    CASE
+                        WHEN previous_submission_id IS NULL THEN 'New'
+                        ELSE 'Update'
+                    END AS submission_type
+                FROM book_submissions AS s
+                JOIN users AS u ON s.submitter_id = u.id
+                JOIN books AS b ON s.book_id = b.id
+                WHERE s.review_status = ?
+                ORDER BY s.created_at DESC
+                LIMIT ? OFFSET ?
+                """;
+        List<BookSubmissionSummary> result = jdbcTemplate.query(
+                sql,
+                new BookSubmissionSummaryRowMapper(),
+                status,
+                limit,
+                page * limit);
+
+        String countSql = "SELECT COUNT(*) FROM book_submissions WHERE review_status = ?";
+        Integer totalCount = jdbcTemplate.queryForObject(
+                countSql,
+                Integer.class,
+                status);
+
+        if (totalCount == null) {
+            totalCount = 0;
+        }
+        
+        int totalPages = (int) Math.ceil((double) totalCount / limit);
+        SubmissionListingResponse<BookSubmissionSummary> response = new SubmissionListingResponse<>(
+                result,
+                totalCount,
+                totalPages,
+                page,
+                limit);
+        return response;
     }
 
     // U

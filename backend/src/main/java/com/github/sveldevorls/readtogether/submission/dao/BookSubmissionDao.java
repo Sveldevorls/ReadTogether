@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionSummary;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 
 public interface BookSubmissionDao {
@@ -27,6 +30,8 @@ public interface BookSubmissionDao {
     List<Integer> getMappedGenresById(int id);
 
     Optional<BookSubmissionResponse> getSubmissionResponseById(int id);
+
+    SubmissionListingResponse<BookSubmissionSummary> getSubmissionListing(Integer limit, Integer page, String status);
 
     // U
     int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment);

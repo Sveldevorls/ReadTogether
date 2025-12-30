@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionRequest;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.service.BookSubmissionService;
 
 import jakarta.validation.Valid;
@@ -32,6 +36,20 @@ public class BookSubmissionController {
     public BookSubmissionController(BookSubmissionService bookSubmissionService) {
         this.bookSubmissionService = bookSubmissionService;
     }
+
+    // ?limit, ?page, ?status
+        @GetMapping
+        public ResponseEntity<SuccessResponse> getSubmissionListing(
+                        @RequestParam(required = false) Integer limit,
+                        @RequestParam(required = false) Integer page,
+                        @RequestParam(required = false) String status) {
+
+                SubmissionListingResponse<BookSubmissionSummary> result = bookSubmissionService
+                                .getSubmissionListing(limit, page, status);
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.OK, result),
+                                HttpStatus.OK);
+        }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")

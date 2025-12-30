@@ -1,7 +1,10 @@
 package com.github.sveldevorls.readtogether.submission.service;
 
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.BookSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.NewBookSubmissionRequest;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.entity.BookSubmission;
 import com.github.sveldevorls.readtogether.submission.mapper.BookSubmissionMapper;
 
@@ -146,5 +149,20 @@ public class BookSubmissionService {
                 .orElseThrow(() -> new ResourceNotFoundException());
 
         return response;
+    }
+
+    public SubmissionListingResponse<BookSubmissionSummary> getSubmissionListing(
+            Integer limit,
+            Integer page,
+            String status) {
+
+        Integer limitValue = limit != null ? limit : 10;
+        Integer pageValue = page != null ? page : 0;
+        String statusValue = status != null ? status : "pending";
+        SubmissionListingResponse<BookSubmissionSummary> result = bookSubmissionDao.getSubmissionListing(
+                limitValue,
+                pageValue,
+                statusValue);
+        return result;
     }
 }

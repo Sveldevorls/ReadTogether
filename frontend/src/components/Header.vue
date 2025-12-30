@@ -57,6 +57,10 @@ const navbarItems = ref<MenuItem[]>([
   {
     label: "Community",
   },
+  {
+    label: "Submissions",
+    route: "/submissions",
+  },
 ]);
 
 const toggle = (event: MouseEvent) => {
