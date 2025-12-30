@@ -77,7 +77,7 @@ public class StartupConfig {
                 // Add the admin first
                 userService.createAdmin(adminUsername, adminEmail, adminPassword);
 
-                InputStream userStream = StartupConfig.class.getResourceAsStream("defaultUsers.json");
+                InputStream userStream = StartupConfig.class.getResourceAsStream("/defaultUsers.json");
                 System.out.println(userStream);
                 DefaultUser[] users = objectMapper.readValue(
                         userStream,
@@ -99,7 +99,7 @@ public class StartupConfig {
             }
 
             if (!authorSubmissionService.isInitialized()) {
-                InputStream authorStream = StartupConfig.class.getResourceAsStream("defaultAuthorSubmissions.json");
+                InputStream authorStream = StartupConfig.class.getResourceAsStream("/defaultAuthorSubmissions.json");
                 NewAuthorSubmissionRequest[] authors = objectMapper.readValue(
                         authorStream,
                         NewAuthorSubmissionRequest[].class);
@@ -111,7 +111,7 @@ public class StartupConfig {
             }
 
             if (!bookSubmissionService.isInitialized()) {
-                InputStream bookStream = StartupConfig.class.getResourceAsStream("defaultBookSubmissions.json");
+                InputStream bookStream = StartupConfig.class.getResourceAsStream("/defaultBookSubmissions.json");
                 NewBookSubmissionRequest[] books = objectMapper.readValue(
                         bookStream,
                         NewBookSubmissionRequest[].class);
@@ -123,7 +123,7 @@ public class StartupConfig {
             }
 
             if (!reviewService.isInitialized()) {
-                InputStream reviewStream = StartupConfig.class.getResourceAsStream("defaultReviews.json");
+                InputStream reviewStream = StartupConfig.class.getResourceAsStream("/defaultReviews.json");
                 DefaultReview[] reviews = objectMapper.readValue(
                         reviewStream,
                         DefaultReview[].class);
