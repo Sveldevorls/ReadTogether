@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 
 public interface AuthorSubmissionDao {
@@ -20,6 +22,8 @@ public interface AuthorSubmissionDao {
     /* Optional<AuthorSubmission> getSubmissionEntityById(int id); */
 
     Optional<Integer> getAuthorIdById(int id);
+
+    SubmissionListingResponse<AuthorSubmissionSummary> getSubmissionListing(Integer limit, Integer page, String status);
 
     // U
     int updateReviewById(int submissionId, ReviewStatus status, int reviewerId, String reviewerComment);

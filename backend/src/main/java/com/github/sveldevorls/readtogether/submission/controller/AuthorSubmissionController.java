@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.sveldevorls.readtogether.common.response.SuccessResponse;
 import com.github.sveldevorls.readtogether.security.JwtUserPrincipal;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionRequest;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.service.AuthorSubmissionService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -27,81 +30,83 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path = "/api/submissions/authors", produces = "application/json")
 public class AuthorSubmissionController {
 
-    private record ReviewRequest(String reviewerComment) {}
+        private record ReviewRequest(String reviewerComment) {
+        }
 
-    private final AuthorSubmissionService authorSubmissionService;
+        private final AuthorSubmissionService authorSubmissionService;
 
-    public AuthorSubmissionController(AuthorSubmissionService authorSubmissionService) {
-        this.authorSubmissionService = authorSubmissionService;
-    }
+        public AuthorSubmissionController(AuthorSubmissionService authorSubmissionService) {
+                this.authorSubmissionService = authorSubmissionService;
+        }
 
-    @PostMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessResponse> createNewAuthorSubmission(
-            @Valid @RequestBody NewAuthorSubmissionRequest request,
-            @AuthenticationPrincipal JwtUserPrincipal principal) {
+        // ?limit, ?page, ?status
+        @GetMapping
+        public ResponseEntity<SuccessResponse> getSubmissionListing(
+                        @RequestParam(required = false) Integer limit,
+                        @RequestParam(required = false) Integer page,
+                        @RequestParam(required = false) String status) {
 
-        int submitterId = principal.getId();
-        int createdId = authorSubmissionService.createNewAuthorSubmission(submitterId, request);
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.CREATED, Map.of("id", createdId)),
-                HttpStatus.CREATED);
-    }
+                SubmissionListingResponse<AuthorSubmissionSummary> result = authorSubmissionService
+                                .getSubmissionListing(limit, page, status);
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.OK, result),
+                                HttpStatus.OK);
+        }
 
-    //?limit, ?page, ?status
-    @GetMapping
-    public ResponseEntity<SuccessResponse> getSubmissionListing(
-        @RequestParam(required = false) String limit,
-        @RequestParam(required = false) String page,
-        @RequestParam(required = false) String status
-    ) {
-        List<SubmissionSummary> result = authorSubmissionService.getSubmissionListing();
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.OK, result),
-                HttpStatus.OK);
-    }
+        @PostMapping
+        @PreAuthorize("hasRole('USER')")
+        public ResponseEntity<SuccessResponse> createNewAuthorSubmission(
+                        @Valid @RequestBody NewAuthorSubmissionRequest request,
+                        @AuthenticationPrincipal JwtUserPrincipal principal) {
 
-    @GetMapping("/{submissionId}")
-    public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int submissionId) {
-        AuthorSubmissionResponse result = authorSubmissionService.getSubmissionResponseById(submissionId);
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.OK, result),
-                HttpStatus.OK);
-    }
+                int submitterId = principal.getId();
+                int createdId = authorSubmissionService.createNewAuthorSubmission(submitterId, request);
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.CREATED, Map.of("id", createdId)),
+                                HttpStatus.CREATED);
+        }
 
-    @PostMapping("/{submissionId}/approve")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public ResponseEntity<SuccessResponse> approveSubmission(
-            @PathVariable int submissionId,
-            @RequestBody ReviewRequest reviewRequest,
-            @AuthenticationPrincipal JwtUserPrincipal principal) {
+        @GetMapping("/{submissionId}")
+        public ResponseEntity<SuccessResponse> getSubmissionDetails(@PathVariable int submissionId) {
+                AuthorSubmissionResponse result = authorSubmissionService.getSubmissionResponseById(submissionId);
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.OK, result),
+                                HttpStatus.OK);
+        }
 
-        int reviewerId = principal.getId();
-        AuthorSubmissionResponse result = authorSubmissionService.approveSubmission(
-                submissionId,
-                reviewerId,
-                reviewRequest.reviewerComment());
+        @PostMapping("/{submissionId}/approve")
+        @PreAuthorize("hasRole('MODERATOR')")
+        public ResponseEntity<SuccessResponse> approveSubmission(
+                        @PathVariable int submissionId,
+                        @RequestBody ReviewRequest reviewRequest,
+                        @AuthenticationPrincipal JwtUserPrincipal principal) {
 
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.OK, result),
-                HttpStatus.OK);
-    }
+                int reviewerId = principal.getId();
+                AuthorSubmissionResponse result = authorSubmissionService.approveSubmission(
+                                submissionId,
+                                reviewerId,
+                                reviewRequest.reviewerComment());
 
-    @PostMapping("/{submissionId}/reject")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public ResponseEntity<SuccessResponse> rejectSubmission(
-            @PathVariable int submissionId,
-            @RequestBody ReviewRequest reviewRequest,
-            @AuthenticationPrincipal JwtUserPrincipal principal) {
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.OK, result),
+                                HttpStatus.OK);
+        }
 
-        int reviewerId = principal.getId();
-        AuthorSubmissionResponse result = authorSubmissionService.rejectSubmission(
-                submissionId,
-                reviewerId,
-                reviewRequest.reviewerComment());
+        @PostMapping("/{submissionId}/reject")
+        @PreAuthorize("hasRole('MODERATOR')")
+        public ResponseEntity<SuccessResponse> rejectSubmission(
+                        @PathVariable int submissionId,
+                        @RequestBody ReviewRequest reviewRequest,
+                        @AuthenticationPrincipal JwtUserPrincipal principal) {
 
-        return new ResponseEntity<>(
-                new SuccessResponse(HttpStatus.OK, result),
-                HttpStatus.OK);
-    }
+                int reviewerId = principal.getId();
+                AuthorSubmissionResponse result = authorSubmissionService.rejectSubmission(
+                                submissionId,
+                                reviewerId,
+                                reviewRequest.reviewerComment());
+
+                return new ResponseEntity<>(
+                                new SuccessResponse(HttpStatus.OK, result),
+                                HttpStatus.OK);
+        }
 }

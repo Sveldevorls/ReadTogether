@@ -18,7 +18,8 @@ export const ENDPOINTS = {
   BOOK_REVIEWS: (id: string) => `/api/books/${id}/reviews`,
   BOOK_SEARCH_BY_TITLE: (title: string) => `/api/books?title=${title}`,
 
-  AUTHOR_SUBMISSIONS: "/api/submissions/authors",
+  AUTHOR_SUBMISSIONS_SUBMIT: "/api/submissions/authors",
+  AUTHOR_SUBMISSIONS_LIST: (limit: number, page: number, status: string) => `/api/submissions/authors?limit=${limit}&page=${page}&status=${status}`,
   AUTHOR_SUBMISSION_PAGE: (id: string) => `/api/submissions/authors/${id}`,
   AUTHOR_SUBMISSION_APPROVE: (id: string) => `/api/submissions/authors/${id}/approve`,
   AUTHOR_SUBMISSION_REJECT: (id: string) => `/api/submissions/authors/${id}/reject`,

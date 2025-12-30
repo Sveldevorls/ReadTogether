@@ -191,3 +191,21 @@ export type HomepageResponse = {
   weeklyPopularBooks: BookSummary[];
   latestBooks: BookSummary[];
 }
+
+export type AuthorSubmissionSummary = {
+  submitter: UserSummary;
+  author: AuthorSummary;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  type: string;
+}
+
+export type SubmissionListResponse<T> = {
+  submissions: T[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+};

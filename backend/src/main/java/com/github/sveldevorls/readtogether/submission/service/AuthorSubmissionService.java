@@ -1,5 +1,7 @@
 package com.github.sveldevorls.readtogether.submission.service;
 
+import java.util.List;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,9 @@ import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.common.exception.ResourceNotFoundException;
 import com.github.sveldevorls.readtogether.submission.dao.AuthorSubmissionDao;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
 import com.github.sveldevorls.readtogether.submission.dto.NewAuthorSubmissionRequest;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 
 @Service
 public class AuthorSubmissionService {
@@ -121,5 +125,20 @@ public class AuthorSubmissionService {
                 .orElseThrow(() -> new ResourceNotFoundException());
 
         return response;
+    }
+
+    public SubmissionListingResponse<AuthorSubmissionSummary> getSubmissionListing(
+            Integer limit,
+            Integer page,
+            String status) {
+
+        Integer limitValue = limit != null ? limit : 10;
+        Integer pageValue = page != null ? page : 0;
+        String statusValue = status != null ? status : "pending";
+        SubmissionListingResponse<AuthorSubmissionSummary> result = authorSubmissionDao.getSubmissionListing(
+                limitValue,
+                pageValue,
+                statusValue);
+        return result;
     }
 }

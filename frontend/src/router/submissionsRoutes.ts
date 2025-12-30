@@ -1,4 +1,5 @@
 import AuthorSubmissionView from "@/pages/submissions/AuthorSubmissionView.vue";
+import AuthorSubmissionsIndex from "@/pages/submissions/AuthorSubmissionsIndex.vue";
 import BookSubmissionView from "@/pages/submissions/BookSubmissionView.vue";
 import NewAuthor from "@/pages/submissions/NewAuthor.vue";
 import NewBook from "@/pages/submissions/NewBook.vue";
@@ -18,6 +19,10 @@ const submissionsRoutes = [
     path: "/submissions/authors/:id",
     component: AuthorSubmissionView,
   },
+  {
+    path: "/submissions/authors",
+    component: AuthorSubmissionsIndex,
+  },
 
   // Books
   {
@@ -35,4 +40,4 @@ const submissionsRoutes = [
   },
 ];
 
-export default submissionsRoutes
+export default submissionsRoutes;

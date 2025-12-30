@@ -68,7 +68,7 @@ const submit = handleSubmit(
     };
     try {
       const { data: response } = await api.post<SuccessResponse<NewAuthorSubmissionResponse>>(
-        ENDPOINTS.AUTHOR_SUBMISSIONS,
+        ENDPOINTS.AUTHOR_SUBMISSIONS_SUBMIT,
         payload,
       );
       toast({

@@ -17,8 +17,11 @@ import org.springframework.stereotype.Repository;
 
 import com.github.sveldevorls.readtogether.common.entity.ReviewStatus;
 import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionResponse;
+import com.github.sveldevorls.readtogether.submission.dto.AuthorSubmissionSummary;
+import com.github.sveldevorls.readtogether.submission.dto.SubmissionListingResponse;
 import com.github.sveldevorls.readtogether.submission.entity.AuthorSubmission;
 import com.github.sveldevorls.readtogether.submission.rowmapper.AuthorSubmissionResponseRowMapper;
+import com.github.sveldevorls.readtogether.submission.rowmapper.AuthorSubmissionSummaryRowMapper;
 
 @Repository
 public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
@@ -105,6 +108,61 @@ public class AuthorSubmissionDaoImpl implements AuthorSubmissionDao {
                 (rs, rowNum) -> rs.getInt("author_id"),
                 id);
         return result.stream().findFirst();
+    }
+
+    public SubmissionListingResponse<AuthorSubmissionSummary> getSubmissionListing(
+            Integer limit,
+            Integer page,
+            String status) {
+
+        String sql = """
+                SELECT
+                    u.username,
+                    u.display_name,
+                    u.avatar_url,
+                    a.id AS author_id,
+                    a.slug,
+                    a.author_name,
+                    s.id AS submission_id,
+                    s.created_at,
+                    s.updated_at,
+                    s.review_status,
+                    CASE
+                        WHEN previous_submission_id IS NULL THEN 'New'
+                        ELSE 'Update'
+                    END AS submission_type
+                FROM author_submissions AS s
+                JOIN users AS u ON s.submitter_id = u.id
+                JOIN authors AS a ON s.author_id = a.id
+                WHERE s.review_status = ?
+                ORDER BY s.created_at DESC
+                LIMIT ? OFFSET ?
+                """;
+        List<AuthorSubmissionSummary> result = jdbcTemplate.query(
+                sql,
+                new AuthorSubmissionSummaryRowMapper(),
+                status,
+                limit,
+                page * limit);
+
+        String countSql = "SELECT COUNT(*) FROM author_submissions WHERE review_status = ?";
+        Integer totalCount = jdbcTemplate.queryForObject(
+                countSql,
+                Integer.class,
+                status);
+
+        if (totalCount == null) {
+            totalCount = 0;
+        }
+        
+        int totalPages = (int) Math.ceil((double) totalCount / limit);
+        SubmissionListingResponse<AuthorSubmissionSummary> response = new SubmissionListingResponse<>(
+                result,
+                totalCount,
+                totalPages,
+                page,
+                limit);
+        return response;
     }
 
     // U
